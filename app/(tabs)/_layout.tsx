@@ -1,57 +1,114 @@
-import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import React, { useContext } from "react";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Tabs } from "expo-router";
 
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
+import { dark, light } from "@/constants/Theme";
+import { useColorScheme } from "react-native";
+import { GlobalContext } from "@/context/global";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
+const TabBarIcon = (props: {
+  name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
-}) {
+}) => {
+  const colorScheme = useColorScheme();
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
+};
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { state } = useContext(GlobalContext);
 
   return (
     <Tabs
+      initialRouteName="now"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
-      }}>
+        headerShown: false,
+        tabBarActiveTintColor: state.dark
+          ? dark.colors.tabBar.selected.text
+          : light.colors.tabBar.selected.text,
+        tabBarInactiveTintColor: state.dark
+          ? dark.colors.tabBar.default.text
+          : light.colors.tabBar.default.text,
+      }}
+    >
       <Tabs.Screen
-        name="index"
+        name="now"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
+          title: "Now",
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon
+              name="code"
+              color={
+                focused
+                  ? state.dark
+                    ? dark.colors.tabBar.selected.icon
+                    : light.colors.tabBar.selected.icon
+                  : state.dark
+                  ? dark.colors.tabBar.default.icon
+                  : light.colors.tabBar.default.icon
+              }
+            />
           ),
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="today"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "Today",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name="code"
+              color={
+                focused
+                  ? state.dark
+                    ? dark.colors.tabBar.selected.icon
+                    : light.colors.tabBar.selected.icon
+                  : state.dark
+                  ? dark.colors.tabBar.default.icon
+                  : light.colors.tabBar.default.icon
+              }
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="forecast"
+        options={{
+          title: "Forecast",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name="code"
+              color={
+                focused
+                  ? state.dark
+                    ? dark.colors.tabBar.selected.icon
+                    : light.colors.tabBar.selected.icon
+                  : state.dark
+                  ? dark.colors.tabBar.default.icon
+                  : light.colors.tabBar.default.icon
+              }
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: "Settings",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name="code"
+              color={
+                focused
+                  ? state.dark
+                    ? dark.colors.tabBar.selected.icon
+                    : light.colors.tabBar.selected.icon
+                  : state.dark
+                  ? dark.colors.tabBar.default.icon
+                  : light.colors.tabBar.default.icon
+              }
+            />
+          ),
         }}
       />
     </Tabs>
