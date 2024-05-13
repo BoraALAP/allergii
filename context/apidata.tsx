@@ -5,6 +5,7 @@ import {
   CurrentStateType,
   ForecastType,
   GoogleAirQualityType,
+  GooglePollenType,
   LocationType,
 } from "../types/api";
 import { storeData } from "../func/storage";
@@ -16,10 +17,11 @@ export type ApiDataStateType = {
   forecast: {
     forecastday: ForecastType[];
   };
-  current: CurrentStateType | undefined;
-  location: LocationType | undefined;
+  current: CurrentStateType;
+  location: LocationType;
   alerts: { alert: AlertType[] };
   googleairquality: GoogleAirQualityType;
+  googlepollen: GooglePollenType;
 };
 
 // Define the apiData state of the app
@@ -32,6 +34,7 @@ export const apiDataInitialState = {
   astro: null,
   alerts: { alert: [] },
   googleairquality: null,
+  googlepollen: null,
 };
 
 // setup a global context to store the user's location and weather data. This will allow us to access this data from any component in our app.

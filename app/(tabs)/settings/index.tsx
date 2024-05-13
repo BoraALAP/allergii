@@ -6,7 +6,7 @@ import { storeData } from "../../../func/storage";
 import { PageView, View } from "@/ui/Containers";
 import { Text } from "@/ui/Typography";
 import styled from "styled-components";
-import { dark, light } from "@/constants/Theme";
+import { dark, global, light } from "@/constants/Theme";
 
 const Setting = () => {
   const { state, dispatch } = useContext(GlobalContext);
@@ -22,7 +22,7 @@ const Setting = () => {
         <SegmentedControlS
           values={["Censuis", "Farhenheit"]}
           selectedIndex={state.settings.tempType}
-          tintColor={state.dark ? dark.colors.tint.off : light.colors.tint.off}
+          fontStyle={{ fontFamily: global.font.family.primary }}
           onChange={(event) => {
             dispatch({
               type: "SET_TEMP_TYPE",
@@ -36,7 +36,7 @@ const Setting = () => {
         <SegmentedControlS
           values={["Kilometer", "Miles"]}
           selectedIndex={state.settings.distanceType}
-          tintColor={state.dark ? dark.colors.tint.off : light.colors.tint.off}
+          fontStyle={{ fontFamily: global.font.family.primary }}
           onChange={(event) => {
             dispatch({
               type: "SET_DIRECTION_TYPE",
@@ -45,12 +45,12 @@ const Setting = () => {
           }}
         />
       </ViewContainer>
-      <ViewContainer>
+      {/* <ViewContainer>
         <Text>Is Allergy Information Important For You?</Text>
         <SegmentedControlS
           values={["Yes", "No"]}
           selectedIndex={state.settings.allergy}
-          tintColor={state.dark ? dark.colors.tint.off : light.colors.tint.off}
+          fontStyle={{ fontFamily: global.font.family.primary }}
           onChange={(event) => {
             dispatch({
               type: "SET_ALLERGY",
@@ -58,13 +58,12 @@ const Setting = () => {
             });
           }}
         />
-      </ViewContainer>
-      <ViewContainer>
+      </ViewContainer> */}
+      {/* <ViewContainer>
         <Text>Push Notifications</Text>
         <SegmentedControlS
           values={["Yes", "No"]}
           selectedIndex={state.settings.notifications}
-          tintColor={state.dark ? dark.colors.tint.off : light.colors.tint.off}
           onChange={(event) => {
             dispatch({
               type: "SET_NOTIFICATIONS",
@@ -72,7 +71,7 @@ const Setting = () => {
             });
           }}
         />
-      </ViewContainer>
+      </ViewContainer> */}
     </PageView>
   );
 };

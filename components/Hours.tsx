@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { ScrollView, TouchableOpacity } from "react-native";
 import styled from "styled-components";
 import { LineChart } from "react-native-gifted-charts";
@@ -9,36 +9,39 @@ import { HourType } from "@/types/api";
 import { Card } from "@/ui/Card";
 import { Caption, Text } from "@/ui/Typography";
 import { View } from "@/ui/Containers";
-import { LinearGradient, Stop } from "react-native-svg";
+
 import { ValueColor } from "@/func/valueColor";
+
+import { SunIcon } from "@/assets/icons/sun";
+import IconContainer from "@/ui/IconContainer";
 
 const Hours = ({
   hours,
   day,
   today,
+  nextdayhours,
 }: {
   hours: HourType[];
   today?: boolean;
   day: number;
+  nextdayhours?: HourType[];
 }) => {
   const { state } = useContext(GlobalContext);
-  const existHours = hours.filter((hour) =>
+  let existHours = hours.filter((hour) =>
     //check the hour if it is after current hour then display it
     today ? new Date().getHours() <= new Date(hour.time).getHours() : true
   );
 
-  const data = [
-    { value: 15, time: 18 },
-    { value: 30, time: 19 },
-    { value: 26, time: 20 },
-    { value: 40, time: 21 },
-  ];
-  const data2 = [
-    { value: 25, time: 18 },
-    { value: 10, time: 19 },
-    { value: 14, time: 20 },
-    { value: 46, time: 21 },
-  ];
+  //if today is true then display the next day hours
+  if (today) {
+    //check the length of existHours if it is less than 24 then add next day hours to make it the existing hours length to 24
+    if (existHours.length < 24) {
+      existHours = [
+        ...existHours,
+        ...nextdayhours!.slice(0, 24 - existHours.length),
+      ];
+    }
+  }
 
   return (
     <Card noPadding>
@@ -51,6 +54,7 @@ const Hours = ({
         // style={{ paddingHorizontal: 16 }}
         contentContainerStyle={{
           gap: 2,
+
           // paddingHorizontal: 16,
           // paddingVertical: 12,
         }}
@@ -61,7 +65,6 @@ const Hours = ({
               key={hour.time_epoch}
               hour={hour.time_epoch}
               day={day}
-              today={today}
               last={index === existHours.length - 1}
             >
               <Text>
@@ -74,17 +77,24 @@ const Hours = ({
               <View center>
                 <Text color={ValueColor({ value: hour.temp_c, type: "temp" })}>
                   {state.settings.tempType === 0
-                    ? `${hour.temp_c} °C`
-                    : `${hour.temp_f} °F`}
+                    ? `${Math.round(hour.temp_c)} °C`
+                    : `${Math.round(hour.temp_f)} °F`}
                 </Text>
                 <Caption
                   color={ValueColor({ value: hour.feelslike_c, type: "temp" })}
                 >
                   {state.settings.tempType === 0
-                    ? `${hour.feelslike_c} °C`
-                    : `${hour.feelslike_f} °F`}
+                    ? `${Math.round(hour.feelslike_c)} °C`
+                    : `${Math.round(hour.feelslike_f)} °F`}
                 </Caption>
               </View>
+              <IconContainerSmall>
+                <IconContainer
+                  size={16}
+                  code={hour.condition.code}
+                  day={hour.is_day}
+                />
+              </IconContainerSmall>
             </Tile>
           );
         })}
@@ -130,13 +140,11 @@ const Hours = ({
 const Tile = ({
   children,
   hour,
-  today,
   day,
   last,
 }: {
   children: React.ReactNode;
   hour: number;
-  today?: boolean;
   day?: number;
   last?: boolean;
 }) => {
@@ -145,12 +153,10 @@ const Tile = ({
       key={hour}
       last={last}
       onPress={() => {
-        today
-          ? router.push({ pathname: "/(tabs)/today/[hour]/", params: { hour } })
-          : router.push({
-              pathname: "/(tabs)/forecast/[hour]/hour",
-              params: { hour, day: day as number },
-            });
+        router.navigate({
+          pathname: "/hourmodal",
+          params: { hour, day: day as number },
+        });
       }}
     >
       {children}
@@ -168,3 +174,9 @@ const ClickArea = styled(TouchableOpacity)<{ last?: boolean }>`
 `;
 
 export default Hours;
+
+const IconContainerSmall = styled(View)`
+  width: 16px;
+  height: 16px;
+  align-items: center;
+`;

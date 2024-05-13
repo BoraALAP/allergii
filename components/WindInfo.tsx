@@ -8,6 +8,7 @@ import { DividerV } from "@/ui/Elements";
 import { SectionTitle, Value } from "@/ui/Typography";
 import { ValueColor } from "@/func/valueColor";
 import { Card } from "@/ui/Card";
+import { RainIcon } from "@/assets/icons/rain";
 
 type WindInfoProps = {
   wind_degree: number;
@@ -18,8 +19,8 @@ type WindInfoProps = {
   gust_mph: number;
   vis_km: number;
   vis_miles: number;
-  precip_in: number;
-  precip_mm: number;
+  precip_in?: number;
+  precip_mm?: number;
 };
 
 const WindInfo = ({
@@ -35,6 +36,7 @@ const WindInfo = ({
   precip_mm,
 }: WindInfoProps) => {
   const { state } = useContext(GlobalContext);
+
   return (
     <Card row>
       <Grid>
@@ -51,38 +53,34 @@ const WindInfo = ({
           <SectionTitle>Wind Speed:</SectionTitle>
           <Value color={ValueColor({ value: wind_kph, type: "speed" })}>
             {state.settings.distanceType === 0
-              ? `${wind_kph} KM/H`
-              : `${wind_mph} M/H`}
+              ? `${Math.round(wind_kph)} KM/H`
+              : `${Math.round(wind_mph)} M/H`}
           </Value>
         </ItemContainer>
         <ItemContainer>
           <SectionTitle>Gust Speed:</SectionTitle>
           <Value color={ValueColor({ value: gust_kph, type: "speed" })}>
             {state.settings.distanceType === 0
-              ? `${gust_kph} KM/H`
-              : `${gust_mph} M/H`}
+              ? `${Math.round(gust_kph)} KM/H`
+              : `${Math.round(gust_mph)} M/H`}
           </Value>
         </ItemContainer>
         <ItemContainer>
           <SectionTitle>Visibility:</SectionTitle>
           <Value color={ValueColor({ value: vis_km, type: "visibility" })}>
             {state.settings.distanceType === 0
-              ? `${vis_km} KM`
-              : `${vis_miles} M`}
+              ? `${Math.round(vis_km)} KM`
+              : `${Math.round(vis_miles)} M`}
           </Value>
         </ItemContainer>
       </Grid>
-      {precip_mm !== 0 && (
+      {!!precip_mm && precip_mm !== 0 && (
         <>
           <DividerV />
           <View>
             <ItemContainerCenter>
               <IconContainer>
-                <FontAwesome
-                  name="exclamation-triangle"
-                  size={24}
-                  color={state.dark ? "#ff0" : "#000"}
-                />
+                <RainIcon />
               </IconContainer>
               <SectionTitle>Rain Amount:</SectionTitle>
 
@@ -106,6 +104,8 @@ export default WindInfo;
 
 const IconContainer = styled(View)`
   margin-bottom: 8px;
+  width: 24px;
+  height: 24px;
 `;
 
 const ItemContainerCenter = styled(ItemContainer)`

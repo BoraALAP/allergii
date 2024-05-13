@@ -22,10 +22,7 @@ export const PageView = ({ children, center }: PageViewProps) => {
   return (
     <PageBackgroundLinear>
       <SafeAreaView>
-        <PageContainer
-          center={center}
-          style={{ height: "100%", justifyContent: "center" }}
-        >
+        <PageContainer center={center} style={{ height: "100%" }}>
           {children}
         </PageContainer>
       </SafeAreaView>
@@ -36,22 +33,26 @@ export const PageScrollView = ({ children, center }: PageViewProps) => {
   const [refreshing, setRefreshing] = useState(false);
 
   const { apiDataState, apiDataDispatch } = useContext(ApiDataContext);
-  const { state, dispatch } = useContext(GlobalContext);
+  const { state } = useContext(GlobalContext);
   const { nowAiDispatch } = useContext(NowAiContext);
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
+    console.log(await state.location);
 
-    await fetchData(apiDataDispatch, dispatch);
-    await fetchAIData(
-      apiDataState,
-      nowAiDispatch,
-      state.settings.distanceType,
-      state.settings.tempType
-    );
+    // on refresh fetch the data from apis
+    const data = await fetchData(state.location);
+    apiDataDispatch({ type: "LOAD_DATA", payload: await data });
+    // await fetchAIData(
+    //   apiDataState,
+    //   nowAiDispatch,
+    //   state.settings.distanceType,
+    //   state.settings.tempType
+    // );
 
     setRefreshing(false);
   }, []);
+
   return (
     <PageBackgroundLinear>
       {/* <SafeAreaView> */}
@@ -99,10 +100,12 @@ export const Grid = styled(View)`
   flex: 1;
 `;
 
-export const ItemContainer = styled(View)`
+export const ItemContainer = styled(View)<{ row?: boolean }>`
   gap: -8px;
+  flex-direction: ${(props) => (props.row ? "row" : "column")};
+  justify-content: ${(props) => (props.row ? "space-between" : "flex-start")};
   min-width: 80px;
-  /* max-width: 120px; */
-  width: auto;
+  width: 50%;
+  /* width: auto; */
   flex: 1;
 `;

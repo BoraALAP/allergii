@@ -9,35 +9,39 @@ import { DividerV } from "@/ui/Elements";
 import { BigNumber, SectionTitle, Value } from "@/ui/Typography";
 import { ValueColor } from "@/func/valueColor";
 import { dark, light } from "@/constants/Theme";
+import { SunIcon } from "@/assets/icons/sun";
+import { CloudIcon } from "@/assets/icons/cloud";
+import { HumidityIcon } from "@/assets/icons/humidity";
+import IconContainer from "@/ui/IconContainer";
 
 type RealTimeProps = {
+  day?: number;
   temp: {
     c: number;
     f: number;
   };
-  feelslike: {
+  feelslike?: {
     c: number;
     f: number;
   };
-  location: {
+  location?: {
     name: string;
     country: string;
   };
-  cloud: number;
+  cloud?: number;
   condition: {
     code: number;
     text: string;
     icon: string;
   };
-  uv: number;
   is_day: number;
   humidity: number;
 };
 
 const RealTime = ({
+  day,
   cloud,
   condition,
-  uv,
   temp,
   feelslike,
   location,
@@ -46,57 +50,58 @@ const RealTime = ({
 }: RealTimeProps) => {
   const { state } = useContext(GlobalContext);
 
-  //if I use my own icons i can use this function
-  // const weather = weatherContidion(code);
   return (
     <Card row>
-      <IconContainer>
-        <FontAwesome
-          name="exclamation-triangle"
-          size={56}
-          color={state.dark ? dark.colors.primary : light.colors.secondary}
-        />
-      </IconContainer>
+      <IconContainer size={72} code={condition.code} day={is_day} />
       <DividerV />
       <CardContent>
+        {day !== undefined && (
+          <SectionTitle color="secondary">
+            {Intl.DateTimeFormat("en-US", {
+              day: "numeric",
+              weekday: "long",
+            }).format(new Date(day * 1000))}
+          </SectionTitle>
+        )}
         <Row style={{ gap: 24 }}>
-          <BigNumber color={ValueColor({ value: temp.c, type: "temp" })}>
-            {state.settings.tempType === 0 ? `${temp.c}°C` : `${temp.f}°F`}
-          </BigNumber>
           <Row style={{ gap: 4, alignItems: "flex-start" }}>
-            <SectionTitle>Feels</SectionTitle>
-            <BigNumber color={ValueColor({ value: feelslike.c, type: "temp" })}>
+            <SectionTitle>{!!day ? "Max" : ""}</SectionTitle>
+            <BigNumber color={ValueColor({ value: temp.c, type: "temp" })}>
               {state.settings.tempType === 0
-                ? `${feelslike.c}°C`
-                : `${feelslike.f}°F`}
+                ? `${Math.round(temp.c)}°C`
+                : `${Math.round(temp.f)}°F`}
             </BigNumber>
           </Row>
+          {feelslike && (
+            <Row style={{ gap: 4, alignItems: "flex-start" }}>
+              <SectionTitle>{!!day ? "Min" : "Feels"}</SectionTitle>
+              <BigNumber
+                color={ValueColor({ value: feelslike.c, type: "temp" })}
+              >
+                {state.settings.tempType === 0
+                  ? `${Math.round(feelslike.c)}°C`
+                  : `${Math.round(feelslike.f)}°F`}
+              </BigNumber>
+            </Row>
+          )}
         </Row>
-        <SectionTitle color="secondary">
-          {location.name}, {location.country}
-        </SectionTitle>
+        {location && (
+          <SectionTitle color="secondary">
+            {location.name}, {location.country}
+          </SectionTitle>
+        )}
         <Row style={{ gap: 28 }}>
+          {cloud !== undefined && (
+            <Row style={{ gap: 4 }}>
+              <IconContainerSmall>
+                <CloudIcon />
+              </IconContainerSmall>
+              <Value>{cloud}%</Value>
+            </Row>
+          )}
           <Row style={{ gap: 4 }}>
             <IconContainerSmall>
-              <FontAwesome
-                name="map-marker"
-                size={24}
-                color={
-                  state.dark ? dark.colors.primary : light.colors.secondary
-                }
-              />
-            </IconContainerSmall>
-            <Value>{cloud}%</Value>
-          </Row>
-          <Row style={{ gap: 4 }}>
-            <IconContainerSmall>
-              <FontAwesome
-                name="map-marker"
-                size={24}
-                color={
-                  state.dark ? dark.colors.primary : light.colors.secondary
-                }
-              />
+              <HumidityIcon />
             </IconContainerSmall>
 
             <Value>{humidity}%</Value>
@@ -109,9 +114,6 @@ const RealTime = ({
 
 export default RealTime;
 
-const IconContainer = styled(View)`
-  padding: 8px;
-`;
 const IconContainerSmall = styled(View)`
   width: 24px;
   height: 24px;

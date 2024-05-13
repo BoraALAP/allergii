@@ -1,3 +1,7 @@
+import { MoonriseIcon } from "@/assets/icons/moonrise";
+import { MoonsetIcon } from "@/assets/icons/moonset";
+import { SunriseIcon } from "@/assets/icons/sunrise";
+import { SunsetIcon } from "@/assets/icons/sunset";
 import { dark, light } from "@/constants/Theme";
 import { GlobalContext } from "@/context/global";
 import { AstroType } from "@/types/api";
@@ -7,6 +11,7 @@ import { Text, SectionTitle, Value } from "@/ui/Typography";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useContext } from "react";
 import { View } from "react-native";
+import { Svg } from "react-native-svg";
 import styled from "styled-components";
 
 const AstroInfo = ({ astro }: { astro: AstroType }) => {
@@ -16,11 +21,7 @@ const AstroInfo = ({ astro }: { astro: AstroType }) => {
       <Row>
         <Row>
           <IconContainer>
-            <FontAwesome
-              name="sun-o"
-              size={24}
-              color={state.dark ? dark.colors.primary : light.colors.secondary}
-            />
+            <SunriseIcon />
           </IconContainer>
           <ItemContainer>
             <SectionTitle>Sun Rise:</SectionTitle>
@@ -29,11 +30,7 @@ const AstroInfo = ({ astro }: { astro: AstroType }) => {
         </Row>
         <Row>
           <IconContainer>
-            <FontAwesome
-              name="sun-o"
-              size={24}
-              color={state.dark ? dark.colors.primary : light.colors.secondary}
-            />
+            <SunsetIcon />
           </IconContainer>
           <ItemContainer>
             <SectionTitle>Sun Set:</SectionTitle>
@@ -44,11 +41,7 @@ const AstroInfo = ({ astro }: { astro: AstroType }) => {
       <Row>
         <Row>
           <IconContainer>
-            <FontAwesome
-              name="sun-o"
-              size={24}
-              color={state.dark ? dark.colors.primary : light.colors.secondary}
-            />
+            <MoonriseIcon />
           </IconContainer>
           <ItemContainer>
             <SectionTitle>Moon Rise:</SectionTitle>
@@ -57,11 +50,7 @@ const AstroInfo = ({ astro }: { astro: AstroType }) => {
         </Row>
         <Row>
           <IconContainer>
-            <FontAwesome
-              name="sun-o"
-              size={24}
-              color={state.dark ? dark.colors.primary : light.colors.secondary}
-            />
+            <MoonsetIcon />
           </IconContainer>
           <ItemContainer>
             <SectionTitle>Moon Set:</SectionTitle>
@@ -76,7 +65,7 @@ const AstroInfo = ({ astro }: { astro: AstroType }) => {
         </ItemContainer>
         <ItemContainer>
           <SectionTitle>Moon Illumination:</SectionTitle>
-          <Value>{astro.moon_illumination}</Value>
+          <Value>{astro.moon_illumination} %</Value>
         </ItemContainer>
       </Row>
     </Card>

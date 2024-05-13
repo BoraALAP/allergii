@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useLayoutEffect } from "react";
 import styled from "styled-components";
 
 import { GlobalContext } from "@/context/global";
@@ -18,68 +18,83 @@ import Hours from "@/components/Hours";
 import AstroInfo from "@/components/AstroInfo";
 import DayDetails from "@/components/DayDetails";
 import { DayType } from "@/types/api";
+import RainInfo from "@/components/RainInfo";
 
 const HomePage = () => {
   const { state } = useContext(GlobalContext);
-  const { apiDataState } = useContext(ApiDataContext);
-  console.log(apiDataState);
+  const {
+    apiDataState: { current, location, alerts, forecast, googleairquality },
+  } = useContext(ApiDataContext);
 
-  if (state.loading || !apiDataState.current || !apiDataState.location) {
+  if (state.loading || !current || !location) {
     return <Loading />;
   }
+  const day = forecast.forecastday[0];
 
   return (
     <PageScrollView center>
-      {/* {apiDataState.alerts.alert.length > 0 && ( */}
-      <Alert alerts={apiDataState.alerts.alert} />
-      {/* )} */}
+      {alerts.alert.length > 0 && <Alert alerts={alerts.alert} />}
       <RealTime
-        cloud={apiDataState.current.cloud}
-        condition={apiDataState.current.condition}
-        uv={apiDataState.current.uv}
-        is_day={apiDataState.current.is_day}
-        humidity={apiDataState.current.humidity}
+        cloud={current.cloud}
+        condition={current.condition}
+        is_day={current.is_day}
+        humidity={current.humidity}
         temp={{
-          c: apiDataState.current.temp_c,
-          f: apiDataState.current.temp_f,
+          c: current.temp_c,
+          f: current.temp_f,
         }}
         feelslike={{
-          c: apiDataState.current.feelslike_c,
-          f: apiDataState.current.feelslike_f,
+          c: current.feelslike_c,
+          f: current.feelslike_f,
         }}
         location={{
-          name: apiDataState.location.name,
-          country: apiDataState.location.country,
+          name: location.name,
+          country: location.country,
         }}
       />
 
       <DividerH />
       <WindInfo
-        wind_degree={apiDataState.current.wind_degree}
-        wind_dir={apiDataState.current.wind_dir}
-        wind_kph={apiDataState.current.wind_kph}
-        wind_mph={apiDataState.current.wind_mph}
-        gust_kph={apiDataState.current.gust_kph}
-        gust_mph={apiDataState.current.gust_mph}
-        vis_km={apiDataState.current.vis_km}
-        vis_miles={apiDataState.current.vis_miles}
-        precip_in={apiDataState.current.precip_in}
-        precip_mm={apiDataState.current.precip_mm}
+        wind_degree={current.wind_degree}
+        wind_dir={current.wind_dir}
+        wind_kph={current.wind_kph}
+        wind_mph={current.wind_mph}
+        gust_kph={current.gust_kph}
+        gust_mph={current.gust_mph}
+        vis_km={current.vis_km}
+        vis_miles={current.vis_miles}
+        precip_in={current.precip_in}
+        precip_mm={current.precip_mm}
       />
       <DividerH />
-      {apiDataState.googleairquality !== null && (
-        <AirQuality airQuality={apiDataState.googleairquality} />
+      {googleairquality !== null && (
+        <AirQuality airQuality={googleairquality} />
       )}
       <DividerH />
       <Hours
         today
-        hours={apiDataState.forecast.forecastday[0].hour}
-        day={apiDataState.forecast.forecastday[0].date_epoch}
+        hours={day.hour}
+        day={day.date_epoch}
+        nextdayhours={forecast.forecastday[1].hour}
       />
       <DividerH />
-      <AstroInfo astro={apiDataState.forecast.forecastday[0].astro} />
+      <DayDetails day={day.day as DayType} />
+      {day.day.daily_will_it_rain === 1 && day.day.daily_will_it_snow === 1 && (
+        <>
+          <DividerH />
+          <RainInfo
+            chance_of_rain={day.day.daily_chance_of_rain}
+            chance_of_snow={day.day.daily_chance_of_snow}
+            will_it_rain={day.day.daily_will_it_rain}
+            will_it_snow={day.day.daily_will_it_snow}
+            precip_in={day.day.totalprecip_in}
+            precip_mm={day.day.totalprecip_mm}
+            snow_cm={day.day.totalsnow_cm}
+          />
+        </>
+      )}
       <DividerH />
-      <DayDetails day={apiDataState.forecast.forecastday[0].day as DayType} />
+      <AstroInfo astro={day.astro} />
     </PageScrollView>
   );
 };

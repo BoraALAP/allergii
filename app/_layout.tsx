@@ -27,7 +27,7 @@ import { NoPermission } from "./noPermission";
 import PushNotification from "@/lib/pushNotification";
 import fetchData from "@/func/fetchData";
 import { NowAiContext, nowAiInitialState, nowAiReducer } from "@/context/nowai";
-import { useColorScheme } from "react-native";
+import { Platform, useColorScheme } from "react-native";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -62,26 +62,11 @@ export default function RootLayout() {
     nowAiReducer,
     nowAiInitialState
   );
-
+  //on load check the location permission and save the location in the global state
   useEffect(() => {
     console.log("Root Layout Loaded");
 
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        // Alert.alert("Permission to access location was denied");
-
-        dispatch({
-          type: "SET_NO_LOCATION_PERMISSION",
-        });
-
-        return;
-      }
-      dispatch({
-        type: "SET_LOCATION_PERMISSION",
-      });
-
-      // Load global data
       const globalData = await getData("global");
       if (globalData) {
         dispatch({
@@ -90,25 +75,48 @@ export default function RootLayout() {
         });
       }
 
-      // Load API data or fetch new data
-      const apiData = await getData("apiData");
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        // Alert.alert("Permission to access location was denied");
+        dispatch({
+          type: "SET_NO_LOCATION_PERMISSION",
+        });
 
-      if (apiData) {
-        if (
-          new Date().getTime() -
-            new Date(apiData.current.last_updated).getTime() >
-          21600000
-        ) {
-          fetchData(apiDataDispatch, dispatch);
-        } else {
-          apiDataDispatch({
-            type: "LOAD_DATA",
-            payload: apiData,
-          });
-        }
+        return;
       } else {
-        fetchData(apiDataDispatch, dispatch);
+        // Load global data
+
+        console.log("Getting location from device");
+
+        const {
+          coords: { longitude, latitude },
+        } = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Low,
+        });
+
+        await dispatch({
+          type: "SET_LOCATION",
+          payload: { latitude, longitude },
+        });
       }
+    })();
+  }, []);
+
+  //if location changes in global state, fetch the data from the apis
+  useEffect(() => {
+    (async () => {
+      console.log("Api Data loaded from Fetch");
+      await dispatch({
+        type: "SET_LOADING",
+        payload: true,
+      });
+      const result = await fetchData(state.location);
+      console.log(result);
+
+      apiDataDispatch({
+        type: "LOAD_DATA",
+        payload: result,
+      });
 
       // Set loading to false
       dispatch({
@@ -116,8 +124,9 @@ export default function RootLayout() {
         payload: false,
       });
     })();
-  }, []);
+  }, [state.location]);
 
+  // Set dark mode based on the device color scheme
   useEffect(() => {
     dispatch({
       type: "SET_DARK_MODE",
@@ -159,10 +168,32 @@ export default function RootLayout() {
       <ApiDataContext.Provider value={{ apiDataState, apiDataDispatch }}>
         <NowAiContext.Provider value={{ nowAiState, nowAiDispatch }}>
           <ThemeProvider theme={state.dark ? dark : light}>
-            {state.notifications == 0 && <PushNotification />}
-            <Stack screenOptions={{}}>
-              <Stack.Screen name="index" />
+            {/* {state.notifications == 0 && <PushNotification />} */}
+            <Stack initialRouteName="(tabs)/now">
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="hourmodal"
+                options={{
+                  title: "",
+                  presentation:
+                    Platform.OS === "ios"
+                      ? "modal"
+                      : "containedTransparentModal",
+                  headerShown: false,
+
+                  contentStyle: {
+                    bottom: 0,
+                    width: "100%",
+                    position: "absolute",
+                    borderTopEndRadius: 20,
+                    borderTopStartRadius: 20,
+                    elevation: 8,
+                    backgroundColor: state.dark
+                      ? dark.colors.page.bg.start
+                      : light.colors.page.bg.start,
+                  },
+                }}
+              />
             </Stack>
           </ThemeProvider>
         </NowAiContext.Provider>

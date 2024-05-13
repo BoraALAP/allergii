@@ -9,6 +9,9 @@ import { SectionTitle, Value } from "@/ui/Typography";
 import { ValueColor } from "@/func/valueColor";
 import { Card } from "@/ui/Card";
 import { DayType } from "@/types/api";
+import { TempIcon } from "@/assets/icons/temp";
+import { WindIcon } from "@/assets/icons/wind";
+import { RainIcon } from "@/assets/icons/rain";
 
 type DayDetailsProps = {
   maxtemp_c: number;
@@ -29,8 +32,6 @@ type DayDetailsProps = {
 };
 
 const DayDetails = ({ day }: { day: DayType }) => {
-  console.log(day);
-
   const { state } = useContext(GlobalContext);
   const {
     maxtemp_c,
@@ -53,65 +54,54 @@ const DayDetails = ({ day }: { day: DayType }) => {
     <Card row>
       <Column center>
         <IconContainer>
-          <FontAwesome
-            name="exclamation-triangle"
-            size={24}
-            color={state.dark ? "#ff0" : "#000"}
-          />
+          <TempIcon />
         </IconContainer>
         <ItemContainer>
           <SectionTitle>Max Temp:</SectionTitle>
           <Value color={ValueColor({ value: maxtemp_c, type: "temp" })}>
             {state.settings.distanceType === 0
-              ? `${maxtemp_c}°C`
-              : `${maxtemp_f}°F`}
+              ? `${Math.round(maxtemp_c)}°C`
+              : `${Math.round(maxtemp_f)}°F`}
           </Value>
         </ItemContainer>
         <ItemContainer>
           <SectionTitle>Min Temp:</SectionTitle>
           <Value color={ValueColor({ value: mintemp_c, type: "temp" })}>
             {state.settings.distanceType === 0
-              ? `${mintemp_c}°C`
-              : `${mintemp_f}°F`}
+              ? `${Math.round(mintemp_c)}°C`
+              : `${Math.round(mintemp_f)}°F`}
           </Value>
         </ItemContainer>
       </Column>
       <DividerV />
       <Column center>
         <IconContainer>
-          <FontAwesome
-            name="exclamation-triangle"
-            size={24}
-            color={state.dark ? "#ff0" : "#000"}
-          />
+          <WindIcon />
         </IconContainer>
         <ItemContainer>
           <SectionTitle>Max Wind Speed:</SectionTitle>
           <Value color={ValueColor({ value: maxwind_kph, type: "speed" })}>
             {state.settings.distanceType === 0
-              ? `${maxwind_kph} KM/H`
-              : `${maxwind_mph} M/H`}
+              ? `${Math.round(maxwind_kph)} KM/H`
+              : `${Math.round(maxwind_mph)} M/H`}
           </Value>
         </ItemContainer>
         <ItemContainer>
           <SectionTitle>Avg. Visibility:</SectionTitle>
           <Value color={ValueColor({ value: avgvis_km, type: "visibility" })}>
             {state.settings.distanceType === 0
-              ? `${avgvis_km} KM`
-              : `${avgvis_miles} M`}
+              ? `${Math.round(avgvis_km)} KM`
+              : `${Math.round(avgvis_miles)} M`}
           </Value>
         </ItemContainer>
       </Column>
-      {daily_will_it_rain > 0 && (
+
+      {daily_will_it_rain > 0 && daily_will_it_snow === 0 && (
         <>
           <DividerV />
           <Column center>
             <IconContainer>
-              <FontAwesome
-                name="exclamation-triangle"
-                size={24}
-                color={state.dark ? "#ff0" : "#000"}
-              />
+              <RainIcon />
             </IconContainer>
             <ItemContainer>
               <SectionTitle>Rain Amount:</SectionTitle>
@@ -137,7 +127,7 @@ const DayDetails = ({ day }: { day: DayType }) => {
           </Column>
         </>
       )}
-      {daily_will_it_snow > 0 && (
+      {daily_will_it_snow > 0 && daily_will_it_rain === 0 && (
         <>
           <DividerV />
           <Column center>
@@ -176,6 +166,8 @@ export default DayDetails;
 
 const IconContainer = styled(View)`
   margin-bottom: 8px;
+  width: 24px;
+  height: 24px;
 `;
 
 const ItemContainerCenter = styled(ItemContainer)`

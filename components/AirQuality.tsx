@@ -8,12 +8,21 @@ import { Card, CardContent, Row } from "@/ui/Card";
 import { GlobalContext } from "@/context/global";
 import styled from "styled-components";
 import { View } from "react-native";
-import { Grid, ItemContainer } from "@/ui/Containers";
+import { Grid } from "@/ui/Containers";
 import { ValueColor } from "@/func/valueColor";
 
 const AirQuality = ({ airQuality }: { airQuality: GoogleAirQualityType }) => {
   const { state } = useContext(GlobalContext);
-  const { aqiDisplay, displayName, category } = airQuality.indexes[1];
+
+  if (airQuality.error) {
+    return (
+      <View>
+        <Text>Don't have air quality data for this location</Text>
+      </View>
+    );
+  }
+
+  const { aqiDisplay, displayName, category, aqi } = airQuality?.indexes[1];
   const polutants = airQuality.pollutants;
 
   // write a switch function that takes the keys and turns them in to name of the air quality
@@ -22,7 +31,7 @@ const AirQuality = ({ airQuality }: { airQuality: GoogleAirQualityType }) => {
     <Card>
       <Spacing>
         <Row>
-          <Circle level="high">
+          <Circle level={aqi}>
             <Number>{aqiDisplay}</Number>
           </Circle>
           <ItemContainer>
@@ -44,7 +53,7 @@ const AirQuality = ({ airQuality }: { airQuality: GoogleAirQualityType }) => {
                     type: item.code,
                   })}
                 >
-                  {item.concentration.value}
+                  {Math.round(item.concentration.value)}
                 </Value>
               </ItemContainer>
             ))}
@@ -57,24 +66,27 @@ const AirQuality = ({ airQuality }: { airQuality: GoogleAirQualityType }) => {
 
 export default AirQuality;
 
-const Circle = styled(View)<{ level: string }>`
+export const ItemContainer = styled(View)<{ row?: boolean }>`
+  gap: -8px;
+  flex-direction: ${(props) => (props.row ? "row" : "column")};
+  justify-content: ${(props) => (props.row ? "space-between" : "flex-start")};
+  min-width: 30px;
+  flex: 1;
+`;
+
+const Circle = styled(View)<{ level: number }>`
   width: 48px;
   height: 48px;
   border-radius: 50px;
   background-color: ${(props) => {
-    switch (props.level) {
-      case "low":
-        return props.theme.colors.level.low;
-      case "high":
-        return props.theme.colors.level.high;
-      case "medium":
-        return props.theme.colors.level.medium;
-      case "extreme":
-        return props.theme.colors.level.extreme;
-      case "normal":
-        return props.theme.colors.level.normal;
-      default:
-        return props.theme.colors.primary;
+    if (props.level > 4) {
+      return props.theme.colors.level.medium;
+    } else if (props.level > 7) {
+      return props.theme.colors.level.high;
+    } else if (props.level > 10) {
+      return props.theme.colors.level.extreme;
+    } else {
+      return props.theme.colors.level.low;
     }
   }};
   justify-content: center;

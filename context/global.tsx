@@ -23,6 +23,10 @@ export type InitialStateType = {
   };
   loading: boolean;
   errorMsg: string | null;
+  search: {
+    input: string;
+    placeId: string;
+  };
   dark: boolean;
 };
 
@@ -41,6 +45,10 @@ export const initialState = {
   },
   loading: true,
   errorMsg: null,
+  search: {
+    input: "",
+    placeId: "",
+  },
   dark: false,
 };
 
@@ -62,17 +70,25 @@ export const reducer = (state: InitialStateType, action: any) => {
         dark: action.payload,
       };
 
+    case "SET_SEARCH":
+      return {
+        ...state,
+        search: { ...state.search, input: action.payload },
+      };
+
     case "SET_LOCATION":
       return {
         ...state,
         location: action.payload,
       };
+
     case "SET_NO_LOCATION_PERMISSION":
       return {
         ...state,
         locationPermission: false,
         loading: false,
       };
+
     case "SET_LOCATION_PERMISSION":
       return {
         ...state,
@@ -98,6 +114,7 @@ export const reducer = (state: InitialStateType, action: any) => {
           tempType: action.payload,
         },
       };
+
     case "SET_DIRECTION_TYPE":
       return {
         ...state,
@@ -106,6 +123,7 @@ export const reducer = (state: InitialStateType, action: any) => {
           distanceType: action.payload,
         },
       };
+
     case "SET_ALLERGY":
       return {
         ...state,
@@ -114,22 +132,26 @@ export const reducer = (state: InitialStateType, action: any) => {
           allergy: action.payload,
         },
       };
+
     case "SET_LOADING":
       return {
         ...state,
         loading: action.payload,
       };
+
     case "SET_ERROR":
       return {
         ...state,
         errorMsg: action.payload,
       };
+
     case "LOAD_DATA":
       return {
         ...state,
         ...action.payload,
         loading: true,
       };
+
     default:
       return state;
   }

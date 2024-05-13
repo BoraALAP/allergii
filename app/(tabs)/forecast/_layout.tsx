@@ -1,6 +1,7 @@
 import { MainPagesOptions } from "@/lib/screenOptions";
 import { Slot, Stack } from "expo-router";
 import React from "react";
+import { Platform } from "react-native";
 
 export default function Layout() {
   return (
@@ -11,18 +12,7 @@ export default function Layout() {
           title: "Forecast",
         }}
       />
-      <Stack.Screen
-        name="[hour]"
-        options={{
-          title: "Hour",
-        }}
-      />
-      <Stack.Screen
-        name="[day]"
-        options={{
-          title: "Day",
-        }}
-      />
+      <Stack.Screen name="[day]" options={{ headerShown: true }} />
     </MainPagesOptions>
   );
 }

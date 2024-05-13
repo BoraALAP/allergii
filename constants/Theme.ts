@@ -1,3 +1,5 @@
+import { TextInput } from "react-native";
+
 const lBlue100 = "hsl(173, 100%, 90%)";
 const lBlue200 = "hsl(173, 100%, 80%)";
 const lBlue300 = "hsl(173, 100%, 70%)";
@@ -86,8 +88,8 @@ export const global = {
   font: {
     size: {
       xs: "11px",
-      sm: "12px",
-      base: "14px",
+      sm: "13px",
+      base: "15px",
       lg: "16px",
       xl: "18px",
       xxl: "20px",
@@ -143,8 +145,8 @@ export const color = {
     },
   },
   tint: {
-    off: grey800,
-    on: white,
+    active: grey900,
+    text: grey900,
   },
   page: {
     bg: {
@@ -152,6 +154,7 @@ export const color = {
       end: grey50,
     },
   },
+
   card: {
     border: grey50,
     background: white,
@@ -177,6 +180,12 @@ export const color = {
     high: red400,
     extreme: red800,
   },
+  icon: {
+    yellow: orange400,
+    lightBlue: blue400,
+    blue: blue600,
+    darkBlue: blue800,
+  },
 };
 
 export const light = {
@@ -191,6 +200,65 @@ export const dark = {
   dark: true,
   ...global,
   colors: {
-    ...color,
+    page: {
+      bg: {
+        start: black,
+        end: grey950,
+      },
+    },
+    tabBar: {
+      default: {
+        icon: grey200,
+        text: grey200,
+      },
+      selected: {
+        icon: orange200,
+        text: orange200,
+      },
+    },
+    primary: white,
+    secondary: orange200,
+    soft: grey700,
+    invert: grey900,
+    heading: white,
+    value: white,
+    sectionTitle: grey200,
+    body: grey150,
+    divider: grey750,
+    tint: {
+      active: grey100,
+      text: grey100,
+    },
+    card: {
+      border: grey900,
+      background: grey950,
+    },
+    button: {
+      bg: {
+        primary: lBlue200,
+        secondary: orange500,
+        tertiary: purple500,
+        disabled: grey600,
+      },
+      text: {
+        primary: grey950,
+        secondary: grey100,
+        tertiary: grey100,
+        disabled: grey100,
+      },
+    },
+    level: {
+      low: blue500,
+      normal: green400,
+      medium: orange500,
+      high: red600,
+      extreme: red200,
+    },
+    icon: {
+      yellow: orange400,
+      lightBlue: blue300,
+      blue: blue600,
+      darkBlue: blue800,
+    },
   },
 };

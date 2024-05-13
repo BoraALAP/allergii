@@ -35,22 +35,22 @@ export const ValueColor = ({ value, type }: ValueColorProps) => {
         return "extreme";
       } else if (value > 30) {
         return "high";
-      } else if (value > 20) {
+      } else if (value > 15) {
         return "medium";
-      } else if (value > 10) {
+      } else if (value > 5) {
         return "normal";
       } else {
         return "low";
       }
 
     case "temp":
-      if (value > 20) {
+      if (value < -10 || value > 30) {
         return "extreme";
-      } else if (value > 10) {
+      } else if (value < -5 || value > 20) {
         return "high";
-      } else if (value > 0) {
+      } else if (value < 0 || value > 15) {
         return "medium";
-      } else if (value > -5) {
+      } else if (value < 5 || value > 10) {
         return "normal";
       } else {
         return "low";

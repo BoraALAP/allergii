@@ -150,6 +150,7 @@ export type ForecastType = {
 };
 
 export type GoogleAirQualityType = {
+  error?: {};
   dateTime: string;
   healthRecommendations: {
     athletes: string;
@@ -175,5 +176,57 @@ export type GoogleAirQualityType = {
     code: "co" | "no2" | "o3" | "so2" | "pm25" | "pm10";
     concentration: { value: number; units: string };
   }[];
+  regionCode: string;
+};
+
+export type GooglePollenType = {
+  dailyInfo: [
+    {
+      date: {
+        day: number;
+        month: number;
+        year: number;
+      };
+      plantInfo: [
+        {
+          code: string;
+          displayName: string;
+          inSeason?: boolean;
+          indexInfo: {
+            code: string;
+            displayName: string;
+            value: number;
+            category: string;
+            indexDescription: string;
+            color: { red: number; green: number; blue: number };
+          };
+          plantDescription: {
+            code: string;
+            displayName: string;
+            description: string;
+            symptoms: string;
+            prevention: string;
+            treatment: string;
+          };
+        }
+      ];
+      pollenTypeInfo: [
+        {
+          code: string;
+          displayName: string;
+          healthRecommendations: string[];
+          inSeason?: boolean;
+          indexInfo: {
+            code: string;
+            displayName: string;
+            value: number;
+            category: string;
+            indexDescription: string;
+            color: { red: number; green: number; blue: number };
+          };
+        }
+      ];
+    }
+  ];
   regionCode: string;
 };

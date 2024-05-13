@@ -1,13 +1,18 @@
 {
+  "cli": {
+    "appVersionSource": "remote"
+  },
   "build": {
     "dev": {
       "developmentClient": true,
       "distribution": "internal",
-      "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_WEATHER_API_URL": "8525ae2e888e42d3900195557242703",
         "EXPO_PUBLIC_PROJECT_ID": "f43b43c9-e8ea-4612-b835-fb4f51ab6222",
-        "EXPO_PUBLIC_OPEN_API": "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"
+        "EXPO_PUBLIC_OPEN_API": "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",
+        "EXPO_PUBLIC_GOOGLE_KEY": "AIzaSyBGcfgapV6mPxS1wktotOtxPxWgQwNaoOY",
+        "APP_ENV": "development",
+        "APP_VARIANT": "development"
       },
       "channel": "development"
     },
@@ -23,11 +28,14 @@
       "channel": "development-simulator"
     },
     "prev": {
+      "distribution": "internal",
       "env": {
         "EXPO_PUBLIC_WEATHER_API_URL": "8525ae2e888e42d3900195557242703",
         "EXPO_PUBLIC_PROJECT_ID": "f43b43c9-e8ea-4612-b835-fb4f51ab6222",
         "EXPO_PUBLIC_OPEN_API": "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",
-        "APP_ENV": "production"
+        "EXPO_PUBLIC_GOOGLE_KEY": "AIzaSyBGcfgapV6mPxS1wktotOtxPxWgQwNaoOY",
+        "APP_ENV": "preview",
+        "APP_VARIANT": "preview"
       },
       "channel": "preview"
     },
@@ -38,28 +46,13 @@
         "EXPO_PUBLIC_WEATHER_API_URL": "8525ae2e888e42d3900195557242703",
         "EXPO_PUBLIC_PROJECT_ID": "f43b43c9-e8ea-4612-b835-fb4f51ab6222",
         "EXPO_PUBLIC_OPEN_API": "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",
-        "APP_ENV": "production"
+        "EXPO_PUBLIC_GOOGLE_KEY": "AIzaSyBGcfgapV6mPxS1wktotOtxPxWgQwNaoOY",
+        "APP_ENV": "production",
+        "APP_VARIANT": "production"
       }
     }
   },
   "submit": {
-    "dev": {
-      "ios": {
-        "bundleIdentifier": "com.boraalap.allergii",
-        "appName": "Allergii Development"
-      }
-    },
-    "prev": {
-      "ios": {
-        "bundleIdentifier": "com.boraalap.allergii",
-        "appName": "Allergii Preview"
-      }
-    },
-    "prod": {
-      "ios": {
-        "bundleIdentifier": "com.boraalap.allergii",
-        "appName": "Allergii"
-      }
-    }
+    "prod": {}
   }
 }

@@ -24,6 +24,7 @@ export const SectionTitle = styled(TextBase)<{
       ? props.theme.colors.secondary
       : props.theme.colors.sectionTitle};
   font-family: ${(props) => props.theme.font.family.primaryBold};
+  line-height: 20px;
 `;
 
 const Textcolor = styled(TextBase)<{
@@ -67,7 +68,6 @@ export const BigNumber = styled(Textcolor)`
 
 export const Text = styled(Textcolor)<{ center?: boolean; bold?: boolean }>`
   font-size: ${(props) => props.theme.font.size.base};
-
   text-align: ${(props) => (props.center ? "center" : "left")};
   flex-wrap: wrap;
   font-family: ${(props) => props.theme.font.family.primaryBold};
@@ -88,5 +88,5 @@ export const CaptionSoft = styled(Textcolor)`
 export const Body = styled(Textcolor)`
   color: ${(props) => props.theme.colors.body};
   font-size: ${(props) => props.theme.font.size.base};
-  font-family: ${(props) => props.theme.font.family.secondary};
+  font-family: ${(props) => props.theme.font.family.primary};
 `;

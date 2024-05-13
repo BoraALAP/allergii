@@ -9,6 +9,7 @@ import { Link, router } from "expo-router";
 import { DayType, ForecastType } from "@/types/api";
 import styled from "styled-components";
 import { TouchableOpacity } from "react-native";
+import RealTime from "@/components/RealTime";
 
 const Forecast = () => {
   const { state } = useContext(GlobalContext);
@@ -32,7 +33,6 @@ const Forecast = () => {
 
   return (
     <PageScrollView center>
-      {/* <SectionTitle>Forecast</SectionTitle> */}
       {data.map((day) => (
         <DayCard day={day} key={day.date_epoch} />
       ))}
@@ -43,47 +43,37 @@ const Forecast = () => {
 export default Forecast;
 
 const DayCard = ({ day }: { day: ForecastType }) => {
-  const { state } = useContext(GlobalContext);
   return (
     <ClickArea
       key={day.date_epoch}
       onPress={() =>
-        router.push({
-          pathname: "/(tabs)/forecast/[day]/day",
+        router.navigate({
+          pathname: "/(tabs)/forecast/[day]",
           params: { day: day.date_epoch },
         })
       }
     >
-      <Text>
-        {Intl.DateTimeFormat("en-US", {
-          day: "numeric",
-          weekday: "long",
-        }).format(new Date(day.date))}
-      </Text>
-      <Text>
-        {state.settings.tempType === 0
-          ? `${day.day.maxtemp_c} °C`
-          : `${day.day.maxtemp_f} °F`}
-      </Text>
-      <Text>
-        {state.settings.tempType === 0
-          ? `${day.day.avgtemp_c} °C`
-          : `${day.day.avgtemp_f} °F`}
-      </Text>
-      <Text>
-        {state.settings.tempType === 0
-          ? `${day.day.mintemp_c} °C`
-          : `${day.day.mintemp_f} °F`}
-      </Text>
+      <RealTime
+        day={day.date_epoch}
+        temp={{
+          c: day.day.maxtemp_c,
+          f: day.day.maxtemp_f,
+        }}
+        feelslike={{
+          c: day.day.mintemp_c,
+          f: day.day.mintemp_f,
+        }}
+        is_day={1}
+        humidity={day.day.avghumidity}
+        condition={day.day.condition}
+      />
     </ClickArea>
   );
 };
 
 const ClickArea = styled(TouchableOpacity)`
-  padding: 12px 16px;
   border-radius: ${({ theme }) => theme.border.radius.button};
   display: flex;
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.clickable.bg};
   width: 100%;
 `;
