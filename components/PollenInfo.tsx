@@ -17,7 +17,7 @@ const Pollen = ({ pollen }: { pollen: GooglePollenType }) => {
   if (pollen.error !== undefined) {
     return (
       <View>
-        <Text>Don't have air quality data for this location</Text>
+        <Text>There was an error on our side. We are working on the fix.</Text>
       </View>
     );
   }

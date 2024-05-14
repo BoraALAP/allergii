@@ -5,9 +5,7 @@ import styled from "styled-components";
 export const NoPermission = () => {
   return (
     <PageView>
-      <SectionTitle center>
-        You didn't provide the necessary permission
-      </SectionTitle>
+      <SectionTitle>You didn't provide the necessary permission</SectionTitle>
       <ViewStyle>
         <Text>1. Go to settings and enable the necessary permissions</Text>
         <Text>2. Restart the app</Text>

@@ -23,20 +23,16 @@ export type InitialStateType = {
   };
   loading: boolean;
   errorMsg: string | null;
-  search: {
-    input: string;
-    placeId: string;
-  };
   dark: boolean;
 };
 
 // Define the initial state of the app
 export const initialState = {
   location: {
-    latitude: 0,
-    longitude: 0,
+    latitude: 51.507218,
+    longitude: -0.127586,
   },
-  locationPermission: true,
+  locationPermission: false,
   settings: {
     allergy: 1,
     tempType: 0, //0 is celsius, 1 is fahrenheit
@@ -45,10 +41,6 @@ export const initialState = {
   },
   loading: true,
   errorMsg: null,
-  search: {
-    input: "",
-    placeId: "",
-  },
   dark: false,
 };
 
@@ -68,12 +60,6 @@ export const reducer = (state: InitialStateType, action: any) => {
       return {
         ...state,
         dark: action.payload,
-      };
-
-    case "SET_SEARCH":
-      return {
-        ...state,
-        search: { ...state.search, input: action.payload },
       };
 
     case "SET_LOCATION":

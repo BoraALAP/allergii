@@ -66,6 +66,9 @@ export default function RootLayout() {
   useEffect(() => {
     (async () => {
       const globalData = await getData("global");
+
+      console.log(globalData, state);
+
       if (globalData) {
         dispatch({
           type: "LOAD_DATA",
@@ -84,6 +87,9 @@ export default function RootLayout() {
       } else {
         // Load global data
 
+        dispatch({
+          type: "SET_LOCATION_PERMISSION",
+        });
         const {
           coords: { longitude, latitude },
         } = await Location.getCurrentPositionAsync({
@@ -141,20 +147,6 @@ export default function RootLayout() {
 
   if (!loaded && !state.loading) {
     return null;
-  }
-
-  if (state.locationPermission === false) {
-    return (
-      <GlobalContext.Provider value={{ state, dispatch }}>
-        <ApiDataContext.Provider value={{ apiDataState, apiDataDispatch }}>
-          <NowAiContext.Provider value={{ nowAiState, nowAiDispatch }}>
-            <ThemeProvider theme={state.dark ? dark : light}>
-              <NoPermission />
-            </ThemeProvider>
-          </NowAiContext.Provider>
-        </ApiDataContext.Provider>
-      </GlobalContext.Provider>
-    );
   }
 
   return (

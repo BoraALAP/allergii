@@ -1,12 +1,14 @@
 import { ApiDataContext } from "@/context/apidata";
+import * as Location from "expo-location";
 import { GlobalContext } from "@/context/global";
 import fetchData from "@/func/fetchData";
 import { fetchLocation } from "@/func/fetchLocation";
 import { PageView } from "@/ui/Containers";
 import { SectionTitle, Text } from "@/ui/Typography";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import { useNavigation } from "expo-router";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, TextInput, TouchableOpacity } from "react-native";
 import styled from "styled-components";
 
@@ -98,20 +100,76 @@ const ModalScreen = () => {
     setResults(data.predictions);
   };
 
+  const [currentLocation, setCurrentLocation] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      console.log(status);
+
+      if (status !== "granted") {
+        // Alert.alert("Permission to access location was denied");
+        dispatch({
+          type: "SET_NO_LOCATION_PERMISSION",
+        });
+
+        return;
+      } else {
+        // Load global data
+
+        dispatch({
+          type: "SET_LOCATION_PERMISSION",
+        });
+
+        const {
+          coords: { longitude, latitude },
+        } = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Low,
+        });
+
+        setCurrentLocation({ latitude, longitude });
+      }
+    })();
+  }, []);
+
   return (
     <PageView>
       <TextInputContainer
         placeholder="Search"
-        onChangeText={(event: any) =>
-          // dispatch({ type: "SET_SEARCH", payload: event })
-          fetchSuggestions(event)
-        }
+        onChangeText={(event: any) => fetchSuggestions(event)}
         clearButtonMode="while-editing"
         onFocus={() => setFocused(true)}
       />
+      {state.locationPermission && (
+        <PressableItemCurrent
+          onPress={async () => {
+            console.log("clicked");
+
+            await dispatch({
+              type: "SET_LOCATION",
+              payload: currentLocation,
+            });
+
+            navigation.goBack();
+          }}
+        >
+          <IconContainer
+            onPress={() => {
+              console.log("pressed icon");
+            }}
+          >
+            <FontAwesome name="location-arrow" size={16} />
+          </IconContainer>
+          <Text>Current Location</Text>
+        </PressableItemCurrent>
+      )}
       {!focused ? (
         <>
           <SectionTitle>Suggestions</SectionTitle>
+
           <Suggestions
             data={suggestionsList}
             // showsVerticalScrollIndicator={false}
@@ -192,6 +250,10 @@ const PressableItem = styled(TouchableOpacity)`
   align-items: center;
 
   justify-content: space-between;
+`;
+const PressableItemCurrent = styled(PressableItem)`
+  padding: 12px 8px 12px 0px;
+  justify-content: flex-start;
 `;
 
 const IconContainer = styled(TouchableOpacity)`
