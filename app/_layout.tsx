@@ -64,8 +64,6 @@ export default function RootLayout() {
   );
   //on load check the location permission and save the location in the global state
   useEffect(() => {
-    console.log("Root Layout Loaded");
-
     (async () => {
       const globalData = await getData("global");
       if (globalData) {
@@ -86,8 +84,6 @@ export default function RootLayout() {
       } else {
         // Load global data
 
-        console.log("Getting location from device");
-
         const {
           coords: { longitude, latitude },
         } = await Location.getCurrentPositionAsync({
@@ -105,13 +101,11 @@ export default function RootLayout() {
   //if location changes in global state, fetch the data from the apis
   useEffect(() => {
     (async () => {
-      console.log("Api Data loaded from Fetch");
       await dispatch({
         type: "SET_LOADING",
         payload: true,
       });
       const result = await fetchData(state.location);
-      console.log(result);
 
       apiDataDispatch({
         type: "LOAD_DATA",

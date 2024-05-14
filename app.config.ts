@@ -73,7 +73,7 @@ module.exports = ({ config }: ConfigContext): ExpoConfig => ({
       "expo-location",
       {
         locationAlwaysAndWhenInUsePermission:
-          "Allow $(PRODUCT_NAME) to use your location.",
+          "Allow $(PRODUCT_NAME) to use your location. This is required to show you the weather in your area. You can change this in your settings.",
       },
     ],
     "expo-localization",

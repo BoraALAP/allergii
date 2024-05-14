@@ -12,7 +12,6 @@ import { View } from "@/ui/Containers";
 
 import { ValueColor } from "@/func/valueColor";
 
-import { SunIcon } from "@/assets/icons/sun";
 import IconContainer from "@/ui/IconContainer";
 
 const Hours = ({
@@ -64,7 +63,6 @@ const Hours = ({
             <Tile
               key={hour.time_epoch}
               hour={hour.time_epoch}
-              day={day}
               last={index === existHours.length - 1}
             >
               <Text>
@@ -140,7 +138,6 @@ const Hours = ({
 const Tile = ({
   children,
   hour,
-  day,
   last,
 }: {
   children: React.ReactNode;
@@ -155,7 +152,7 @@ const Tile = ({
       onPress={() => {
         router.navigate({
           pathname: "/hourmodal",
-          params: { hour, day: day as number },
+          params: { hour },
         });
       }}
     >

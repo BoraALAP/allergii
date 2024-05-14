@@ -1,4 +1,4 @@
-import { GoogleAirQualityType } from "@/types/api";
+import { GooglePollenType } from "@/types/api";
 
 import { Text, SectionTitle, Value, Body } from "@/ui/Typography";
 import React, { useContext } from "react";
@@ -11,10 +11,10 @@ import { View } from "react-native";
 import { Grid } from "@/ui/Containers";
 import { ValueColor } from "@/func/valueColor";
 
-const AirQuality = ({ airQuality }: { airQuality: GoogleAirQualityType }) => {
+const Pollen = ({ pollen }: { pollen: GooglePollenType }) => {
   const { state } = useContext(GlobalContext);
 
-  if (airQuality.error !== undefined) {
+  if (pollen.error !== undefined) {
     return (
       <View>
         <Text>Don't have air quality data for this location</Text>
@@ -22,49 +22,30 @@ const AirQuality = ({ airQuality }: { airQuality: GoogleAirQualityType }) => {
     );
   }
 
-  const { aqiDisplay, displayName, category, aqi } = airQuality?.indexes[1];
-  const polutants = airQuality.pollutants;
+  const { plantInfo, pollenTypeInfo } = pollen?.dailyInfo[0];
+  const list = plantInfo.filter(
+    (item) => item.inSeason === true && item.indexInfo.value > 0
+  );
+
+  console.log(pollen);
 
   // write a switch function that takes the keys and turns them in to name of the air quality
 
   return (
     <Card>
       <Spacing>
-        <Row>
-          <Circle level={aqi}>
-            <Number>{aqiDisplay}</Number>
-          </Circle>
-          <ItemContainer>
-            <SectionTitle>{displayName}</SectionTitle>
-            <Value>{category}</Value>
+        {list.map((item, index) => (
+          <ItemContainer key={index} row>
+            <SectionTitle>{item.displayName}</SectionTitle>
+            <Text>{item.indexInfo.value}</Text>
           </ItemContainer>
-        </Row>
-        <CardContent>
-          <Body>{airQuality.healthRecommendations.generalPopulation}</Body>
-        </CardContent>
-        {state.settings.allergy === 0 && (
-          <Grid>
-            {polutants.map((item) => (
-              <ItemContainer key={item.code}>
-                <SectionTitle>{item.displayName}</SectionTitle>
-                <Value
-                  color={ValueColor({
-                    value: item.concentration.value,
-                    type: item.code,
-                  })}
-                >
-                  {Math.round(item.concentration.value)}
-                </Value>
-              </ItemContainer>
-            ))}
-          </Grid>
-        )}
+        ))}
       </Spacing>
     </Card>
   );
 };
 
-export default AirQuality;
+export default Pollen;
 
 export const ItemContainer = styled(View)<{ row?: boolean }>`
   gap: -8px;

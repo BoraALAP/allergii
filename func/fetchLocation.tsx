@@ -2,7 +2,6 @@
 export const fetchLocation = async (
   place_id: string
 ): Promise<{ latitude: number; longitude: number }> => {
-  console.log("Searching for location", place_id);
   const response = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?place_id=${place_id}&key=${process.env.EXPO_PUBLIC_GOOGLE_KEY}`
   );

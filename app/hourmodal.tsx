@@ -23,10 +23,13 @@ const ModalScreen = () => {
 
   const detail =
     apiDataState.forecast.forecastday
-      .find((item) => item.date_epoch === parseInt(search.day as string))
-      ?.hour.find((item) => {
-        return item.time_epoch === parseInt(search.hour as string);
-      }) ?? ({} as HourType);
+      .map((day) =>
+        day.hour.find(
+          (hour: HourType) =>
+            hour.time_epoch === parseInt(search.hour as string)
+        )
+      )
+      .find((hour) => hour !== undefined) ?? ({} as HourType);
 
   // time_epoch
   // AI FETCH REQUEST

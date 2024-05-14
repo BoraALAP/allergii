@@ -180,6 +180,7 @@ export type GoogleAirQualityType = {
 };
 
 export type GooglePollenType = {
+  error?: {};
   dailyInfo: [
     {
       date: {

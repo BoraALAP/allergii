@@ -19,11 +19,19 @@ import AstroInfo from "@/components/AstroInfo";
 import DayDetails from "@/components/DayDetails";
 import { DayType } from "@/types/api";
 import RainInfo from "@/components/RainInfo";
+import Pollen from "@/components/PollenInfo";
 
 const HomePage = () => {
   const { state } = useContext(GlobalContext);
   const {
-    apiDataState: { current, location, alerts, forecast, googleairquality },
+    apiDataState: {
+      current,
+      location,
+      alerts,
+      forecast,
+      googleairquality,
+      googlepollen,
+    },
   } = useContext(ApiDataContext);
 
   if (state.loading || !current || !location) {
@@ -70,6 +78,8 @@ const HomePage = () => {
       {googleairquality !== null && (
         <AirQuality airQuality={googleairquality} />
       )}
+      <DividerH />
+      {googlepollen !== null && <Pollen pollen={googlepollen} />}
       <DividerH />
       <Hours
         today

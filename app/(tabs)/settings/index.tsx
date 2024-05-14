@@ -45,7 +45,7 @@ const Setting = () => {
           }}
         />
       </ViewContainer>
-      {/* <ViewContainer>
+      <ViewContainer>
         <Text>Is Allergy Information Important For You?</Text>
         <SegmentedControlS
           values={["Yes", "No"]}
@@ -58,7 +58,7 @@ const Setting = () => {
             });
           }}
         />
-      </ViewContainer> */}
+      </ViewContainer>
       {/* <ViewContainer>
         <Text>Push Notifications</Text>
         <SegmentedControlS
