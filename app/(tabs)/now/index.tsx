@@ -79,8 +79,13 @@ const HomePage = () => {
         <AirQuality airQuality={googleairquality} />
       )}
       <DividerH />
-      {googlepollen !== null && <Pollen pollen={googlepollen} />}
-      <DividerH />
+      {state.settings.allergy === 0 && googlepollen !== null && (
+        <>
+          <Pollen pollen={googlepollen} />
+          <DividerH />
+        </>
+      )}
+
       <Hours
         today
         hours={day.hour}
