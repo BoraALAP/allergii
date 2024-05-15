@@ -45,7 +45,7 @@ const AirQuality = ({ airQuality }: { airQuality: GoogleAirQualityType }) => {
         {state.settings.allergy === 0 && (
           <Grid>
             {polutants.map((item) => (
-              <ItemContainer key={item.code}>
+              <ItemContainerValues key={item.code}>
                 <SectionTitle>{item.displayName}</SectionTitle>
                 <Value
                   color={ValueColor({
@@ -55,7 +55,7 @@ const AirQuality = ({ airQuality }: { airQuality: GoogleAirQualityType }) => {
                 >
                   {Math.round(item.concentration.value)}
                 </Value>
-              </ItemContainer>
+              </ItemContainerValues>
             ))}
           </Grid>
         )}
@@ -71,6 +71,10 @@ export const ItemContainer = styled(View)<{ row?: boolean }>`
   flex-direction: ${(props) => (props.row ? "row" : "column")};
   justify-content: ${(props) => (props.row ? "space-between" : "flex-start")};
   min-width: 30px;
+`;
+
+const ItemContainerValues = styled(ItemContainer)`
+  flex: 1;
 `;
 
 const Circle = styled(View)<{ level: number }>`

@@ -77,6 +77,7 @@ export default function RootLayout() {
       }
 
       let { status } = await Location.requestForegroundPermissionsAsync();
+
       if (status !== "granted") {
         // Alert.alert("Permission to access location was denied");
         dispatch({

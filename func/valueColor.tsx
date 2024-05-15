@@ -6,6 +6,7 @@ type ValueColorProps = {
     | "temp"
     | "default"
     | "visibility"
+    | "pollen"
     | "chance"
     | "co"
     | "no2"
@@ -148,6 +149,18 @@ export const ValueColor = ({ value, type }: ValueColorProps) => {
       } else if (value > 40) {
         return "medium";
       } else if (value > 20) {
+        return "normal";
+      } else {
+        return "low";
+      }
+    case "pollen":
+      if (value === 5) {
+        return "extreme";
+      } else if (value === 4) {
+        return "high";
+      } else if (value === 3) {
+        return "medium";
+      } else if (value === 2) {
         return "normal";
       } else {
         return "low";

@@ -1,19 +1,5 @@
-import React from "react";
 import { Text as TextBase } from "react-native";
 import styled from "styled-components";
-
-type TypographyProps = {
-  children: React.ReactNode;
-  bold?: boolean;
-  center?: boolean;
-  otherProps?: any;
-  color?: "default" | "secondary";
-};
-type SectionTitleProps = {
-  children: React.ReactNode;
-  otherProps?: any;
-  color?: "default" | "secondary";
-};
 
 export const SectionTitle = styled(TextBase)<{
   color?: "default" | "secondary";
@@ -35,14 +21,14 @@ const Textcolor = styled(TextBase)<{
     switch (props.color) {
       case "low":
         return props.theme.colors.level.low;
-      case "high":
-        return props.theme.colors.level.high;
-      case "medium":
-        return props.theme.colors.level.medium;
-      case "extreme":
-        return props.theme.colors.level.extreme;
       case "normal":
         return props.theme.colors.level.normal;
+      case "medium":
+        return props.theme.colors.level.medium;
+      case "high":
+        return props.theme.colors.level.high;
+      case "extreme":
+        return props.theme.colors.level.extreme;
       case "default":
         return props.theme.colors.body;
 

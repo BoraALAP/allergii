@@ -54,6 +54,12 @@ module.exports = ({ config }: ConfigContext): ExpoConfig => ({
     config: {
       usesNonExemptEncryption: false,
     },
+    infoPlist: {
+      NSLocationWhenInUseUsageDescription:
+        "This is required to show you the weather in your area. You can change this in your settings.",
+      NSLocationAlwaysAndWhenInUseUsageDescription:
+        "This is required to show you the weather in your area. You can change this in your settings.",
+    },
   },
   android: {
     package: bundleID,
@@ -73,7 +79,7 @@ module.exports = ({ config }: ConfigContext): ExpoConfig => ({
       "expo-location",
       {
         locationAlwaysAndWhenInUsePermission:
-          "Allow $(PRODUCT_NAME) to use your location. This is required to show you the weather in your area. You can change this in your settings.",
+          "This is required to show you the weather in your area. You can change this in your settings.",
       },
     ],
     "expo-localization",

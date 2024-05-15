@@ -27,19 +27,28 @@ const Pollen = ({ pollen }: { pollen: GooglePollenType }) => {
     (item) => item.inSeason === true && item.indexInfo.value > 0
   );
 
-  console.log(pollen);
-
   // write a switch function that takes the keys and turns them in to name of the air quality
 
   return (
     <Card>
       <Spacing>
-        {list.map((item, index) => (
-          <ItemContainer key={index} row>
-            <SectionTitle>{item.displayName}</SectionTitle>
-            <Text>{item.indexInfo.value}</Text>
-          </ItemContainer>
-        ))}
+        <Grid>
+          {list.map((item, index) => {
+            return (
+              <ItemContainer key={index}>
+                <SectionTitle>{item.displayName}</SectionTitle>
+                <Value
+                  color={ValueColor({
+                    value: item.indexInfo.value,
+                    type: "pollen",
+                  })}
+                >
+                  {item.indexInfo.category}
+                </Value>
+              </ItemContainer>
+            );
+          })}
+        </Grid>
       </Spacing>
     </Card>
   );
@@ -51,7 +60,8 @@ export const ItemContainer = styled(View)<{ row?: boolean }>`
   gap: -8px;
   flex-direction: ${(props) => (props.row ? "row" : "column")};
   justify-content: ${(props) => (props.row ? "space-between" : "flex-start")};
-  min-width: 30px;
+  min-width: 90px;
+  flex: 1;
 `;
 
 const Circle = styled(View)<{ level: number }>`
@@ -71,12 +81,6 @@ const Circle = styled(View)<{ level: number }>`
   }};
   justify-content: center;
   align-items: center;
-`;
-
-const Number = styled(Text)`
-  color: ${(props) => props.theme.colors.primary};
-  font-size: 24px;
-  font-family: ${(props) => props.theme.font.family.primaryBold};
 `;
 
 const Spacing = styled(View)`
