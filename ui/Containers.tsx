@@ -16,20 +16,29 @@ import PageBackgroundLinear from "./PageBackgroundLinear";
 type PageViewProps = {
   children: React.ReactNode;
   center?: boolean;
+  noPadding?: boolean;
 };
 
-export const PageView = ({ children, center }: PageViewProps) => {
+export const PageView = ({ children, center, noPadding }: PageViewProps) => {
   return (
     <PageBackgroundLinear>
       <SafeAreaView>
-        <PageContainer center={center} style={{ height: "100%" }}>
+        <PageContainer
+          center={center}
+          noPadding={noPadding}
+          style={{ height: "100%" }}
+        >
           {children}
         </PageContainer>
       </SafeAreaView>
     </PageBackgroundLinear>
   );
 };
-export const PageScrollView = ({ children, center }: PageViewProps) => {
+export const PageScrollView = ({
+  children,
+  center,
+  noPadding,
+}: PageViewProps) => {
   const [refreshing, setRefreshing] = useState(false);
 
   const { apiDataState, apiDataDispatch } = useContext(ApiDataContext);
@@ -63,7 +72,9 @@ export const PageScrollView = ({ children, center }: PageViewProps) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <PageContainer center={center}>{children}</PageContainer>
+        <PageContainer center={center} noPadding={noPadding}>
+          {children}
+        </PageContainer>
       </PageScrollViewContainer>
       {/* </SafeAreaView> */}
     </PageBackgroundLinear>
@@ -81,8 +92,8 @@ const Container = styled(ViewBase)<{ center?: boolean }>`
   align-items: ${(props) => (props.center ? "center" : "flex-start")};
 `;
 
-const PageContainer = styled(Container)`
-  padding: 24px;
+const PageContainer = styled(Container)<{ noPadding?: boolean }>`
+  padding: ${(props) => (props.noPadding ? "24px 0px" : "24px")};
   gap: 16px;
 `;
 
@@ -108,4 +119,10 @@ export const ItemContainer = styled(View)<{ row?: boolean }>`
   width: 50%;
   /* width: auto; */
   flex: 1;
+`;
+
+export const Section = styled(ViewBase)<{ noPadding?: boolean }>`
+  padding: ${(props) => (props.noPadding ? "0px" : "0px 24px")};
+  gap: 16px;
+  width: 100%;
 `;

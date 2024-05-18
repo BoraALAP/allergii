@@ -26,7 +26,7 @@ type RealTimeProps = {
   };
   location?: {
     name: string;
-    country: string;
+    country?: string;
   };
   cloud?: number;
   condition: {
@@ -87,7 +87,7 @@ const RealTime = ({
         </Row>
         {location && (
           <SectionTitle color="secondary">
-            {location.name}, {location.country}
+            {location.name} {location.country && `, ${location.country}`}
           </SectionTitle>
         )}
         <Row style={{ gap: 28 }}>
