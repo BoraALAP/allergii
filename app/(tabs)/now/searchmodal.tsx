@@ -15,6 +15,7 @@ import { getAll, getData, storeData } from "@/func/storage";
 import { LocationType } from "@/types/api";
 import { types } from "@babel/core";
 import { DividerH } from "@/ui/Elements";
+import Loading from "@/ui/Loading";
 
 type GoogleLocation = {
   description: string;
@@ -39,7 +40,7 @@ const ModalScreen = () => {
   const [favoriteList, setFavoriteList] = useState(
     [] as { description: string; place_id: string }[]
   );
-
+  const [loading, setLoading] = useState(true);
   const [suggestionsList, setSuggestionsList] = useState([
     {
       description: "London, UK",
@@ -62,17 +63,6 @@ const ModalScreen = () => {
       place_id: "ChIJpTvG15DL1IkRd8S0KlBVNTI",
     },
   ]);
-
-  useEffect(() => {
-    (async () => {
-      favoriteList.length > 0 && (await storeData(favoriteList, "savedList"));
-    })();
-  }, [favoriteList]);
-  useEffect(() => {
-    (async () => {
-      recentList.length > 0 && (await storeData(recentList, "recentList"));
-    })();
-  }, [recentList]);
 
   const SearchItem = ({
     item,
@@ -160,8 +150,6 @@ const ModalScreen = () => {
         dispatch({
           type: "SET_NO_LOCATION_PERMISSION",
         });
-
-        return;
       } else {
         // Load global data
 
@@ -189,8 +177,26 @@ const ModalScreen = () => {
           }
         });
       });
+      await console.log("loading", loading);
+
+      await setLoading(false);
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      favoriteList.length > 0 && (await storeData(favoriteList, "savedList"));
+    })();
+  }, [favoriteList]);
+  useEffect(() => {
+    (async () => {
+      recentList.length > 0 && (await storeData(recentList, "recentList"));
+    })();
+  }, [recentList]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <PageView>
@@ -223,14 +229,41 @@ const ModalScreen = () => {
         </PressableItemCurrent>
       )}
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ViewGap>
-          {!focused ? (
-            <>
-              {recentList && recentList.length > 0 ? (
+        {!focused ? (
+          <>
+            {recentList && recentList.length > 0 ? (
+              <ListContainer>
+                <SectionTitle>Recent Searches</SectionTitle>
+                <Suggestions>
+                  {recentList.map((item: any) => {
+                    return (
+                      <SearchItem
+                        item={item}
+                        showFavorite={true}
+                        key={item.place_id}
+                      />
+                    );
+                  })}
+                </Suggestions>
+              </ListContainer>
+            ) : (
+              <ListContainer>
+                <SectionTitle>Suggestions</SectionTitle>
+
+                <Suggestions>
+                  {suggestionsList.map((item: any) => {
+                    return <SearchItem item={item} key={item.place_id} />;
+                  })}
+                </Suggestions>
+              </ListContainer>
+            )}
+            {favoriteList && favoriteList.length > 0 && (
+              <ViewGap>
+                <DividerH />
                 <ListContainer>
-                  <SectionTitle>Recent Searches</SectionTitle>
+                  <SectionTitle>Saved Locations</SectionTitle>
                   <Suggestions>
-                    {recentList.map((item: any) => {
+                    {favoriteList.map((item: any) => {
                       return (
                         <SearchItem
                           item={item}
@@ -241,52 +274,25 @@ const ModalScreen = () => {
                     })}
                   </Suggestions>
                 </ListContainer>
-              ) : (
-                <ListContainer>
-                  <SectionTitle>Suggestions</SectionTitle>
-
-                  <Suggestions>
-                    {suggestionsList.map((item: any) => {
-                      return <SearchItem item={item} key={item.place_id} />;
-                    })}
-                  </Suggestions>
-                </ListContainer>
-              )}
-            </>
-          ) : (
-            <ListContainer>
-              <SectionTitle>Search Results</SectionTitle>
-              <Suggestions>
-                {results.map((item: any) => {
-                  return (
-                    <SearchItem
-                      item={item}
-                      showFavorite={true}
-                      key={item.place_id}
-                    />
-                  );
-                })}
-              </Suggestions>
-            </ListContainer>
-          )}
-          <DividerH />
-          {favoriteList && favoriteList.length > 0 && (
-            <ListContainer>
-              <SectionTitle>Saved Locations</SectionTitle>
-              <Suggestions>
-                {favoriteList.map((item: any) => {
-                  return (
-                    <SearchItem
-                      item={item}
-                      showFavorite={true}
-                      key={item.place_id}
-                    />
-                  );
-                })}
-              </Suggestions>
-            </ListContainer>
-          )}
-        </ViewGap>
+              </ViewGap>
+            )}
+          </>
+        ) : (
+          <ListContainer>
+            <SectionTitle>Search Results</SectionTitle>
+            <Suggestions>
+              {results.map((item: any) => {
+                return (
+                  <SearchItem
+                    item={item}
+                    showFavorite={true}
+                    key={item.place_id}
+                  />
+                );
+              })}
+            </Suggestions>
+          </ListContainer>
+        )}
       </ScrollView>
     </PageView>
   );
