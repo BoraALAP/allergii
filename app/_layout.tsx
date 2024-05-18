@@ -67,8 +67,6 @@ export default function RootLayout() {
     (async () => {
       const globalData = await getData("global");
 
-      console.log(globalData, state);
-
       if (globalData) {
         dispatch({
           type: "LOAD_DATA",

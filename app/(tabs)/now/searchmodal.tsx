@@ -9,86 +9,127 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import { useNavigation } from "expo-router";
 import React, { useContext, useEffect, useState } from "react";
-import { FlatList, TextInput, TouchableOpacity } from "react-native";
+import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
 import styled from "styled-components";
+import { getAll, getData, storeData } from "@/func/storage";
+import { LocationType } from "@/types/api";
+import { types } from "@babel/core";
+import { DividerH } from "@/ui/Elements";
 
-type SearchItemProps = {
-  name: string;
-  active?: boolean;
-  key: number;
+type GoogleLocation = {
+  description: string;
+  place_id: string;
+  matched_substrings: Array<{ length: number; offset: number }>;
+  reference: string;
+  structured_formatting: {
+    main_text: string;
+    main_text_matched_substrings: Array<{ length: number; offset: number }>;
+    secondary_text: string;
+  };
+  terms: Array<{ offset: number; value: string }>;
+  types: Array<string>;
 };
 
 const ModalScreen = () => {
+  const navigation = useNavigation();
   const { state, dispatch } = useContext(GlobalContext);
   const [focused, setFocused] = useState(false);
-  const navigation = useNavigation();
   const [results, setResults] = useState([]);
+  const [recentList, setRecentList] = useState([]);
+  const [favoriteList, setFavoriteList] = useState(
+    [] as { description: string; place_id: string }[]
+  );
 
-  const suggestionsList = [
+  const [suggestionsList, setSuggestionsList] = useState([
     {
-      name: "London, UK",
-      active: false,
-      key: 1,
-      location: {
-        latitude: 51.507218,
-        longitude: -0.127586,
-      },
+      description: "London, UK",
+      place_id: "ChIJdd4hrwug2EcRmSrV3Vo6llI",
     },
     {
-      name: "Sydney, Australia",
-      active: false,
-      key: 2,
-      location: {
-        latitude: -33.86882,
-        longitude: 151.209295,
-      },
+      description: "Istanbul, Türkiye",
+      place_id: "ChIJawhoAASnyhQR0LABvJj-zOE",
     },
     {
-      name: "Istanbul, Türkiye",
-      active: false,
-      key: 3,
-      location: {
-        latitude: 41.008238,
-        longitude: 28.978359,
-      },
+      description: "New York, USA",
+      place_id: "ChIJOwg_06VPwokRYv534QaPC8g",
     },
     {
-      name: "New York, USA",
-      active: false,
-      key: 4,
-      location: {
-        latitude: 40.712775,
-        longitude: -74.005973,
-      },
+      description: "Amsterdam, The Netherlands",
+      place_id: "ChIJVXealLU_xkcRja_At0z9AGY",
     },
     {
-      name: "Amsterdam, The Netherlands",
-      active: false,
-      key: 5,
-      location: {
-        latitude: 52.367573,
-        longitude: 4.904139,
-      },
+      description: "Toronto, Canada",
+      place_id: "ChIJpTvG15DL1IkRd8S0KlBVNTI",
     },
-    {
-      name: "Toronto, Canada",
-      active: false,
-      key: 6,
-      location: {
-        latitude: 43.653226,
-        longitude: -79.383184,
-      },
-    },
-    {
-      name: "Tokyo, Japan",
-      active: false,
-      key: 7,
-      location: {
-        latitude: 35.6804,
-        longitude: 139.769017,
-      },
-    },
-  ];
+  ]);
+
+  useEffect(() => {
+    (async () => {
+      favoriteList.length > 0 && (await storeData(favoriteList, "savedList"));
+    })();
+  }, [favoriteList]);
+  useEffect(() => {
+    (async () => {
+      recentList.length > 0 && (await storeData(recentList, "recentList"));
+    })();
+  }, [recentList]);
+
+  const SearchItem = ({
+    item,
+    showFavorite = false,
+  }: {
+    item: GoogleLocation;
+    showFavorite?: boolean;
+  }) => {
+    // check the favoriteList items and find the place_Id and if that place_Id is same as item.place_id, set active to true
+    const active = favoriteList.find(
+      (element) => element.place_id === item.place_id
+    );
+
+    return (
+      <PressableItem
+        showFavorite={showFavorite}
+        onPress={async () => {
+          const data = await fetchLocation(item.place_id);
+          await setRecentList((prev): any => [
+            { description: item.description, place_id: item.place_id },
+            ...prev.slice(0, 4),
+          ]);
+
+          await dispatch({
+            type: "SET_LOCATION",
+            payload: await data,
+          });
+          navigation.goBack();
+        }}
+      >
+        <Text>{item.description}</Text>
+        {showFavorite && (
+          <IconContainer>
+            <FontAwesome
+              name={active ? "star" : "star-o"}
+              size={16}
+              onPress={() => {
+                if (active) {
+                  setFavoriteList(
+                    favoriteList.filter(
+                      (element) => element.place_id !== item.place_id
+                    )
+                  );
+                  return;
+                } else {
+                  setFavoriteList([
+                    { description: item.description, place_id: item.place_id },
+                    ...favoriteList,
+                  ]);
+                }
+              }}
+            />
+          </IconContainer>
+        )}
+      </PressableItem>
+    );
+  };
 
   //add fetch request for google autocomplete api here
   const fetchSuggestions = async (input: string) => {
@@ -96,7 +137,6 @@ const ModalScreen = () => {
       `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&key=${process.env.EXPO_PUBLIC_GOOGLE_KEY}&types=(cities)&limit=15&bias=location:${state.location.latitude},${state.location.longitude}`
     );
     const data = await response.json();
-
     setResults(data.predictions);
   };
 
@@ -108,7 +148,12 @@ const ModalScreen = () => {
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      console.log(status);
+
+      const recentList = await getData("recentList");
+      const savedList = await getData("savedList");
+
+      (await recentList) !== null && setRecentList(await recentList);
+      (await savedList) !== null && setFavoriteList(await savedList);
 
       if (status !== "granted") {
         // Alert.alert("Permission to access location was denied");
@@ -132,6 +177,18 @@ const ModalScreen = () => {
 
         setCurrentLocation({ latitude, longitude });
       }
+
+      await setSuggestionsList((prev) => {
+        //remove the items are already exist in favoriteList
+        return prev.filter((item) => {
+          const found = favoriteList.find(
+            (element) => element.place_id === item.place_id
+          );
+          if (!found) {
+            return item;
+          }
+        });
+      });
     })();
   }, []);
 
@@ -141,13 +198,16 @@ const ModalScreen = () => {
         placeholder="Search"
         onChangeText={(event: any) => fetchSuggestions(event)}
         clearButtonMode="while-editing"
-        onFocus={() => setFocused(true)}
+        onFocus={() => {
+          setFocused(true);
+        }}
+        onBlur={() => {
+          setFocused(false);
+        }}
       />
       {state.locationPermission && (
         <PressableItemCurrent
           onPress={async () => {
-            console.log("clicked");
-
             await dispatch({
               type: "SET_LOCATION",
               payload: currentLocation,
@@ -156,96 +216,88 @@ const ModalScreen = () => {
             navigation.goBack();
           }}
         >
-          <IconContainer
-            onPress={() => {
-              console.log("pressed icon");
-            }}
-          >
+          <IconContainer>
             <FontAwesome name="location-arrow" size={16} />
           </IconContainer>
           <Text>Current Location</Text>
         </PressableItemCurrent>
       )}
-      {!focused ? (
-        <>
-          <SectionTitle>Suggestions</SectionTitle>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <ViewGap>
+          {!focused ? (
+            <>
+              {recentList && recentList.length > 0 ? (
+                <ListContainer>
+                  <SectionTitle>Recent Searches</SectionTitle>
+                  <Suggestions>
+                    {recentList.map((item: any) => {
+                      return (
+                        <SearchItem
+                          item={item}
+                          showFavorite={true}
+                          key={item.place_id}
+                        />
+                      );
+                    })}
+                  </Suggestions>
+                </ListContainer>
+              ) : (
+                <ListContainer>
+                  <SectionTitle>Suggestions</SectionTitle>
 
-          <Suggestions
-            data={suggestionsList}
-            // showsVerticalScrollIndicator={false}
-
-            keyExtractor={(item: any) => item.key}
-            renderItem={({ item }: any) => {
-              return (
-                <PressableItem
-                  onPress={async () => {
-                    await dispatch({
-                      type: "SET_LOCATION",
-                      payload: item.location,
-                    });
-
-                    navigation.goBack();
-                  }}
-                >
-                  <Text>{item.name}</Text>
-                  {/* <IconContainer
-                    onPress={() => {
-                      console.log("pressed icon");
-                    }}
-                  >
-                    <FontAwesome name={active ? "star" : "star-o"} size={16} />
-                  </IconContainer> */}
-                </PressableItem>
-              );
-            }}
-          />
-        </>
-      ) : (
-        <>
-          <SectionTitle>Search Results</SectionTitle>
-          <Suggestions
-            data={results}
-            // showsVerticalScrollIndicator={false}
-
-            keyExtractor={(item: any) => item.place_id}
-            renderItem={({ item }: any) => {
-              return (
-                <PressableItem
-                  onPress={async () => {
-                    const data = await fetchLocation(item.place_id);
-
-                    await dispatch({
-                      type: "SET_LOCATION",
-                      payload: await data,
-                    });
-
-                    navigation.goBack();
-                  }}
-                >
-                  <Text>{item.description}</Text>
-                  {/* <IconContainer
-                    onPress={() => {
-                      console.log("pressed icon");
-                    }}
-                  >
-                    <FontAwesome name={active ? "star" : "star-o"} size={16} />
-                  </IconContainer> */}
-                </PressableItem>
-              );
-            }}
-          />
-        </>
-      )}
+                  <Suggestions>
+                    {suggestionsList.map((item: any) => {
+                      return <SearchItem item={item} key={item.place_id} />;
+                    })}
+                  </Suggestions>
+                </ListContainer>
+              )}
+            </>
+          ) : (
+            <ListContainer>
+              <SectionTitle>Search Results</SectionTitle>
+              <Suggestions>
+                {results.map((item: any) => {
+                  return (
+                    <SearchItem
+                      item={item}
+                      showFavorite={true}
+                      key={item.place_id}
+                    />
+                  );
+                })}
+              </Suggestions>
+            </ListContainer>
+          )}
+          <DividerH />
+          {favoriteList && favoriteList.length > 0 && (
+            <ListContainer>
+              <SectionTitle>Saved Locations</SectionTitle>
+              <Suggestions>
+                {favoriteList.map((item: any) => {
+                  return (
+                    <SearchItem
+                      item={item}
+                      showFavorite={true}
+                      key={item.place_id}
+                    />
+                  );
+                })}
+              </Suggestions>
+            </ListContainer>
+          )}
+        </ViewGap>
+      </ScrollView>
     </PageView>
   );
 };
 
 export default ModalScreen;
 
-const PressableItem = styled(TouchableOpacity)`
-  padding: 12px 0px 12px 8px;
+const PressableItem = styled(TouchableOpacity)<{ showFavorite?: boolean }>`
+  padding: ${(props) =>
+    props.showFavorite ? "4px 0px 4px 8px" : "12px 0px 12px 8px"};
   width: 100%;
-
   flex-direction: row;
   align-items: center;
 
@@ -260,9 +312,11 @@ const IconContainer = styled(TouchableOpacity)`
   padding: 12px;
 `;
 
-const Suggestions = styled(FlatList)`
+const Suggestions = styled(View)`
   width: 100%;
 `;
+
+const ListContainer = styled(View)``;
 
 const TextInputContainer = styled(TextInput)`
   width: 100%;
@@ -273,4 +327,8 @@ const TextInputContainer = styled(TextInput)`
   border-bottom-color: ${({ theme }) => theme.colors.page.bg.end};
   font-family: ${({ theme }) => theme.font.family.primary};
   margin-bottom: 12px;
+`;
+
+const ViewGap = styled(View)`
+  gap: 16px;
 `;
