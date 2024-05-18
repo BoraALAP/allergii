@@ -13,6 +13,7 @@ import { useContext } from "react";
 import { View } from "react-native";
 import styled from "styled-components";
 import Loading from "@/ui/Loading";
+import { SectionTitle } from "@/ui/Typography";
 
 const ModalScreen = () => {
   const search = useLocalSearchParams();
@@ -60,6 +61,15 @@ const ModalScreen = () => {
         condition={detail.condition}
         is_day={detail.is_day}
         humidity={detail.humidity}
+        location={{
+          name: Intl.DateTimeFormat("en-US", {
+            day: "numeric",
+            month: "long",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: false,
+          }).format(new Date(detail.time)),
+        }}
         temp={{
           c: detail.temp_c,
           f: detail.temp_f,

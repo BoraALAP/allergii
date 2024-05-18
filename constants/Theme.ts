@@ -127,12 +127,13 @@ export const global = {
 export const color = {
   primary: black,
   secondary: orange700,
+
   soft: grey200,
   invert: white,
   heading: black,
   value: black,
   sectionTitle: grey800,
-  body: grey800,
+  body: grey700,
   divider: grey150,
   tabBar: {
     default: {
@@ -180,6 +181,13 @@ export const color = {
     high: red400,
     extreme: red800,
   },
+  chart: {
+    bottom: lBlue500,
+    middle: blue500,
+    top: orange500,
+    line1: grey700,
+    line2: grey500,
+  },
   icon: {
     yellow: orange400,
     lightBlue: blue400,
@@ -217,6 +225,7 @@ export const dark = {
       },
     },
     primary: white,
+
     secondary: orange200,
     soft: grey700,
     invert: grey900,
@@ -254,6 +263,14 @@ export const dark = {
       high: red600,
       extreme: red200,
     },
+    chart: {
+      bottom: lBlue900,
+      middle: blue900,
+      top: orange900,
+      line1: grey300,
+      line2: grey500,
+    },
+
     icon: {
       yellow: orange400,
       lightBlue: blue300,
