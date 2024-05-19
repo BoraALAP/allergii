@@ -1,7 +1,6 @@
-import { ApiDataContext } from "@/context/apidata";
 import * as Location from "expo-location";
 import { GlobalContext } from "@/context/global";
-import fetchData from "@/func/fetchData";
+
 import { fetchLocation } from "@/func/fetchLocation";
 import { PageView } from "@/ui/Containers";
 import { SectionTitle, Text } from "@/ui/Typography";
@@ -11,9 +10,8 @@ import { useNavigation } from "expo-router";
 import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
 import styled from "styled-components";
-import { getAll, getData, storeData } from "@/func/storage";
-import { LocationType } from "@/types/api";
-import { types } from "@babel/core";
+import { getData, storeData } from "@/func/storage";
+
 import { DividerH } from "@/ui/Elements";
 import Loading from "@/ui/Loading";
 
@@ -228,7 +226,10 @@ const ModalScreen = () => {
           <Text>Current Location</Text>
         </PressableItemCurrent>
       )}
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ width: "100%" }}
+      >
         {!focused ? (
           <>
             {recentList && recentList.length > 0 ? (
@@ -302,7 +303,7 @@ export default ModalScreen;
 
 const PressableItem = styled(TouchableOpacity)<{ showFavorite?: boolean }>`
   padding: ${(props) =>
-    props.showFavorite ? "4px 0px 4px 8px" : "12px 0px 12px 8px"};
+    props.showFavorite ? "4px 0px 4px 8px" : "12px 8px 12px 8px"};
   width: 100%;
   flex-direction: row;
   align-items: center;
@@ -310,7 +311,7 @@ const PressableItem = styled(TouchableOpacity)<{ showFavorite?: boolean }>`
   justify-content: space-between;
 `;
 const PressableItemCurrent = styled(PressableItem)`
-  padding: 12px 8px 12px 0px;
+  padding: 4px 8px 4px 0px;
   justify-content: flex-start;
 `;
 
@@ -322,7 +323,9 @@ const Suggestions = styled(View)`
   width: 100%;
 `;
 
-const ListContainer = styled(View)``;
+const ListContainer = styled(View)`
+  width: 100%;
+`;
 
 const TextInputContainer = styled(TextInput)`
   width: 100%;
