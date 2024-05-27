@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-import { PageView } from "@/ui/Containers";
+import { PageView } from "@/components/ui/Containers";
 import LottieView from "lottie-react-native";
 import { View } from "react-native";
 
@@ -12,7 +12,7 @@ const Loading = () => {
   }, []);
 
   return (
-    <PageView center>
+    <PageView center verticalCenter>
       <LottieView
         autoPlay
         ref={animation}

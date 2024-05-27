@@ -1,16 +1,17 @@
 import React, { useContext } from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
 
-import Hours from "@/components/Hours";
+import Hours from "@/components/charts/HoursChart";
 import AstroInfo from "@/components/AstroInfo";
 import { ApiDataContext } from "@/context/apidata";
-import { PageScrollView } from "@/ui/Containers";
-import Loading from "@/ui/Loading";
+import { PageScrollView, Section } from "@/components/ui/Containers";
+import Loading from "@/components/ui/Loading";
 import RealTime from "@/components/RealTime";
 import DayDetails from "@/components/DayDetails";
-import { DividerH } from "@/ui/Elements";
+import { DividerH } from "@/components/ui/Elements";
 import RainInfo from "@/components/RainInfo";
 import { global } from "@/constants/Theme";
+import { Charts } from "@/components/Charts";
 
 const Day = () => {
   const { day } = useLocalSearchParams();
@@ -26,7 +27,7 @@ const Day = () => {
   }
 
   return (
-    <PageScrollView>
+    <PageScrollView center noPadding>
       <Stack.Screen
         options={{
           headerBackTitleStyle: {
@@ -39,18 +40,22 @@ const Day = () => {
           }).format(new Date(data.date_epoch * 1000)),
         }}
       />
-      <RealTime
-        temp={{ c: data.day.avgtemp_c, f: data.day.avgtemp_f }}
-        is_day={1}
-        condition={data.day.condition}
-        humidity={data.day.avghumidity}
-      />
-      <DividerH />
-      <DayDetails day={data.day} />
+      <Section>
+        <RealTime
+          temp={{ c: data.day.avgtemp_c, f: data.day.avgtemp_f }}
+          is_day={1}
+          condition={data.day.condition}
+          humidity={data.day.avghumidity}
+        />
+        <DividerH />
+      </Section>
+      <Section>
+        <DayDetails day={data.day} />
+        <DividerH />
+      </Section>
       {data.day.daily_will_it_rain === 1 &&
         data.day.daily_will_it_snow === 1 && (
-          <>
-            <DividerH />
+          <Section>
             <RainInfo
               chance_of_rain={data.day.daily_chance_of_rain}
               chance_of_snow={data.day.daily_chance_of_snow}
@@ -60,12 +65,16 @@ const Day = () => {
               precip_mm={data.day.totalprecip_mm}
               snow_cm={data.day.totalsnow_cm}
             />
-          </>
+            <DividerH />
+          </Section>
         )}
-      <DividerH />
-      <Hours hours={data.hour} day={data.date_epoch} />
-      <DividerH />
-      <AstroInfo astro={data.astro} />
+      <Charts hours={data.hour} />
+      <Section>
+        <DividerH />
+      </Section>
+      <Section>
+        <AstroInfo astro={data.astro} />
+      </Section>
     </PageScrollView>
   );
 };

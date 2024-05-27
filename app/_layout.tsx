@@ -22,12 +22,10 @@ import {
   apiDataReducer,
 } from "../context/apidata";
 
-import { NoPermission } from "./noPermission";
-
-import PushNotification from "@/lib/pushNotification";
 import fetchData from "@/func/fetchData";
 import { NowAiContext, nowAiInitialState, nowAiReducer } from "@/context/nowai";
 import { Platform, useColorScheme } from "react-native";
+import { err } from "react-native-svg";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -50,6 +48,7 @@ export default function RootLayout() {
     Lato_700Bold,
     ...FontAwesome.font,
   });
+
   const colorScheme = useColorScheme();
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -73,6 +72,11 @@ export default function RootLayout() {
           payload: globalData,
         });
       }
+
+      dispatch({
+        type: "SET_DARK_MODE",
+        payload: colorScheme === "dark" ? true : false,
+      });
 
       let { status } = await Location.requestForegroundPermissionsAsync();
 
@@ -165,7 +169,6 @@ export default function RootLayout() {
                       ? "modal"
                       : "containedTransparentModal",
                   headerShown: false,
-
                   contentStyle: {
                     bottom: 0,
                     width: "100%",

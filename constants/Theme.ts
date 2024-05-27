@@ -162,10 +162,10 @@ export const color = {
   },
   button: {
     bg: {
-      primary: lBlue800,
-      secondary: orange500,
-      tertiary: purple500,
-      disabled: grey400,
+      primary: { default: lBlue800, active: lBlue900 },
+      secondary: { default: orange500, active: orange600 },
+      tertiary: { default: purple500, active: purple600 },
+      disabled: { default: grey400, active: grey600 },
     },
     text: {
       primary: grey50,
@@ -187,6 +187,12 @@ export const color = {
     top: orange500,
     line1: grey700,
     line2: grey500,
+    bar: {
+      bg: grey50,
+      low: blue300,
+      medium: orange300,
+      high: red300,
+    },
   },
   icon: {
     yellow: orange400,
@@ -244,10 +250,10 @@ export const dark = {
     },
     button: {
       bg: {
-        primary: lBlue200,
-        secondary: orange500,
-        tertiary: purple500,
-        disabled: grey600,
+        primary: { default: lBlue300, active: lBlue100 },
+        secondary: { default: orange500, active: orange600 },
+        tertiary: { default: purple500, active: purple600 },
+        disabled: { default: grey400, active: grey600 },
       },
       text: {
         primary: grey950,
@@ -264,11 +270,17 @@ export const dark = {
       extreme: red200,
     },
     chart: {
-      bottom: lBlue900,
-      middle: blue900,
-      top: orange900,
+      bottom: lBlue600,
+      middle: blue600,
+      top: orange600,
       line1: grey300,
       line2: grey500,
+      bar: {
+        bg: grey950,
+        low: blue600,
+        medium: orange600,
+        high: red600,
+      },
     },
 
     icon: {

@@ -14,7 +14,7 @@ export const SectionTitle = styled(TextBase)<{
 `;
 
 const Textcolor = styled(TextBase)<{
-  color?: "body" | "low" | "high" | "medium" | "extreme" | "normal";
+  color?: "body" | "low" | "high" | "medium" | "extreme" | "normal" | "invert";
   large?: boolean;
 }>`
   color: ${(props) => {
@@ -31,7 +31,8 @@ const Textcolor = styled(TextBase)<{
         return props.theme.colors.level.extreme;
       case "body":
         return props.theme.colors.body;
-
+      case "invert":
+        return props.theme.colors.invert;
       default:
         return props.theme.colors.primary;
     }

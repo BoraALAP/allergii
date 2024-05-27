@@ -6,14 +6,14 @@ import { GlobalContext } from "@/context/global";
 
 import { HourType } from "@/types/api";
 
-import { DividerH } from "@/ui/Elements";
+import { DividerH } from "@/components/ui/Elements";
 
 import { useLocalSearchParams } from "expo-router";
 import { useContext } from "react";
 import { View } from "react-native";
 import styled from "styled-components";
-import Loading from "@/ui/Loading";
-import { SectionTitle } from "@/ui/Typography";
+import Loading from "@/components/ui/Loading";
+import { SectionTitle } from "@/components/ui/Typography";
 
 const ModalScreen = () => {
   const search = useLocalSearchParams();

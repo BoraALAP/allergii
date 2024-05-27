@@ -1,5 +1,5 @@
-import { PageView, View } from "@/ui/Containers";
-import { Text, SectionTitle } from "@/ui/Typography";
+import { PageView, View } from "@/components/ui/Containers";
+import { Text, SectionTitle } from "@/components/ui/Typography";
 import styled from "styled-components";
 
 export const NoPermission = () => {

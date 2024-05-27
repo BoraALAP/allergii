@@ -1,61 +1,46 @@
-import { Dimensions, FlatList, View, useColorScheme } from "react-native";
+import styled from "styled-components";
+import { useState } from "react";
+import { Dimensions, FlatList, View } from "react-native";
 
 import { AlertType } from "@/types/api";
 
-import { Text } from "@/ui/Typography";
+import { SectionTitle, Text } from "@/components/ui/Typography";
 
-import { useState } from "react";
-
-import styled from "styled-components";
 import { AlertIcon } from "@/assets/icons/alert";
 
 const Alert = ({ alerts }: { alerts: AlertType[] }) => {
-  const CARD_WIDTH = Dimensions.get("window").width - 82;
+  const CARD_WIDTH = Dimensions.get("window").width - 50;
 
   const [activeSlide, setActiveSlide] = useState<number | null>(0);
 
   return (
-    <CardScroll>
-      <FlatList
+    <Container>
+      <FlatListContainer
         data={alerts}
         horizontal
         pagingEnabled
+        snapToAlignment="center"
+        decelerationRate={"fast"}
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item, index) => item.event + index}
+        keyExtractor={(item: any, index) => item.event + index}
         onViewableItemsChanged={(viewableItems) => {
           if (viewableItems.viewableItems[0].isViewable) {
             setActiveSlide(viewableItems.viewableItems[0].index);
           }
-
-          return viewableItems;
         }}
-        renderItem={({ item, index }) => (
-          <FlatItem key={index} width={CARD_WIDTH}>
+        renderItem={({ item, index }: any) => (
+          <CardScroll key={index} width={CARD_WIDTH}>
             <IconContainer severity={item.severity}>
               <AlertIcon />
             </IconContainer>
-            <Text bold>{item.event}</Text>
-            {/* <Text>{item.category}</Text> */}
-            {/* <Text center>{item.desc}</Text> */}
-            {/* <CaptionSoft>
-              {Intl.DateTimeFormat("en-US", {
-                day: "numeric",
-                weekday: "long",
-                hour: "numeric",
-                minute: "numeric",
-              }).format(Date.parse(item.effective))}{" "}
-              -{" "}
-              {Intl.DateTimeFormat("en-US", {
-                day: "numeric",
-                weekday: "long",
-                hour: "numeric",
-                minute: "numeric",
-              }).format(Date.parse(item.expires))}
-            </CaptionSoft> */}
-          </FlatItem>
+            <Content>
+              <SectionTitle>{item.category}</SectionTitle>
+              <Description bold>{item.desc.split(".")[0]}</Description>
+            </Content>
+          </CardScroll>
         )}
       />
-      {/* <Thumbnail /> */}
+
       {alerts.length > 1 && (
         <Thumbnails>
           {alerts.map((item: any, index: number) => {
@@ -63,13 +48,24 @@ const Alert = ({ alerts }: { alerts: AlertType[] }) => {
           })}
         </Thumbnails>
       )}
-    </CardScroll>
+    </Container>
   );
 };
 
-const CardScroll = styled(View)`
-  width: 100%;
-  padding: 16px;
+const Container = styled(View)`
+  padding: 0px 16px;
+`;
+
+const Description = styled(Text)``;
+
+const FlatListContainer = styled(FlatList)`
+  /* padding: 0px 16px; */
+  overflow: visible;
+`;
+
+const CardScroll = styled(View)<{ width: number }>`
+  padding: 12px 16px;
+  width: ${(props: any) => props.width}px;
   gap: 16px;
   border-color: ${(props: any) => props.theme.colors.card.border};
   border-width: 1px;
@@ -81,18 +77,18 @@ const CardScroll = styled(View)`
   shadow-radius: 4px;
   border-radius: 8px;
   justify-content: flex-start;
+  flex-direction: row;
+  margin: 0px 8px;
 `;
 
-const FlatItem = styled(View)<{ width: number }>`
-  gap: 16px;
+const Content = styled(View)`
+  flex-direction: column;
+  gap: 2px;
   flex: 1;
-  flex-direction: row;
-  width: ${(props: any) => props.width}px;
-  align-items: center;
 `;
 
 const Thumbnail = styled(View)<{ active?: boolean }>`
-  width: 8px;
+  width: ${(props: any) => (props.active ? "12px" : "8px")};
   height: 4px;
   border-radius: 4px;
   background-color: ${(props: any) =>

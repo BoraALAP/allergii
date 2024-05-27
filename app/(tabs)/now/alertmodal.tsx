@@ -1,5 +1,5 @@
-import { PageView, View } from "@/ui/Containers";
-import { Text } from "@/ui/Typography";
+import { PageView, View } from "@/components/ui/Containers";
+import { Text } from "@/components/ui/Typography";
 import React, { useContext, useEffect } from "react";
 
 const ModalScreen = () => {

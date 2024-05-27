@@ -3,12 +3,13 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 
 import { GlobalContext } from "@/context/global";
-import { Grid, ItemContainer, View } from "@/ui/Containers";
-import { DividerV } from "@/ui/Elements";
-import { SectionTitle, Value } from "@/ui/Typography";
+import { Grid, ItemContainer, View } from "@/components/ui/Containers";
+import { DividerV } from "@/components/ui/Elements";
+import { SectionTitle, Value } from "@/components/ui/Typography";
 import { ValueColor } from "@/func/valueColor";
-import { Card } from "@/ui/Card";
+import { Card } from "@/components/ui/Card";
 import { RainIcon } from "@/assets/icons/rain";
+import { DirectionIconContainer } from "./ui/DirectionIconContainer";
 
 type WindInfoProps = {
   wind_degree: number;
@@ -39,14 +40,17 @@ const WindInfo = ({
 
   return (
     <Card row>
-      <Grid>
+      <Grid flex>
         <ItemContainer>
           <SectionTitle>Wind Degree:</SectionTitle>
           <Value>{wind_degree}°</Value>
         </ItemContainer>
         <ItemContainer>
           <SectionTitle>Wind Direction:</SectionTitle>
-          <Value>{wind_dir}</Value>
+          <Content>
+            <DirectionIconContainer direction={wind_dir} size={16} />
+            <Value>{wind_dir}</Value>
+          </Content>
         </ItemContainer>
 
         <ItemContainer>
@@ -111,4 +115,10 @@ const IconContainer = styled(View)`
 const ItemContainerCenter = styled(ItemContainer)`
   align-items: center;
   justify-content: center;
+`;
+
+const Content = styled(View)`
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
 `;

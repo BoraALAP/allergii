@@ -4,15 +4,15 @@ import { useContext } from "react";
 import styled from "styled-components";
 
 import { GlobalContext } from "@/context/global";
-import { Card, Row } from "@/ui/Card";
-import { DividerV } from "@/ui/Elements";
-import { BigNumber, SectionTitle, Value } from "@/ui/Typography";
+import { Card, Row } from "@/components/ui/Card";
+import { DividerV } from "@/components/ui/Elements";
+import { BigNumber, SectionTitle, Value } from "@/components/ui/Typography";
 import { ValueColor } from "@/func/valueColor";
 import { dark, light } from "@/constants/Theme";
 import { SunIcon } from "@/assets/icons/sun";
 import { CloudIcon } from "@/assets/icons/cloud";
 import { HumidityIcon } from "@/assets/icons/humidity";
-import IconContainer from "@/ui/IconContainer";
+import IconContainer from "@/components/ui/IconContainer";
 
 type RealTimeProps = {
   day?: number;

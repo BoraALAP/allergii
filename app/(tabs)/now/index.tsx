@@ -1,25 +1,24 @@
-import { useContext, useLayoutEffect } from "react";
-import styled from "styled-components";
+import { useContext } from "react";
 
 import { GlobalContext } from "@/context/global";
 import { ApiDataContext } from "@/context/apidata";
-import { NowAiContext } from "@/context/nowai";
 
-import { PageScrollView, Section } from "@/ui/Containers";
+import { DayType } from "@/types/api";
+
+import { PageScrollView, Section } from "@/components/ui/Containers";
+import Loading from "@/components/ui/Loading";
+import { DividerH } from "@/components/ui/Elements";
 
 import AirQuality from "@/components/AirQuality";
 import WindInfo from "@/components/WindInfo";
-
 import RealTime from "@/components/RealTime";
-import Loading from "@/ui/Loading";
 import Alert from "@/components/Alert";
-import { DividerH } from "@/ui/Elements";
-import Hours from "@/components/Hours";
 import AstroInfo from "@/components/AstroInfo";
 import DayDetails from "@/components/DayDetails";
-import { DayType } from "@/types/api";
 import RainInfo from "@/components/RainInfo";
 import Pollen from "@/components/PollenInfo";
+import { Charts } from "@/components/Charts";
+import { Text } from "@/components/ui/Typography";
 
 const HomePage = () => {
   const { state } = useContext(GlobalContext);
@@ -39,9 +38,19 @@ const HomePage = () => {
   }
   const day = forecast.forecastday[0];
 
+  const todaysLeftHours = forecast.forecastday[0].hour.filter(
+    (hour: any) => new Date().getHours() <= new Date(hour.time).getHours()
+  );
+  const todayHours = [
+    ...todaysLeftHours,
+    ...forecast.forecastday[1].hour.slice(0, 24 - todaysLeftHours.length),
+  ];
+
   return (
     <PageScrollView center noPadding>
-      {alerts.alert.length > 0 && <Alert alerts={alerts.alert} />}
+      <Section noPadding>
+        {alerts.alert.length > 0 && <Alert alerts={alerts.alert} />}
+      </Section>
       <Section>
         <RealTime
           cloud={current.cloud}
@@ -92,12 +101,8 @@ const HomePage = () => {
         </Section>
       )}
 
-      <Hours
-        today
-        hours={day.hour}
-        day={day.date_epoch}
-        nextdayhours={forecast.forecastday[1].hour}
-      />
+      <Charts hours={todayHours} />
+
       <Section style={{ marginTop: 16 }}>
         <DividerH />
       </Section>

@@ -8,25 +8,29 @@ import {
 import styled from "styled-components";
 import { ApiDataContext } from "@/context/apidata";
 import { GlobalContext } from "@/context/global";
-import { NowAiContext } from "@/context/nowai";
-import fetchAIData from "@/func/fetchAI";
 import fetchData from "@/func/fetchData";
 import PageBackgroundLinear from "./PageBackgroundLinear";
 
 type PageViewProps = {
   children: React.ReactNode;
   center?: boolean;
+  verticalCenter?: boolean;
   noPadding?: boolean;
 };
 
-export const PageView = ({ children, center, noPadding }: PageViewProps) => {
+export const PageView = ({
+  children,
+  center,
+  verticalCenter,
+  noPadding,
+}: PageViewProps) => {
   return (
     <PageBackgroundLinear>
       <SafeAreaView>
         <PageContainer
+          verticalCenter={verticalCenter}
           center={center}
           noPadding={noPadding}
-          style={{ height: "100%" }}
         >
           {children}
         </PageContainer>
@@ -37,17 +41,16 @@ export const PageView = ({ children, center, noPadding }: PageViewProps) => {
 export const PageScrollView = ({
   children,
   center,
+  verticalCenter,
   noPadding,
 }: PageViewProps) => {
   const [refreshing, setRefreshing] = useState(false);
 
-  const { apiDataState, apiDataDispatch } = useContext(ApiDataContext);
+  const { apiDataDispatch } = useContext(ApiDataContext);
   const { state } = useContext(GlobalContext);
-  const { nowAiDispatch } = useContext(NowAiContext);
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    console.log(await state.location);
 
     // on refresh fetch the data from apis
     const data = await fetchData(state.location);
@@ -72,7 +75,11 @@ export const PageScrollView = ({
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <PageContainer center={center} noPadding={noPadding}>
+        <PageContainer
+          center={center}
+          verticalCenter={verticalCenter}
+          noPadding={noPadding}
+        >
           {children}
         </PageContainer>
       </PageScrollViewContainer>
@@ -88,13 +95,21 @@ export const View = ({ children, center, ...otherProps }: PageViewProps) => {
   );
 };
 
-const Container = styled(ViewBase)<{ center?: boolean }>`
+const Container = styled(ViewBase)<{
+  verticalCenter?: boolean;
+  center?: boolean;
+}>`
   align-items: ${(props) => (props.center ? "center" : "flex-start")};
+  justify-content: ${(props) =>
+    props.verticalCenter ? "center" : "flex-start"};
 `;
 
-const PageContainer = styled(Container)<{ noPadding?: boolean }>`
+const PageContainer = styled(Container)<{
+  noPadding?: boolean;
+}>`
   padding: ${(props) => (props.noPadding ? "24px 0px" : "24px")};
   gap: 16px;
+  height: 100%;
 `;
 
 const PageScrollViewContainer = styled(ScrollView)`
@@ -102,13 +117,12 @@ const PageScrollViewContainer = styled(ScrollView)`
   height: 100%;
 `;
 
-export const Grid = styled(View)`
+export const Grid = styled(View)<{ flex?: boolean }>`
   flex-wrap: wrap;
-  display: flex;
   flex-direction: row;
-  width: 100%;
+  /* width: 100%; */
   gap: 8px;
-  flex: 1;
+  flex: ${(props) => (props.flex ? 1 : "none")};
 `;
 
 export const ItemContainer = styled(View)<{ row?: boolean }>`
@@ -116,7 +130,7 @@ export const ItemContainer = styled(View)<{ row?: boolean }>`
   flex-direction: ${(props) => (props.row ? "row" : "column")};
   justify-content: ${(props) => (props.row ? "space-between" : "flex-start")};
   min-width: 80px;
-  width: 50%;
+  /* width: 50%; */
   /* width: auto; */
   flex: 1;
 `;

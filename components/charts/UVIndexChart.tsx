@@ -1,101 +1,43 @@
 import { router } from "expo-router";
 import { useContext } from "react";
-import {
-  Pressable,
-  ScrollView,
-  TouchableOpacity,
-  View as ViewBase,
-} from "react-native";
+import { Pressable, View as ViewBase } from "react-native";
 import styled from "styled-components";
-import { GlobalContext } from "@/context/global";
-import { HourType } from "@/types/api";
-import { Card } from "@/ui/Card";
-import { Caption, Text } from "@/ui/Typography";
-import { View } from "@/ui/Containers";
 import { LineChart, lineDataItem } from "react-native-gifted-charts";
-import { ValueColor } from "@/func/valueColor";
-
-import IconContainer from "@/ui/IconContainer";
-// import { LinearGradient  } from "expo-linear-gradient";
-import { dark, global, light } from "@/constants/Theme";
 import { LinearGradient, Stop } from "react-native-svg";
 
-const Hours = ({
-  hours,
-  day,
-  today,
-  nextdayhours,
-}: {
-  hours: HourType[];
-  today?: boolean;
-  day: number;
-  nextdayhours?: HourType[];
-}) => {
+import { GlobalContext } from "@/context/global";
+import { HourType } from "@/types/api";
+import { Text } from "@/components/ui/Typography";
+
+import { dark, light } from "@/constants/Theme";
+import { CustomDataPoint } from "./styles/lineChart";
+
+const UVIndexChart = ({ hours }: { hours: HourType[] }) => {
   const { state } = useContext(GlobalContext);
-  let existHours = hours.filter((hour) =>
-    //check the hour if it is after current hour then display it
-    today ? new Date().getHours() <= new Date(hour.time).getHours() : true
-  );
 
-  //if today is true then display the next day hours
-  if (today) {
-    //check the length of existHours if it is less than 24 then add next day hours to make it the existing hours length to 24
-    if (existHours.length < 24) {
-      existHours = [
-        ...existHours,
-        ...nextdayhours!.slice(0, 24 - existHours.length),
-      ];
-    }
-  }
-
-  //find the max and min value from existhours array, after looking temp_c and feelslike_c, which ever is bigger and smaller
+  //find the max and min value from existhours array, after looking uv and feelslike_c, which ever is bigger and smaller
   const maxValue = Math.max(
-    ...existHours.map((hour) => Math.max(hour.temp_c, hour.feelslike_c))
+    ...hours.map((hour) => Math.max(hour.uv, hour.feelslike_c))
   );
   const minValue = Math.min(
-    ...existHours.map((hour) => Math.min(hour.temp_c, hour.feelslike_c))
+    ...hours.map((hour) => Math.min(hour.uv, hour.feelslike_c))
   );
 
-  const DataPointLabelComponent = ({ hour, feelLike = false }: any) => {
-    return (
-      <TextLabel feelLike={feelLike} color={feelLike && "body"}>
-        {`${Math.round(
-          feelLike
-            ? state.settings.tempType === 0
-              ? hour.feelslike_c
-              : hour.feelslike_f
-            : state.settings.tempType === 0
-            ? hour.temp_c
-            : hour.temp_f
-        ).toString()}°`}
-      </TextLabel>
-    );
-  };
-
-  const CustomDataPoint = ({ feelLike }: any) => {
-    return (
-      <Dot feelLike={feelLike}>
-        <InnerDot feelLike={feelLike} />
-      </Dot>
-    );
+  const DataPointLabelComponent = ({ hour }: any) => {
+    return <TextLabel>{hour.uv.toString()}</TextLabel>;
   };
 
   //create a new array from existHours to gether only the hours
-  const tempArray = existHours.map((hour, index) => {
+  const tempArray = hours.map((hour, index) => {
     return {
-      value: Math.round(hour.temp_c),
-      dataPointLabelShiftX: 17,
-      dataPointLabelShiftY: hour.temp_c >= hour.feelslike_c ? -20 : 15,
+      value: Math.round(hour.uv),
+      dataPointLabelShiftX: 20,
+      dataPointLabelShiftY: -23,
       index: index,
       pointerShiftX: -15,
       labelComponent: () => {
         return (
           <BottomLabel>
-            <IconContainer
-              size={16}
-              code={hour.condition.code}
-              day={hour.is_day}
-            />
             <TextLabel>
               {Intl.DateTimeFormat("en-US", {
                 hour: "numeric",
@@ -112,23 +54,11 @@ const Hours = ({
     } as lineDataItem;
   });
 
-  const feelsLikeArray = existHours.map((hour, index) => {
-    return {
-      value: Math.round(hour.feelslike_c),
-      dataPointLabelShiftX: 18,
-      dataPointLabelShiftY: hour.temp_c >= hour.feelslike_c ? 15 : -20,
-      index: index,
-      dataPointLabelComponent: () => {
-        return <DataPointLabelComponent hour={hour} feelLike />;
-      },
-    } as lineDataItem;
-  });
-
   return (
     <LineChart
       data={tempArray}
-      data2={feelsLikeArray}
       isAnimated
+      animateTogether
       curved
       areaChart
       hideYAxisText
@@ -136,14 +66,14 @@ const Hours = ({
       hideAxesAndRules
       mostNegativeValue={minValue - 2}
       maxValue={maxValue + 2}
-      height={300}
+      height={136}
       unFocusOnPressOut={false}
       zIndex1={10}
       xAxisLabelsVerticalShift={24}
       onFocus={(data: any) => {
         router.navigate({
           pathname: "/hourmodal",
-          params: { hour: existHours[data.index].time_epoch },
+          params: { hour: hours[data.index].time_epoch },
         });
       }}
       customDataPoint={() => {
@@ -154,18 +84,12 @@ const Hours = ({
       onDataChangeAnimationDuration={300}
       lineGradient
       lineGradientDirection="vertical"
-      lineGradientStartColor={
-        state.dark ? dark.colors.level.low : light.colors.level.low
-      }
-      lineGradientEndColor={
-        state.dark ? dark.colors.level.extreme : light.colors.level.extreme
-      }
       lineGradientId="lg"
       lineGradientComponent={() => {
         return (
           <LinearGradient id="lg" x1="0" y1="1" x2="0" y2="0">
             <Stop
-              offset="0.4"
+              offset="0.6"
               stopColor={
                 state.dark
                   ? dark.colors.chart.bottom
@@ -237,24 +161,9 @@ const TextLabel = styled(Text)<{ feelLike?: boolean }>`
     props.feelLike ? props.theme.font.size.sm : props.theme.font.size.base};
 `;
 
-const Dot = styled(Pressable)<{ feelLike?: boolean }>`
-  width: 8px;
-  height: 8px;
-  padding: 2px;
-  border-radius: 4px;
-  background-color: ${(props) => props.theme.colors.invert};
-  margin-top: -4px;
-`;
-const InnerDot = styled(ViewBase)<{ feelLike?: boolean }>`
-  width: 4px;
-  height: 4px;
-  border-radius: 4px;
-  background-color: ${(props) => props.theme.colors.primary};
-`;
-
 const BottomLabel = styled(ViewBase)`
   justify-content: center;
   align-items: center;
 `;
 
-export default Hours;
+export default UVIndexChart;

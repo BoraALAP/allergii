@@ -6,10 +6,6 @@ export const fetchLocation = async (
     `https://maps.googleapis.com/maps/api/geocode/json?place_id=${place_id}&key=${process.env.EXPO_PUBLIC_GOOGLE_KEY}`
   );
   const data = await response.json();
-  console.log({
-    latitude: data.results[0].geometry.location.lat,
-    longitude: data.results[0].geometry.location.lng,
-  });
 
   return {
     latitude: data.results[0].geometry.location.lat,

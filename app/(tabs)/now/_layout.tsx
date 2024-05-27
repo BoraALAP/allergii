@@ -5,11 +5,13 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import { Link, Stack, useNavigation } from "expo-router";
 import { useContext } from "react";
-import { Platform, TouchableOpacity } from "react-native";
+import { Platform, TouchableOpacity, useColorScheme } from "react-native";
 
 export default function Layout() {
   const { state } = useContext(GlobalContext);
   const navigation = useNavigation();
+
+  const colorScheme = useColorScheme();
 
   return (
     <MainPagesOptions>

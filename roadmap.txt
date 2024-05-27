@@ -1,0 +1,14 @@
+// Phases
+  // 1. Weather
+    // [Completed - TESTING] fix the darkmode issue - when phone is on the dark mode the app should be in dark mode, but half of the app is in the light mode
+    // [Completed] when click on rain button, pollen section goes away in simulator
+    // [Completed] Fix the Alert Card
+    // [Completed] Search bar click away have an issue
+    // [Completed] add arrows to wind direction
+    // Chart Heigths are not the same 
+
+  // 2. Air Quality
+
+  // 3. User input to collect how are they feeling
+
+  // 4. AI suggestions based on their replys and historical data

@@ -3,11 +3,11 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 
 import { GlobalContext } from "@/context/global";
-import { ItemContainer, View } from "@/ui/Containers";
-import { DividerV } from "@/ui/Elements";
-import { SectionTitle, Value } from "@/ui/Typography";
+import { ItemContainer, View } from "@/components/ui/Containers";
+import { DividerV } from "@/components/ui/Elements";
+import { SectionTitle, Value } from "@/components/ui/Typography";
 import { ValueColor } from "@/func/valueColor";
-import { Card } from "@/ui/Card";
+import { Card } from "@/components/ui/Card";
 import { DayType } from "@/types/api";
 import { RainIcon } from "@/assets/icons/rain";
 import { SnowIcon } from "@/assets/icons/snow";

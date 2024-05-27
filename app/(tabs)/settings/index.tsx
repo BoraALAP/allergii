@@ -3,8 +3,8 @@ import React, { useContext, useEffect } from "react";
 import { GlobalContext } from "../../../context/global";
 import { StyleSheet } from "react-native";
 import { storeData } from "../../../func/storage";
-import { PageView, View } from "@/ui/Containers";
-import { Text } from "@/ui/Typography";
+import { PageView, View } from "@/components/ui/Containers";
+import { Text } from "@/components/ui/Typography";
 import styled from "styled-components";
 import { dark, global, light } from "@/constants/Theme";
 

@@ -1,14 +1,14 @@
 import { GoogleAirQualityType } from "@/types/api";
 
-import { Text, SectionTitle, Value, Body } from "@/ui/Typography";
+import { Text, SectionTitle, Value, Body } from "@/components/ui/Typography";
 import React, { useContext } from "react";
 
-import { Card, CardContent, Row } from "@/ui/Card";
+import { Card, CardContent, Row } from "@/components/ui/Card";
 
 import { GlobalContext } from "@/context/global";
 import styled from "styled-components";
 import { View } from "react-native";
-import { Grid } from "@/ui/Containers";
+import { Grid } from "@/components/ui/Containers";
 import { ValueColor } from "@/func/valueColor";
 
 const AirQuality = ({ airQuality }: { airQuality: GoogleAirQualityType }) => {

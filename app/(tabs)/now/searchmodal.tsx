@@ -2,8 +2,8 @@ import * as Location from "expo-location";
 import { GlobalContext } from "@/context/global";
 
 import { fetchLocation } from "@/func/fetchLocation";
-import { PageView } from "@/ui/Containers";
-import { SectionTitle, Text } from "@/ui/Typography";
+import { PageView } from "@/components/ui/Containers";
+import { SectionTitle, Text } from "@/components/ui/Typography";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import { useNavigation } from "expo-router";
@@ -12,8 +12,9 @@ import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
 import styled from "styled-components";
 import { getData, storeData } from "@/func/storage";
 
-import { DividerH } from "@/ui/Elements";
-import Loading from "@/ui/Loading";
+import { DividerH } from "@/components/ui/Elements";
+import Loading from "@/components/ui/Loading";
+import { dark, light } from "@/constants/Theme";
 
 type GoogleLocation = {
   description: string;
@@ -79,10 +80,16 @@ const ModalScreen = () => {
         showFavorite={showFavorite}
         onPress={async () => {
           const data = await fetchLocation(item.place_id);
-          await setRecentList((prev): any => [
-            { description: item.description, place_id: item.place_id },
-            ...prev.slice(0, 4),
-          ]);
+          await setRecentList((prev): any => {
+            //remove the items are already exist in recentList
+            const prevList = prev.filter(
+              (element: any) => element.place_id !== item.place_id
+            );
+            return [
+              { description: item.description, place_id: item.place_id },
+              ...prevList.slice(0, 4),
+            ];
+          });
 
           await dispatch({
             type: "SET_LOCATION",
@@ -96,6 +103,7 @@ const ModalScreen = () => {
           <IconContainer>
             <FontAwesome
               name={active ? "star" : "star-o"}
+              color={state.dark ? dark.colors.primary : light.colors.primary}
               size={16}
               onPress={() => {
                 if (active) {
@@ -175,7 +183,6 @@ const ModalScreen = () => {
           }
         });
       });
-      await console.log("loading", loading);
 
       await setLoading(false);
     })();
@@ -221,7 +228,11 @@ const ModalScreen = () => {
           }}
         >
           <IconContainer>
-            <FontAwesome name="location-arrow" size={16} />
+            <FontAwesome
+              name="location-arrow"
+              size={16}
+              color={state.dark ? dark.colors.primary : light.colors.primary}
+            />
           </IconContainer>
           <Text>Current Location</Text>
         </PressableItemCurrent>
@@ -230,7 +241,7 @@ const ModalScreen = () => {
         showsVerticalScrollIndicator={false}
         style={{ width: "100%" }}
       >
-        {!focused ? (
+        {results.length === 0 ? (
           <>
             {recentList && recentList.length > 0 ? (
               <ListContainer>

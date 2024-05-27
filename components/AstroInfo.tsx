@@ -5,21 +5,20 @@ import { SunsetIcon } from "@/assets/icons/sunset";
 import { dark, light } from "@/constants/Theme";
 import { GlobalContext } from "@/context/global";
 import { AstroType } from "@/types/api";
-import { Card, CardContent, Row } from "@/ui/Card";
-import { Grid, ItemContainer } from "@/ui/Containers";
-import { Text, SectionTitle, Value } from "@/ui/Typography";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Card, Row } from "@/components/ui/Card";
+import { Text, SectionTitle, Value } from "@/components/ui/Typography";
+
 import { useContext } from "react";
 import { View } from "react-native";
-import { Svg } from "react-native-svg";
+
 import styled from "styled-components";
 
 const AstroInfo = ({ astro }: { astro: AstroType }) => {
   const { state } = useContext(GlobalContext);
   return (
     <Card>
-      <Row>
-        <Row>
+      <RowContainer>
+        <RowContainer>
           <IconContainer>
             <SunriseIcon />
           </IconContainer>
@@ -27,8 +26,8 @@ const AstroInfo = ({ astro }: { astro: AstroType }) => {
             <SectionTitle>Sun Rise:</SectionTitle>
             <Value>{astro.sunrise}</Value>
           </ItemContainer>
-        </Row>
-        <Row>
+        </RowContainer>
+        <RowContainer>
           <IconContainer>
             <SunsetIcon />
           </IconContainer>
@@ -36,10 +35,10 @@ const AstroInfo = ({ astro }: { astro: AstroType }) => {
             <SectionTitle>Sun Set:</SectionTitle>
             <Value>{astro.sunset}</Value>
           </ItemContainer>
-        </Row>
-      </Row>
-      <Row>
-        <Row>
+        </RowContainer>
+      </RowContainer>
+      <RowContainer>
+        <RowContainer>
           <IconContainer>
             <MoonriseIcon />
           </IconContainer>
@@ -47,8 +46,8 @@ const AstroInfo = ({ astro }: { astro: AstroType }) => {
             <SectionTitle>Moon Rise:</SectionTitle>
             <Value>{astro.moonrise}</Value>
           </ItemContainer>
-        </Row>
-        <Row>
+        </RowContainer>
+        <RowContainer>
           <IconContainer>
             <MoonsetIcon />
           </IconContainer>
@@ -56,9 +55,9 @@ const AstroInfo = ({ astro }: { astro: AstroType }) => {
             <SectionTitle>Moon Set:</SectionTitle>
             <Value>{astro.moonset}</Value>
           </ItemContainer>
-        </Row>
-      </Row>
-      <Row>
+        </RowContainer>
+      </RowContainer>
+      <RowContainer>
         <ItemContainer>
           <SectionTitle>Moon Phase:</SectionTitle>
           <Value>{astro.moon_phase}</Value>
@@ -67,7 +66,7 @@ const AstroInfo = ({ astro }: { astro: AstroType }) => {
           <SectionTitle>Moon Illumination:</SectionTitle>
           <Value>{astro.moon_illumination} %</Value>
         </ItemContainer>
-      </Row>
+      </RowContainer>
     </Card>
   );
 };
@@ -77,4 +76,16 @@ export default AstroInfo;
 const IconContainer = styled(View)`
   width: 24px;
   height: 24px;
+`;
+
+export const ItemContainer = styled(View)`
+  gap: -8px;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 80px;
+  flex: 1;
+`;
+
+export const RowContainer = styled(Row)`
+  flex: 1;
 `;

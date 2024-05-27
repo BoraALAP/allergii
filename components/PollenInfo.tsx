@@ -1,17 +1,20 @@
-import { GooglePollenType } from "@/types/api";
-
-import { Text, SectionTitle, Value, Body } from "@/ui/Typography";
-import React, { useContext } from "react";
-
-import { Card, CardContent, Row } from "@/ui/Card";
-
-import { GlobalContext } from "@/context/global";
 import styled from "styled-components";
 import { View } from "react-native";
-import { Grid } from "@/ui/Containers";
+
+import { GooglePollenType } from "@/types/api";
+
+import { Text, SectionTitle, Value, Body } from "@/components/ui/Typography";
+import { Card } from "@/components/ui/Card";
+import { Grid } from "@/components/ui/Containers";
+
 import { ValueColor } from "@/func/valueColor";
 
 const Pollen = ({ pollen }: { pollen: GooglePollenType }) => {
+  const { plantInfo } = pollen?.dailyInfo[0];
+  const list = plantInfo.filter(
+    (item) => item.inSeason === true && item.indexInfo.value > 0
+  );
+
   if (pollen.error !== undefined || pollen === undefined) {
     return (
       <View>
@@ -19,11 +22,6 @@ const Pollen = ({ pollen }: { pollen: GooglePollenType }) => {
       </View>
     );
   }
-
-  const { plantInfo, pollenTypeInfo } = pollen?.dailyInfo[0];
-  const list = plantInfo.filter(
-    (item) => item.inSeason === true && item.indexInfo.value > 0
-  );
 
   // write a switch function that takes the keys and turns them in to name of the air quality
 
@@ -57,5 +55,4 @@ export const ItemContainer = styled(View)<{ row?: boolean }>`
   flex-direction: ${(props) => (props.row ? "row" : "column")};
   justify-content: ${(props) => (props.row ? "space-between" : "flex-start")};
   min-width: 90px;
-  flex: 1;
 `;
