@@ -157,7 +157,7 @@ export const color = {
   },
 
   card: {
-    border: grey50,
+    border: grey150,
     background: white,
   },
   button: {
@@ -173,6 +173,10 @@ export const color = {
       tertiary: grey900,
       disabled: grey900,
     },
+  },
+  inSeason: {
+    true: green500,
+    false: red500,
   },
   level: {
     low: blue500,
@@ -245,7 +249,7 @@ export const dark = {
       text: grey100,
     },
     card: {
-      border: grey900,
+      border: grey850,
       background: grey950,
     },
     button: {
@@ -261,6 +265,10 @@ export const dark = {
         tertiary: grey100,
         disabled: grey100,
       },
+    },
+    inSeason: {
+      true: green500,
+      false: red500,
     },
     level: {
       low: blue500,

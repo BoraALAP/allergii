@@ -13,7 +13,8 @@ type ValueColorProps = {
     | "o3"
     | "pm10"
     | "pm25"
-    | "so2";
+    | "so2"
+    | "scale";
 };
 
 export const ValueColor = ({ value, type }: ValueColorProps) => {
@@ -162,6 +163,17 @@ export const ValueColor = ({ value, type }: ValueColorProps) => {
         return "medium";
       } else if (value === 2) {
         return "normal";
+      } else {
+        return "low";
+      }
+
+    case "scale":
+      if (value >= 4) {
+        return "extreme";
+      } else if (value === 3) {
+        return "high";
+      } else if (value === 2) {
+        return "medium";
       } else {
         return "low";
       }

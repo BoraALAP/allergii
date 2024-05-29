@@ -1,4 +1,4 @@
-import { GoogleAirQualityType } from "@/types/api";
+import { GoogleAirQualityType, GooglePollenType } from "@/types/api";
 
 import { Text, SectionTitle, Value, Body } from "@/components/ui/Typography";
 import React, { useContext } from "react";
@@ -10,9 +10,19 @@ import styled from "styled-components";
 import { View } from "react-native";
 import { Grid } from "@/components/ui/Containers";
 import { ValueColor } from "@/func/valueColor";
+import { DividerH } from "./ui/Elements";
+import Pollen from "./PollenInfo";
 
-const AirQuality = ({ airQuality }: { airQuality: GoogleAirQualityType }) => {
+const AirQuality = ({
+  airQuality,
+  pollen,
+}: {
+  airQuality: GoogleAirQualityType;
+  pollen: GooglePollenType;
+}) => {
   const { state } = useContext(GlobalContext);
+
+  console.log(airQuality);
 
   if (airQuality.error !== undefined) {
     return (
@@ -28,39 +38,42 @@ const AirQuality = ({ airQuality }: { airQuality: GoogleAirQualityType }) => {
   // write a switch function that takes the keys and turns them in to name of the air quality
 
   return (
-    <Card>
-      <Spacing>
-        <Row>
-          <Circle level={aqi}>
-            <Number>{aqiDisplay}</Number>
-          </Circle>
-          <ItemContainer>
-            <SectionTitle>{displayName}</SectionTitle>
-            <Value>{category}</Value>
-          </ItemContainer>
-        </Row>
-        <CardContent>
-          <Body>{airQuality.healthRecommendations.generalPopulation}</Body>
-        </CardContent>
-        {state.settings.allergy === 0 && (
-          <Grid>
-            {polutants.map((item) => (
-              <ItemContainerValues key={item.code}>
-                <SectionTitle>{item.displayName}</SectionTitle>
-                <Value
-                  color={ValueColor({
-                    value: item.concentration.value,
-                    type: item.code,
-                  })}
-                >
-                  {Math.round(item.concentration.value)}
-                </Value>
-              </ItemContainerValues>
-            ))}
-          </Grid>
-        )}
-      </Spacing>
-    </Card>
+    <>
+      <Card>
+        <Spacing>
+          <Row>
+            <Circle level={aqi}>
+              <Number>{aqiDisplay}</Number>
+            </Circle>
+            <ItemContainer>
+              <SectionTitle>{displayName}</SectionTitle>
+              <Value>{category}</Value>
+            </ItemContainer>
+          </Row>
+          <CardContent>
+            <Body>{airQuality.healthRecommendations.generalPopulation}</Body>
+          </CardContent>
+          {state.settings.allergy === 0 && (
+            <Grid>
+              {polutants.map((item) => (
+                <ItemContainerValues key={item.code}>
+                  <SectionTitle>{item.displayName}</SectionTitle>
+                  <Value
+                    color={ValueColor({
+                      value: item.concentration.value,
+                      type: item.code,
+                    })}
+                  >
+                    {Math.round(item.concentration.value)}
+                  </Value>
+                </ItemContainerValues>
+              ))}
+            </Grid>
+          )}
+        </Spacing>
+      </Card>
+      <Pollen pollen={pollen} />
+    </>
   );
 };
 

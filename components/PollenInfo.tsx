@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 import { GooglePollenType } from "@/types/api";
 
@@ -11,26 +11,17 @@ import { ValueColor } from "@/func/valueColor";
 
 const Pollen = ({ pollen }: { pollen: GooglePollenType }) => {
   const { plantInfo } = pollen?.dailyInfo[0];
-  const list = plantInfo.filter(
-    (item) => item.inSeason === true && item.indexInfo.value > 0
-  );
 
-  if (pollen.error !== undefined || pollen === undefined) {
-    return (
-      <View>
-        <Text>There was an error on our side. We are working on the fix.</Text>
-      </View>
-    );
-  }
+  console.log(pollen);
 
-  // write a switch function that takes the keys and turns them in to name of the air quality
+  const list = plantInfo.filter((item) => item.inSeason === true);
 
   return (
-    <Card>
-      <Grid>
+    <>
+      <ScrollViewContainer horizontal showsHorizontalScrollIndicator={false}>
         {list.map((item, index) => {
           return (
-            <ItemContainer key={index}>
+            <ItemContainer key={index} index={index} length={list.length}>
               <SectionTitle>{item.displayName}</SectionTitle>
               <Value
                 color={ValueColor({
@@ -43,16 +34,34 @@ const Pollen = ({ pollen }: { pollen: GooglePollenType }) => {
             </ItemContainer>
           );
         })}
-      </Grid>
-    </Card>
+      </ScrollViewContainer>
+    </>
   );
 };
 
 export default Pollen;
 
-export const ItemContainer = styled(View)<{ row?: boolean }>`
+export const ScrollViewContainer = styled(ScrollView)`
+  width: 100%;
+  padding: 0px 16px;
+`;
+
+export const ItemContainer = styled(View)<{
+  row?: boolean;
+  index?: number;
+  length?: number;
+}>`
+  margin-right: ${(props) =>
+    props.index !== undefined &&
+    props.length !== undefined &&
+    props.index < props.length - 1
+      ? "16px"
+      : "0"};
   gap: -8px;
   flex-direction: ${(props) => (props.row ? "row" : "column")};
   justify-content: ${(props) => (props.row ? "space-between" : "flex-start")};
   min-width: 90px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  border: 1px solid ${(props) => props.theme.colors.card.border};
 `;

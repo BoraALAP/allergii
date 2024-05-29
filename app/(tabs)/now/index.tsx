@@ -9,16 +9,16 @@ import { PageScrollView, Section } from "@/components/ui/Containers";
 import Loading from "@/components/ui/Loading";
 import { DividerH } from "@/components/ui/Elements";
 
-import AirQuality from "@/components/AirQuality";
 import WindInfo from "@/components/WindInfo";
 import RealTime from "@/components/RealTime";
 import Alert from "@/components/Alert";
 import AstroInfo from "@/components/AstroInfo";
 import DayDetails from "@/components/DayDetails";
 import RainInfo from "@/components/RainInfo";
-import Pollen from "@/components/PollenInfo";
+
 import { Charts } from "@/components/Charts";
-import { Text } from "@/components/ui/Typography";
+
+import AirQualityOverView from "@/components/AirQualityOverView";
 
 const HomePage = () => {
   const { state } = useContext(GlobalContext);
@@ -90,13 +90,10 @@ const HomePage = () => {
       </Section>
       {googleairquality !== null && (
         <Section>
-          <AirQuality airQuality={googleairquality} />
-          <DividerH />
-        </Section>
-      )}
-      {state.settings.allergy === 0 && googlepollen !== null && (
-        <Section>
-          <Pollen pollen={googlepollen} />
+          <AirQualityOverView
+            airQuality={googleairquality}
+            pollen={googlepollen}
+          />
           <DividerH />
         </Section>
       )}

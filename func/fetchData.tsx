@@ -2,7 +2,8 @@ const fetchData = async (location: { latitude: number; longitude: number }) => {
   let fetchURL = `https://api.weatherapi.com/v1/forecast.json?q=${location.latitude},${location.longitude}&key=${process.env.EXPO_PUBLIC_WEATHER_API_URL}&days=10&aqi=yes&alerts=yes`;
   // let fetchWorldURL = `https://api.worldweatheronline.com/premium/v1/weather.ashx?key=${process.env.EXPO_PUBLIC_WORLD_WEATHER_API_URL}&format=json&q=${latitude},${longitude}&num_of_days=14&aqi=no&alerts=yes`;
   let fetchGoogleAirQualityURL = `https://airquality.googleapis.com/v1/currentConditions:lookup?key=${process.env.EXPO_PUBLIC_GOOGLE_KEY}`;
-  let fetchGooglePollenyURL = `https://pollen.googleapis.com/v1/forecast:lookup?key=${process.env.EXPO_PUBLIC_GOOGLE_KEY}&location.longitude=${location.longitude}&location.latitude=${location.latitude}&days=3`;
+  let fetchGooglePollenURL = `https://pollen.googleapis.com/v1/forecast:lookup?key=${process.env.EXPO_PUBLIC_GOOGLE_KEY}&location.longitude=${location.longitude}&location.latitude=${location.latitude}&days=5&plantsDescription=0`;
+  let fetchGAirQualityHourlyURL = `https://airquality.googleapis.com/v1/forecast:lookup?key=${process.env.EXPO_PUBLIC_GOOGLE_KEY}&location.longitude=${location.longitude}&location.latitude=${location.latitude}&days=3`;
 
   const response = await fetch(fetchURL);
   const googleAirQualityResponse = await fetch(fetchGoogleAirQualityURL, {
@@ -22,7 +23,9 @@ const fetchData = async (location: { latitude: number; longitude: number }) => {
       ],
     }),
   });
-  const googlePollenResponse = await fetch(fetchGooglePollenyURL);
+
+  const googleAirQualityHourlyResponse = await fetch(fetchGooglePollenURL);
+  const googlePollenResponse = await fetch(fetchGooglePollenURL);
 
   const data = await response.json();
   const googleAirQualityData = await googleAirQualityResponse.json();
