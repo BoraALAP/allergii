@@ -12,6 +12,7 @@ import { LinearGradient, Stop } from "react-native-svg";
 import { DirectionIconContainer } from "../ui/DirectionIconContainer";
 import { CustomDataPoint } from "./styles/lineChart";
 import Legend from "../ui/Legend";
+import { ChartSpace } from "./styles/generalStyle";
 
 const WindChart = ({ hours }: { hours: HourType[] }) => {
   const { state } = useContext(GlobalContext);
@@ -81,7 +82,7 @@ const WindChart = ({ hours }: { hours: HourType[] }) => {
   });
 
   return (
-    <>
+    <ChartSpace>
       <LineChart
         data={windArray}
         data2={gustArray}
@@ -181,7 +182,7 @@ const WindChart = ({ hours }: { hours: HourType[] }) => {
         }}
       />
       <Legend solid="Wind" dotted="Gust" />
-    </>
+    </ChartSpace>
   );
 };
 

@@ -11,6 +11,8 @@ import { dark, light } from "@/constants/Theme";
 
 import { TextLabel, BottomLabel, CustomDataPoint } from "./styles/lineChart";
 import Legend from "../ui/Legend";
+import { ChartSpace } from "./styles/generalStyle";
+import styled from "styled-components";
 
 const TempChart = ({ hours }: { hours: HourType[] }) => {
   const { state } = useContext(GlobalContext);
@@ -84,8 +86,8 @@ const TempChart = ({ hours }: { hours: HourType[] }) => {
   });
 
   return (
-    <>
-      <LineChart
+    <ChartSpace>
+      <LineChartS
         data={tempArray}
         data2={feelsLikeArray}
         isAnimated
@@ -184,8 +186,12 @@ const TempChart = ({ hours }: { hours: HourType[] }) => {
         }}
       />
       <Legend solid="Temp" dotted="Feels like" />
-    </>
+    </ChartSpace>
   );
 };
+
+const LineChartS = styled(LineChart)`
+  width: 200px;
+`;
 
 export default TempChart;
