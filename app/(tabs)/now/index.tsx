@@ -39,12 +39,15 @@ const HomePage = () => {
   const day = forecast.forecastday[0];
 
   const todaysLeftHours = forecast.forecastday[0].hour.filter(
-    (hour: any) => new Date().getHours() <= new Date(hour.time).getHours()
+    (hour: any) =>
+      new Date(location.localtime).getHours() <= new Date(hour.time).getHours()
   );
   const todayHours = [
     ...todaysLeftHours,
     ...forecast.forecastday[1].hour.slice(0, 24 - todaysLeftHours.length),
   ];
+
+  console.log(current, location, forecast.forecastday[0].hour);
 
   return (
     <PageScrollView center noPadding>
@@ -97,12 +100,12 @@ const HomePage = () => {
           <DividerH />
         </Section>
       )}
-
-      <Charts hours={todayHours} />
-
-      <Section style={{ marginTop: 16 }}>
-        <DividerH />
-      </Section>
+      <>
+        <Charts hours={todayHours} />
+        <Section style={{ marginTop: 16 }}>
+          <DividerH />
+        </Section>
+      </>
       <Section>
         <DayDetails day={day.day as DayType} />
         <DividerH />

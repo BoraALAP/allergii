@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useContext, useState } from "react";
 
 import { GlobalContext } from "@/context/global";
@@ -6,8 +7,6 @@ import { HourType } from "@/types/api";
 import { SectionTitle, Text } from "@/components/ui/Typography";
 
 import { dark, global, light } from "@/constants/Theme";
-
-import { router } from "expo-router";
 
 import {
   Left,
@@ -23,7 +22,7 @@ import {
 const RainChart = ({ hours }: { hours: HourType[] }) => {
   const { state } = useContext(GlobalContext);
 
-  let highesRain = 10;
+  let highesRain = 7.6;
 
   // find the max value in the array of hours for the precip_mm however if it is smaller then 7.6mm then set it to 7.6mm
   let maxValue = Math.max(...hours.map((hour) => Math.max(hour.precip_mm)));

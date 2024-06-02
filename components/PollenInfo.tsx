@@ -12,30 +12,26 @@ import { ValueColor } from "@/func/valueColor";
 const Pollen = ({ pollen }: { pollen: GooglePollenType }) => {
   const { plantInfo } = pollen?.dailyInfo[0];
 
-  console.log(pollen);
-
   const list = plantInfo.filter((item) => item.inSeason === true);
 
   return (
-    <>
-      <ScrollViewContainer horizontal showsHorizontalScrollIndicator={false}>
-        {list.map((item, index) => {
-          return (
-            <ItemContainer key={index} index={index} length={list.length}>
-              <SectionTitle>{item.displayName}</SectionTitle>
-              <Value
-                color={ValueColor({
-                  value: item.indexInfo.value,
-                  type: "pollen",
-                })}
-              >
-                {item.indexInfo.category}
-              </Value>
-            </ItemContainer>
-          );
-        })}
-      </ScrollViewContainer>
-    </>
+    <ScrollViewContainer horizontal showsHorizontalScrollIndicator={false}>
+      {list.map((item, index) => {
+        return (
+          <ItemContainer key={index} index={index} length={list.length}>
+            <SectionTitle>{item.displayName}</SectionTitle>
+            <Value
+              color={ValueColor({
+                value: item.indexInfo.value,
+                type: "pollen",
+              })}
+            >
+              {item.indexInfo.category}
+            </Value>
+          </ItemContainer>
+        );
+      })}
+    </ScrollViewContainer>
   );
 };
 

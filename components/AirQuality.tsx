@@ -22,8 +22,6 @@ const AirQuality = ({
 }) => {
   const { state } = useContext(GlobalContext);
 
-  console.log(airQuality);
-
   if (airQuality.error !== undefined) {
     return (
       <View>

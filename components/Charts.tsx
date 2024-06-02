@@ -20,6 +20,8 @@ export const Charts = ({ hours }: { hours: HourType[] }) => {
   // find if any of the hours has will_it_snow field set to 1
   const willItSnow = hours.some((hour) => hour.will_it_snow === 1);
 
+  console.log(hours);
+
   const charts = [
     { title: "Temp", display: true },
     { title: "Rain", display: willItRain },
