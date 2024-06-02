@@ -34,7 +34,7 @@ module.exports = ({ config }: ConfigContext): ExpoConfig => ({
   name: appName,
   slug: "allergii",
   owner: "artticfox",
-  version: "1.0.0",
+  version: "1.1.0",
   orientation: "portrait",
   icon: "./assets/appicon.png",
   scheme: "myapp",
