@@ -10,7 +10,6 @@ export const SectionTitle = styled(TextBase)<{
       ? props.theme.colors.secondary
       : props.theme.colors.sectionTitle};
   font-family: ${(props) => props.theme.font.family.primaryBold};
-  line-height: 20px;
 `;
 
 const Textcolor = styled(TextBase)<{

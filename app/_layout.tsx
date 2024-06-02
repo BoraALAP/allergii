@@ -25,7 +25,6 @@ import {
 import fetchData from "@/func/fetchData";
 import { NowAiContext, nowAiInitialState, nowAiReducer } from "@/context/nowai";
 import { Platform, useColorScheme } from "react-native";
-import { err } from "react-native-svg";
 
 export {
   // Catch any errors thrown by the Layout component.

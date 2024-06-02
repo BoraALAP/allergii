@@ -1,17 +1,15 @@
 import { GoogleAirQualityType, GooglePollenType } from "@/types/api";
 
-import { Text, SectionTitle, Value, Body } from "@/components/ui/Typography";
+import { SectionTitle, Value, Body } from "@/components/ui/Typography";
 import React, { useContext } from "react";
 
-import { Card, CardContent, Row } from "@/components/ui/Card";
+import { Card } from "@/components/ui/Card";
 
 import { GlobalContext } from "@/context/global";
 import styled from "styled-components";
 import { View } from "react-native";
 import { Grid } from "@/components/ui/Containers";
 import { ValueColor } from "@/func/valueColor";
-import { DividerH } from "./ui/Elements";
-import Pollen from "./PollenInfo";
 
 const AirQualityOverView = ({
   airQuality,
@@ -22,7 +20,7 @@ const AirQualityOverView = ({
 }) => {
   const { state } = useContext(GlobalContext);
 
-  console.log(airQuality);
+  console.log(airQuality, pollen);
 
   const { aqiDisplay, displayName, category, aqi } = airQuality?.indexes[1];
 
@@ -36,24 +34,19 @@ const AirQualityOverView = ({
           <Value>{category}</Value>
         </ItemContainer>
         {pollen.dailyInfo[0].pollenTypeInfo.map((item, index) => (
-          <ItemContainer key={index}>
-            {item.indexInfo ? (
-              <>
-                <SectionTitle>{item.displayName}</SectionTitle>
-                <Value
-                  color={ValueColor({
-                    value: item.indexInfo.value,
-                    type: "pollen",
-                  })}
-                >
-                  {item.indexInfo.category}
-                </Value>
-              </>
-            ) : (
-              <Row>
-                <Dot />
-                <SectionTitle>{item.displayName}</SectionTitle>
-              </Row>
+          <ItemContainer key={index} disabled={!item.inSeason}>
+            <Row>
+              <SectionTitle>{item.displayName}</SectionTitle>
+            </Row>
+            {item.indexInfo && (
+              <Value
+                color={ValueColor({
+                  value: item.indexInfo.value,
+                  type: "pollen",
+                })}
+              >
+                {item.indexInfo.category}
+              </Value>
             )}
           </ItemContainer>
         ))}
@@ -64,7 +57,7 @@ const AirQualityOverView = ({
   );
 };
 
-export const ItemContainer = styled(View)`
+const ItemContainer = styled(View)<{ disabled?: boolean }>`
   padding: 12px 16px;
   border-radius: 8px;
   border: 1px solid ${(props) => props.theme.colors.card.border};
@@ -73,14 +66,17 @@ export const ItemContainer = styled(View)`
   flex-shrink: 0;
   flex-basis: auto;
   align-self: stretch;
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+  background-color: ${(props) =>
+    props.disabled
+      ? props.theme.colors.card.disabled.background
+      : props.theme.colors.card.background};
 `;
 
-export const Dot = styled(View)`
-  width: 8px;
-  height: 8px;
-  border-radius: 4px;
-  background-color: ${(props) => props.theme.colors.inSeason.false};
-  margin-right: 8px;
+const Row = styled(View)`
+  flex-direction: row;
+  align-items: center;
+  gap: 0px;
 `;
 
 export default AirQualityOverView;

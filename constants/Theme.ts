@@ -159,6 +159,10 @@ export const color = {
   card: {
     border: grey150,
     background: white,
+    disabled: {
+      border: grey150,
+      background: grey50,
+    },
   },
   button: {
     bg: {
@@ -251,6 +255,10 @@ export const dark = {
     card: {
       border: grey850,
       background: grey950,
+      disabled: {
+        border: grey850,
+        background: grey950,
+      },
     },
     button: {
       bg: {
