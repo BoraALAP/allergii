@@ -10,6 +10,7 @@ import IconContainer from "@/components/ui/IconContainer";
 import { dark, light } from "@/constants/Theme";
 
 import { TextLabel, BottomLabel, CustomDataPoint } from "./styles/lineChart";
+import Legend from "../ui/Legend";
 
 const TempChart = ({ hours }: { hours: HourType[] }) => {
   const { state } = useContext(GlobalContext);
@@ -83,104 +84,107 @@ const TempChart = ({ hours }: { hours: HourType[] }) => {
   });
 
   return (
-    <LineChart
-      data={tempArray}
-      data2={feelsLikeArray}
-      isAnimated
-      animateTogether
-      curved
-      areaChart
-      hideYAxisText
-      focusEnabled
-      hideAxesAndRules
-      mostNegativeValue={minValue - 2}
-      maxValue={maxValue + 2}
-      height={300}
-      unFocusOnPressOut={false}
-      zIndex1={10}
-      xAxisLabelsVerticalShift={24}
-      onFocus={(data: any) => {
-        router.navigate({
-          pathname: "/hourmodal",
-          params: { hour: hours[data.index].time_epoch },
-        });
-      }}
-      customDataPoint={() => {
-        return <CustomDataPoint />;
-      }}
-      animateOnDataChange
-      animationDuration={1000}
-      onDataChangeAnimationDuration={300}
-      lineGradient
-      lineGradientDirection="vertical"
-      lineGradientId="lg"
-      lineGradientComponent={() => {
-        return (
-          <LinearGradient id="lg" x1="0" y1="1" x2="0" y2="0">
-            <Stop
-              offset="0.6"
-              stopColor={
-                state.dark
-                  ? dark.colors.chart.bottom
-                  : light.colors.chart.bottom
-              }
-              stopOpacity={1}
-            />
-            <Stop
-              offset="0.9"
-              stopColor={
-                state.dark
-                  ? dark.colors.chart.middle
-                  : light.colors.chart.middle
-              }
-              stopOpacity={1}
-            />
-            <Stop
-              offset="1.5"
-              stopColor={
-                state.dark ? dark.colors.chart.top : light.colors.chart.top
-              }
-              stopOpacity={1}
-            />
-          </LinearGradient>
-        );
-      }}
-      thickness1={2}
-      thickness2={1}
-      strokeDashArray2={[5, 5]}
-      areaGradientId="ag" // same as the id passed in <LinearGradient> below
-      areaGradientComponent={() => {
-        return (
-          <LinearGradient id="ag" x1="0" y1="1" x2="0" y2="0">
-            <Stop
-              offset="0.6"
-              stopColor={
-                state.dark
-                  ? dark.colors.chart.bottom
-                  : light.colors.chart.bottom
-              }
-              stopOpacity={0}
-            />
-            <Stop
-              offset="0.9"
-              stopColor={
-                state.dark
-                  ? dark.colors.chart.middle
-                  : light.colors.chart.middle
-              }
-              stopOpacity={0.1}
-            />
-            <Stop
-              offset="1.5"
-              stopColor={
-                state.dark ? dark.colors.chart.top : light.colors.chart.top
-              }
-              stopOpacity={0.1}
-            />
-          </LinearGradient>
-        );
-      }}
-    />
+    <>
+      <LineChart
+        data={tempArray}
+        data2={feelsLikeArray}
+        isAnimated
+        animateTogether
+        curved
+        areaChart
+        hideYAxisText
+        focusEnabled
+        hideAxesAndRules
+        mostNegativeValue={minValue - 2}
+        maxValue={maxValue + 2}
+        height={300}
+        unFocusOnPressOut={false}
+        zIndex1={10}
+        xAxisLabelsVerticalShift={24}
+        onFocus={(data: any) => {
+          router.navigate({
+            pathname: "/hourmodal",
+            params: { hour: hours[data.index].time_epoch },
+          });
+        }}
+        customDataPoint={() => {
+          return <CustomDataPoint />;
+        }}
+        animateOnDataChange
+        animationDuration={1000}
+        onDataChangeAnimationDuration={300}
+        lineGradient
+        lineGradientDirection="vertical"
+        lineGradientId="lg"
+        lineGradientComponent={() => {
+          return (
+            <LinearGradient id="lg" x1="0" y1="1" x2="0" y2="0">
+              <Stop
+                offset="0.6"
+                stopColor={
+                  state.dark
+                    ? dark.colors.chart.bottom
+                    : light.colors.chart.bottom
+                }
+                stopOpacity={1}
+              />
+              <Stop
+                offset="0.9"
+                stopColor={
+                  state.dark
+                    ? dark.colors.chart.middle
+                    : light.colors.chart.middle
+                }
+                stopOpacity={1}
+              />
+              <Stop
+                offset="1.5"
+                stopColor={
+                  state.dark ? dark.colors.chart.top : light.colors.chart.top
+                }
+                stopOpacity={1}
+              />
+            </LinearGradient>
+          );
+        }}
+        thickness1={2}
+        thickness2={1}
+        strokeDashArray2={[5, 5]}
+        areaGradientId="ag" // same as the id passed in <LinearGradient> below
+        areaGradientComponent={() => {
+          return (
+            <LinearGradient id="ag" x1="0" y1="1" x2="0" y2="0">
+              <Stop
+                offset="0.6"
+                stopColor={
+                  state.dark
+                    ? dark.colors.chart.bottom
+                    : light.colors.chart.bottom
+                }
+                stopOpacity={0}
+              />
+              <Stop
+                offset="0.9"
+                stopColor={
+                  state.dark
+                    ? dark.colors.chart.middle
+                    : light.colors.chart.middle
+                }
+                stopOpacity={0.1}
+              />
+              <Stop
+                offset="1.5"
+                stopColor={
+                  state.dark ? dark.colors.chart.top : light.colors.chart.top
+                }
+                stopOpacity={0.1}
+              />
+            </LinearGradient>
+          );
+        }}
+      />
+      <Legend solid="Temp" dotted="Feels like" />
+    </>
   );
 };
 

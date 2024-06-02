@@ -11,6 +11,7 @@ import { dark, light } from "@/constants/Theme";
 import { LinearGradient, Stop } from "react-native-svg";
 import { DirectionIconContainer } from "../ui/DirectionIconContainer";
 import { CustomDataPoint } from "./styles/lineChart";
+import Legend from "../ui/Legend";
 
 const WindChart = ({ hours }: { hours: HourType[] }) => {
   const { state } = useContext(GlobalContext);
@@ -179,48 +180,10 @@ const WindChart = ({ hours }: { hours: HourType[] }) => {
           );
         }}
       />
-      <Description>
-        <Container>
-          <Line />
-          <View style={{ marginTop: 4 }}>
-            <CustomDataPoint />
-          </View>
-          <Line />
-        </Container>
-        <Text>Wind</Text>
-        <Container>
-          <Line dotted />
-          <View style={{ marginTop: 4 }}>
-            <CustomDataPoint />
-          </View>
-          <Line dotted />
-        </Container>
-        <Text>Gust</Text>
-      </Description>
+      <Legend solid="Wind" dotted="Gust" />
     </>
   );
 };
-
-const Description = styled(View)`
-  flex-direction: row;
-  gap: 8px;
-`;
-
-const Container = styled(View)`
-  flex-direction: row;
-  align-items: center;
-  align-content: center;
-  gap: 2px;
-`;
-
-const Line = styled(View)<{ dotted?: boolean }>`
-  border-width: 2px;
-  border: 1px ${(props) => (props.dotted ? "dotted" : "solid")}
-    ${(props) => props.theme.colors.chart.bottom};
-  height: 1px;
-  width: 16px;
-  border-radius: 5px;
-`;
 
 const TextLabel = styled(Text)<{ gust?: boolean }>`
   font-family: ${(props) => props.theme.font.family.primaryBold};
