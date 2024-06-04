@@ -19,7 +19,6 @@ const AirQualityOverView = ({
   pollen: GooglePollenType;
 }) => {
   const { state } = useContext(GlobalContext);
-  console.log(airQuality, pollen);
 
   // write a switch function that takes the keys and turns them in to name of the air quality
 
@@ -35,7 +34,6 @@ const AirQualityOverView = ({
   }
 
   const { aqiDisplay, displayName, category, aqi } = airQuality?.indexes[1];
-  console.log(pollen);
 
   return (
     <Card>

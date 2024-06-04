@@ -13,7 +13,15 @@ export const SectionTitle = styled(TextBase)<{
 `;
 
 const Textcolor = styled(TextBase)<{
-  color?: "body" | "low" | "high" | "medium" | "extreme" | "normal" | "invert";
+  color?:
+    | "body"
+    | "low"
+    | "high"
+    | "medium"
+    | "extreme"
+    | "normal"
+    | "invert"
+    | "soft";
   large?: boolean;
 }>`
   color: ${(props) => {
@@ -32,6 +40,8 @@ const Textcolor = styled(TextBase)<{
         return props.theme.colors.body;
       case "invert":
         return props.theme.colors.invert;
+      case "soft":
+        return props.theme.colors.soft;
       default:
         return props.theme.colors.primary;
     }

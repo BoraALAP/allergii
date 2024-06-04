@@ -33,8 +33,6 @@ const HomePage = () => {
     },
   } = useContext(ApiDataContext);
 
-  console.log(state.settings.allergy);
-
   if (state.loading || !current || !location) {
     return <Loading />;
   }
