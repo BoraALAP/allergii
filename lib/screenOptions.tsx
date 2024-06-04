@@ -17,6 +17,14 @@ export const MainPagesOptions = ({ children }: React.PropsWithChildren) => {
         headerShadowVisible: false,
         headerTransparent: Platform.OS === "ios" ? true : false,
         headerShown: Platform.OS === "ios" ? false : true,
+        headerStyle: {
+          backgroundColor:
+            Platform.OS === "ios"
+              ? "transparent"
+              : state.dark
+              ? dark.colors.page.bg.start
+              : light.colors.page.bg.start,
+        },
         headerBlurEffect: "prominent",
         headerTintColor: state.dark
           ? dark.colors.tint.text

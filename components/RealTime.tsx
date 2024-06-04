@@ -57,10 +57,13 @@ const RealTime = ({
       <CardContent>
         {day !== undefined && (
           <SectionTitle color="secondary">
-            {Intl.DateTimeFormat("en-US", {
-              day: "numeric",
-              weekday: "long",
-            }).format(new Date(day * 1000))}
+            {new Date(day * 1000).setHours(0, 0, 0, 0) ===
+            new Date().setHours(0, 0, 0, 0)
+              ? "Today"
+              : Intl.DateTimeFormat("en-US", {
+                  day: "numeric",
+                  weekday: "long",
+                }).format(new Date(day * 1000))}
           </SectionTitle>
         )}
         <Row style={{ gap: 24 }}>

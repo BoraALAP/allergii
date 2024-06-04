@@ -176,8 +176,8 @@ export default function RootLayout() {
                     borderTopStartRadius: 20,
                     elevation: 8,
                     backgroundColor: state.dark
-                      ? dark.colors.page.bg.start
-                      : light.colors.page.bg.start,
+                      ? dark.colors.modal.bg
+                      : light.colors.modal.bg,
                   },
                 }}
               />

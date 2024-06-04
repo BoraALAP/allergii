@@ -19,10 +19,23 @@ const AirQualityOverView = ({
   pollen: GooglePollenType;
 }) => {
   const { state } = useContext(GlobalContext);
-
-  const { aqiDisplay, displayName, category, aqi } = airQuality?.indexes[1];
+  console.log(airQuality, pollen);
 
   // write a switch function that takes the keys and turns them in to name of the air quality
+
+  if (airQuality.error || pollen.error) {
+    return (
+      <Card>
+        <Body>
+          We apologize, but we currently do not have allergy information
+          available for this location.
+        </Body>
+      </Card>
+    );
+  }
+
+  const { aqiDisplay, displayName, category, aqi } = airQuality?.indexes[1];
+  console.log(pollen);
 
   return (
     <Card>
@@ -31,7 +44,7 @@ const AirQualityOverView = ({
           <SectionTitle>Air Quality</SectionTitle>
           <Value>{category}</Value>
         </ItemContainer>
-        {pollen.dailyInfo[0].pollenTypeInfo.map((item, index) => (
+        {pollen?.dailyInfo[0].pollenTypeInfo.map((item, index) => (
           <ItemContainer key={index} disabled={!item.inSeason}>
             <Row>
               <SectionTitle>{item.displayName}</SectionTitle>

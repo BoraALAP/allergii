@@ -155,9 +155,12 @@ export const color = {
       end: grey50,
     },
   },
+  modal: {
+    bg: grey50,
+  },
 
   card: {
-    border: grey150,
+    border: grey100,
     background: white,
     disabled: {
       border: grey150,
@@ -228,6 +231,9 @@ export const dark = {
         end: grey950,
       },
     },
+    modal: {
+      bg: grey900,
+    },
     tabBar: {
       default: {
         icon: grey200,
@@ -253,7 +259,7 @@ export const dark = {
       text: grey100,
     },
     card: {
-      border: grey850,
+      border: grey900,
       background: grey950,
       disabled: {
         border: grey850,

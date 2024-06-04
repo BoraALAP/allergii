@@ -120,9 +120,7 @@ const PageScrollViewContainer = styled(ScrollView)`
 export const Grid = styled(View)<{ flex?: boolean }>`
   flex-wrap: wrap;
   flex-direction: row;
-  /* width: 100%; */
   gap: 8px;
-  flex: ${(props) => (props.flex ? 1 : "none")};
 `;
 
 export const ItemContainer = styled(View)<{ row?: boolean }>`

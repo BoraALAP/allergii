@@ -2,7 +2,6 @@ import RealTime from "@/components/RealTime";
 import WindInfo from "@/components/WindInfo";
 import RainInfo from "@/components/RainInfo";
 import { ApiDataContext } from "@/context/apidata";
-import { GlobalContext } from "@/context/global";
 
 import { HourType } from "@/types/api";
 
@@ -13,7 +12,6 @@ import { useContext } from "react";
 import { View } from "react-native";
 import styled from "styled-components";
 import Loading from "@/components/ui/Loading";
-import { SectionTitle } from "@/components/ui/Typography";
 
 const ModalScreen = () => {
   const search = useLocalSearchParams();

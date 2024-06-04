@@ -50,7 +50,7 @@ module.exports = ({ config }: ConfigContext): ExpoConfig => ({
     bundleIdentifier: bundleID,
     icon: "./assets/appicon.png",
     backgroundColor: "#022B46",
-    buildNumber: "0.0.14",
+    // buildNumber: "0.0.14",
     config: {
       usesNonExemptEncryption: false,
     },
@@ -71,7 +71,7 @@ module.exports = ({ config }: ConfigContext): ExpoConfig => ({
       "android.permission.ACCESS_COARSE_LOCATION",
       "android.permission.ACCESS_FINE_LOCATION",
     ],
-    versionCode: 4,
+    // versionCode: 4,
   },
   plugins: [
     "expo-router",

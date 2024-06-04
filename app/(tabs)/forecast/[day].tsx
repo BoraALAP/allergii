@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
 
-import Hours from "@/components/charts/HoursChart";
 import AstroInfo from "@/components/AstroInfo";
 import { ApiDataContext } from "@/context/apidata";
 import { PageScrollView, Section } from "@/components/ui/Containers";

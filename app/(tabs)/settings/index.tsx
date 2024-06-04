@@ -1,12 +1,12 @@
-import SegmentedControl from "@react-native-segmented-control/segmented-control";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { GlobalContext } from "../../../context/global";
-import { StyleSheet } from "react-native";
+
 import { storeData } from "../../../func/storage";
 import { PageView, View } from "@/components/ui/Containers";
 import { Text } from "@/components/ui/Typography";
 import styled from "styled-components";
-import { dark, global, light } from "@/constants/Theme";
+
+import { SegmentedControlComponent } from "@/components/ui/SegmentedControl";
 
 const Setting = () => {
   const { state, dispatch } = useContext(GlobalContext);
@@ -19,42 +19,39 @@ const Setting = () => {
     <PageView>
       <ViewContainer>
         <Text>Temprature Type</Text>
-        <SegmentedControlS
+        <SegmentedControlComponent
           values={["Censuis", "Farhenheit"]}
           selectedIndex={state.settings.tempType}
-          fontStyle={{ fontFamily: global.font.family.primary }}
-          onChange={(event) => {
+          onChange={(result) => {
             dispatch({
               type: "SET_TEMP_TYPE",
-              payload: event.nativeEvent.selectedSegmentIndex,
+              payload: result,
             });
           }}
         />
       </ViewContainer>
       <ViewContainer>
         <Text>Distance Type</Text>
-        <SegmentedControlS
+        <SegmentedControlComponent
           values={["Kilometer", "Miles"]}
           selectedIndex={state.settings.distanceType}
-          fontStyle={{ fontFamily: global.font.family.primary }}
-          onChange={(event) => {
+          onChange={(result) => {
             dispatch({
               type: "SET_DIRECTION_TYPE",
-              payload: event.nativeEvent.selectedSegmentIndex,
+              payload: result,
             });
           }}
         />
       </ViewContainer>
       <ViewContainer>
         <Text>Is Allergy Information Important For You?</Text>
-        <SegmentedControlS
+        <SegmentedControlComponent
           values={["Yes", "No"]}
           selectedIndex={state.settings.allergy}
-          fontStyle={{ fontFamily: global.font.family.primary }}
-          onChange={(event) => {
+          onChange={(result) => {
             dispatch({
               type: "SET_ALLERGY",
-              payload: event.nativeEvent.selectedSegmentIndex,
+              payload: result,
             });
           }}
         />
@@ -79,11 +76,6 @@ const Setting = () => {
 const ViewContainer = styled(View)`
   width: 100%;
   gap: 16px;
-`;
-
-const SegmentedControlS = styled(SegmentedControl)`
-  padding: 16px;
-  width: 100%;
 `;
 
 export default Setting;

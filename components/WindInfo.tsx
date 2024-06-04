@@ -1,15 +1,15 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 
 import { GlobalContext } from "@/context/global";
-import { Grid, ItemContainer, View } from "@/components/ui/Containers";
+import { Grid, ItemContainer } from "@/components/ui/Containers";
 import { DividerV } from "@/components/ui/Elements";
 import { SectionTitle, Value } from "@/components/ui/Typography";
 import { ValueColor } from "@/func/valueColor";
 import { Card } from "@/components/ui/Card";
 import { RainIcon } from "@/assets/icons/rain";
 import { DirectionIconContainer } from "./ui/DirectionIconContainer";
+import { View } from "react-native";
 
 type WindInfoProps = {
   wind_degree: number;
@@ -40,7 +40,7 @@ const WindInfo = ({
 
   return (
     <Card row>
-      <Grid flex>
+      <Grid>
         <ItemContainer>
           <SectionTitle>Wind Degree:</SectionTitle>
           <Value>{wind_degree}°</Value>

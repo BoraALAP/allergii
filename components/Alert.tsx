@@ -108,14 +108,14 @@ const IconContainer = styled(View)<{ severity: string }>`
       case "Extreme":
         return props.theme.colors.level.extreme;
       case "Severe":
-        return props.theme.colors.level.high;
+        return props.theme.colors.level.extreme;
       case "Moderate":
-        return props.theme.colors.level.medium;
+        return props.theme.colors.level.extreme;
       case "Minor":
-        return props.theme.colors.level.normal;
+        return props.theme.colors.level.extreme;
 
       default:
-        return props.theme.colors.level.normal;
+        return props.theme.colors.level.extreme;
     }
   }};
   padding: 8px;

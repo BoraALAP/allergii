@@ -33,6 +33,8 @@ const HomePage = () => {
     },
   } = useContext(ApiDataContext);
 
+  console.log(state.settings.allergy);
+
   if (state.loading || !current || !location) {
     return <Loading />;
   }
@@ -46,8 +48,6 @@ const HomePage = () => {
     ...todaysLeftHours,
     ...forecast.forecastday[1].hour.slice(0, 24 - todaysLeftHours.length),
   ];
-
-  console.log(current, location, forecast.forecastday[0].hour);
 
   return (
     <PageScrollView center noPadding>
@@ -91,15 +91,16 @@ const HomePage = () => {
         />
         <DividerH />
       </Section>
-      {googleairquality !== null && (
-        <Section>
-          <AirQualityOverView
-            airQuality={googleairquality}
-            pollen={googlepollen}
-          />
-          <DividerH />
-        </Section>
-      )}
+      {state.settings.allergy === 0 &&
+        (googleairquality !== null || googlepollen !== null) && (
+          <Section>
+            <AirQualityOverView
+              airQuality={googleairquality}
+              pollen={googlepollen}
+            />
+            <DividerH />
+          </Section>
+        )}
       <>
         <Charts hours={todayHours} />
         <Section style={{ marginTop: 16 }}>
