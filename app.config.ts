@@ -40,16 +40,16 @@ module.exports = ({ config }: ConfigContext): ExpoConfig => ({
   scheme: "myapp",
   userInterfaceStyle: "automatic",
   splash: {
-    image: "./assets/splash.png",
+    // image: "./assets/splash.png",
     resizeMode: "contain",
-    backgroundColor: "#022B46",
+    backgroundColor: "#005266",
   },
   assetBundlePatterns: ["**/*"],
   ios: {
     supportsTablet: true,
     bundleIdentifier: bundleID,
     icon: "./assets/appicon.png",
-    backgroundColor: "#022B46",
+    backgroundColor: "#005266",
     buildNumber: "0.0.20",
     config: {
       usesNonExemptEncryption: false,
@@ -65,7 +65,7 @@ module.exports = ({ config }: ConfigContext): ExpoConfig => ({
     package: bundleID,
     adaptiveIcon: {
       foregroundImage: "./assets/appicon.png",
-      backgroundColor: "#022B46",
+      backgroundColor: "#005266",
     },
     permissions: [
       "android.permission.ACCESS_COARSE_LOCATION",
@@ -89,7 +89,7 @@ module.exports = ({ config }: ConfigContext): ExpoConfig => ({
       "expo-notifications",
       {
         icon: "./assets/noti-appicon.png",
-        color: "#022B46",
+        color: "#005266",
       },
     ],
   ],

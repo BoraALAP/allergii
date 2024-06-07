@@ -484,7 +484,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.24.6"
 
-"@babel/plugin-transform-arrow-functions@^7.0.0":
+"@babel/plugin-transform-arrow-functions@^7.0.0", "@babel/plugin-transform-arrow-functions@^7.0.0-0":
   version "7.24.6"
   resolved "https://registry.npmjs.org/@babel/plugin-transform-arrow-functions/-/plugin-transform-arrow-functions-7.24.6.tgz"
   integrity sha512-jSSSDt4ZidNMggcLx8SaKsbGNEfIl0PHx/4mFEulorE7bpYLbN0d3pDW3eJ7Y5Z3yPhy3L3NaPCYyTUY7TuugQ==
@@ -585,6 +585,14 @@
     "@babel/helper-create-regexp-features-plugin" "^7.24.6"
     "@babel/helper-plugin-utils" "^7.24.6"
 
+"@babel/plugin-transform-nullish-coalescing-operator@^7.0.0-0":
+  version "7.24.6"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-nullish-coalescing-operator/-/plugin-transform-nullish-coalescing-operator-7.24.6.tgz#12b83b3cdfd1cd2066350e36e4fb912ab194545e"
+  integrity sha512-+QlAiZBMsBK5NqrBWFXCYeXyiU1y7BQ/OYaiPAcQJMomn5Tyg+r5WuVtyEuvTbpV7L25ZSLfE+2E9ywj4FD48A==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.24.6"
+    "@babel/plugin-syntax-nullish-coalescing-operator" "^7.8.3"
+
 "@babel/plugin-transform-object-rest-spread@^7.12.13":
   version "7.24.6"
   resolved "https://registry.npmjs.org/@babel/plugin-transform-object-rest-spread/-/plugin-transform-object-rest-spread-7.24.6.tgz"
@@ -594,6 +602,15 @@
     "@babel/helper-plugin-utils" "^7.24.6"
     "@babel/plugin-syntax-object-rest-spread" "^7.8.3"
     "@babel/plugin-transform-parameters" "^7.24.6"
+
+"@babel/plugin-transform-optional-chaining@^7.0.0-0":
+  version "7.24.6"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-optional-chaining/-/plugin-transform-optional-chaining-7.24.6.tgz#3d636b3ed8b5a506f93e4d4675fc95754d7594f5"
+  integrity sha512-cHbqF6l1QP11OkYTYQ+hhVx1E017O5ZcSPXk9oODpqhcAD1htsWG2NpHrrhthEO2qZomLK0FXS+u7NfrkF5aOQ==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.24.6"
+    "@babel/helper-skip-transparent-expression-wrappers" "^7.24.6"
+    "@babel/plugin-syntax-optional-chaining" "^7.8.3"
 
 "@babel/plugin-transform-parameters@^7.0.0", "@babel/plugin-transform-parameters@^7.20.7", "@babel/plugin-transform-parameters@^7.22.15", "@babel/plugin-transform-parameters@^7.24.6":
   version "7.24.6"
@@ -679,7 +696,7 @@
     babel-plugin-polyfill-regenerator "^0.6.1"
     semver "^6.3.1"
 
-"@babel/plugin-transform-shorthand-properties@^7.0.0":
+"@babel/plugin-transform-shorthand-properties@^7.0.0", "@babel/plugin-transform-shorthand-properties@^7.0.0-0":
   version "7.24.6"
   resolved "https://registry.npmjs.org/@babel/plugin-transform-shorthand-properties/-/plugin-transform-shorthand-properties-7.24.6.tgz"
   integrity sha512-xnEUvHSMr9eOWS5Al2YPfc32ten7CXdH7Zwyyk7IqITg4nX61oHj+GxpNvl+y5JHjfN3KXE2IV55wAWowBYMVw==
@@ -698,6 +715,13 @@
   version "7.24.6"
   resolved "https://registry.npmjs.org/@babel/plugin-transform-sticky-regex/-/plugin-transform-sticky-regex-7.24.6.tgz"
   integrity sha512-fN8OcTLfGmYv7FnDrsjodYBo1DhPL3Pze/9mIIE2MGCT1KgADYIOD7rEglpLHZj8PZlC/JFX5WcD+85FLAQusw==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.24.6"
+
+"@babel/plugin-transform-template-literals@^7.0.0-0":
+  version "7.24.6"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-template-literals/-/plugin-transform-template-literals-7.24.6.tgz#aaf2ae157acd0e5c9265dba8ac0a439f8d2a6303"
+  integrity sha512-BJbEqJIcKwrqUP+KfUIkxz3q8VzXe2R8Wv8TaNgO1cx+nNavxn/2+H8kp9tgFSOL6wYPPEgFvU6IKS4qoGqhmg==
   dependencies:
     "@babel/helper-plugin-utils" "^7.24.6"
 
@@ -740,7 +764,7 @@
     "@babel/plugin-transform-react-jsx-development" "^7.24.6"
     "@babel/plugin-transform-react-pure-annotations" "^7.24.6"
 
-"@babel/preset-typescript@^7.13.0", "@babel/preset-typescript@^7.23.0":
+"@babel/preset-typescript@^7.13.0", "@babel/preset-typescript@^7.16.7", "@babel/preset-typescript@^7.23.0":
   version "7.24.6"
   resolved "https://registry.npmjs.org/@babel/preset-typescript/-/preset-typescript-7.24.6.tgz"
   integrity sha512-U10aHPDnokCFRXgyT/MaIRTivUu2K/mu0vJlwRS9LxJmJet+PFQNKpggPyFCUtC6zWSBPjvxjnpNkAn3Uw2m5w==
@@ -3782,6 +3806,16 @@ expo-asset@~10.0.6:
     invariant "^2.2.4"
     md5-file "^3.2.3"
 
+expo-asset@~10.0.7:
+  version "10.0.7"
+  resolved "https://registry.yarnpkg.com/expo-asset/-/expo-asset-10.0.7.tgz#0075998eab948741e1df1a4790a5969d3f9f4926"
+  integrity sha512-ql4eDaGJSyulMsfCYXfRrrcZYR31wptEZWGff8ksgxtfEzF9vkFUckkBWFBX1uwkqfP95UYxkgth4nRh3F1XsQ==
+  dependencies:
+    "@react-native/assets-registry" "0.74.83"
+    expo-constants "~16.0.0"
+    invariant "^2.2.4"
+    md5-file "^3.2.3"
+
 expo-blur@~13.0.2:
   version "13.0.2"
   resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-13.0.2.tgz#c2d179b19b13830db1d8b90c51373235f462e958"
@@ -3859,12 +3893,12 @@ expo-font@~12.0.6:
   dependencies:
     fontfaceobserver "^2.1.0"
 
-expo-image@~1.12.9:
-  version "1.12.9"
-  resolved "https://registry.yarnpkg.com/expo-image/-/expo-image-1.12.9.tgz#b6354ab1dcff65df596399a538e6985c44aacc0b"
-  integrity sha512-WnC3Z3vsOTJLWE9FGB0a0GANmkpfBCqTf9bSLXXl50hEYiRcfwrAYZ/87oswAhggMGbJqOuLKZxt5rtuij1xcQ==
+expo-image@~1.12.10:
+  version "1.12.10"
+  resolved "https://registry.yarnpkg.com/expo-image/-/expo-image-1.12.10.tgz#e7c05b7f123c850dda8262117d294067036d98c4"
+  integrity sha512-a+3lPEVQeTzFy7KzKwLX+/9oSfLCruqAMkIdvvnBfBOzhaC06ASzpVBvLqMP207TIy/gxhD3xlu0db73IW8BaQ==
   dependencies:
-    "@react-native/assets-registry" "~0.74.83"
+    "@react-native/assets-registry" "0.74.83"
 
 expo-insights@~0.7.0:
   version "0.7.0"
@@ -3934,10 +3968,10 @@ expo-modules-core@1.12.12:
   dependencies:
     invariant "^2.2.4"
 
-expo-notifications@~0.28.5:
-  version "0.28.5"
-  resolved "https://registry.yarnpkg.com/expo-notifications/-/expo-notifications-0.28.5.tgz#7d827a693fd922124639c737acd4560c437b8953"
-  integrity sha512-3Ry6VvVbQgLmmwjyEL174sKg8Q+xcnvCqGj4MWcAm0WeOqt+VxgZsAbRVGkNCvooy5MFOvab3K1XL0cptYR2Mg==
+expo-notifications@~0.28.7:
+  version "0.28.7"
+  resolved "https://registry.yarnpkg.com/expo-notifications/-/expo-notifications-0.28.7.tgz#14826c10d126b1dd16d1604add2a4766aecf7591"
+  integrity sha512-P68/IlnxTtKjfHy22nC+o/H4VSgBVrmTQcx42JCevTbVQB8JTITmR42hvpZh8GUecB7jNOsuVokTTDZDE6aSyg==
   dependencies:
     "@expo/image-utils" "^0.5.0"
     "@ide/backoff" "^1.0.0"
@@ -3948,10 +3982,10 @@ expo-notifications@~0.28.5:
     expo-constants "~16.0.0"
     fs-extra "^9.1.0"
 
-expo-router@~3.5.14:
-  version "3.5.14"
-  resolved "https://registry.yarnpkg.com/expo-router/-/expo-router-3.5.14.tgz#5ca0e861271fa716b94a6149d696f7ac1258aad4"
-  integrity sha512-RVsyJLosZSq89ebA5qfPToRcFZJoTTb+6nwPHk6iESD6KON/Q7ZODt5fvCwXkY86tLNEMGo160QvBPfBZmglaA==
+expo-router@~3.5.15:
+  version "3.5.15"
+  resolved "https://registry.yarnpkg.com/expo-router/-/expo-router-3.5.15.tgz#3727009b38c069692a09918b2f595e738f9c48ad"
+  integrity sha512-rJdxvePGaVtS5VbZG/EuzLppDLDXD/HSDX/c7EBKs2kjrVLsChq1ywmCM0kCZSlBWZIDQtTAjnk+zadTDZf1/g==
   dependencies:
     "@expo/metro-runtime" "3.2.1"
     "@expo/server" "^0.4.0"
@@ -3980,12 +4014,12 @@ expo-structured-headers@~3.8.0:
   resolved "https://registry.yarnpkg.com/expo-structured-headers/-/expo-structured-headers-3.8.0.tgz#11797a4c3a7a6770b21126cecffcda148030e361"
   integrity sha512-R+gFGn0x5CWl4OVlk2j1bJTJIz4KO8mPoCHpRHmfqMjmrMvrOM0qQSY3V5NHXwp1yT/L2v8aUmFQsBRIdvi1XA==
 
-expo-system-ui@~3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/expo-system-ui/-/expo-system-ui-3.0.4.tgz#5ace49d38eb03c09a8041b3b82c581a6b974741a"
-  integrity sha512-v1n6hBO30k9qw6RE8/au4yNoovs71ExGuXizJUlR5KSo4Ruogpb+0/2q3uRZMDIYWWCANvms8L0UOh6fQJ5TXg==
+expo-system-ui@~3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/expo-system-ui/-/expo-system-ui-3.0.5.tgz#e860fa818191790a0c82431e5a14e6ed999b1e29"
+  integrity sha512-K/B8D3Th+jO0i2KFHb/QWi10qMM+ZpeHqhDKoKGNvVL1biugPePkCUw+BXs5j7n28cejr6mDaeGy2gPMAHSOcQ==
   dependencies:
-    "@react-native/normalize-colors" "~0.74.83"
+    "@react-native/normalize-colors" "0.74.83"
     debug "^4.3.2"
 
 expo-updates-interface@~0.16.2:
@@ -6940,6 +6974,20 @@ react-native-helmet-async@2.0.4:
     invariant "^2.2.4"
     react-fast-compare "^3.2.2"
     shallowequal "^1.1.0"
+
+react-native-reanimated@~3.10.1:
+  version "3.10.1"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-3.10.1.tgz#3c37d1100bbba0065df39c96aab0c1ff1b50c0fa"
+  integrity sha512-sfxg6vYphrDc/g4jf/7iJ7NRi+26z2+BszPmvmk0Vnrz6FL7HYljJqTf531F1x6tFmsf+FEAmuCtTUIXFLVo9w==
+  dependencies:
+    "@babel/plugin-transform-arrow-functions" "^7.0.0-0"
+    "@babel/plugin-transform-nullish-coalescing-operator" "^7.0.0-0"
+    "@babel/plugin-transform-optional-chaining" "^7.0.0-0"
+    "@babel/plugin-transform-shorthand-properties" "^7.0.0-0"
+    "@babel/plugin-transform-template-literals" "^7.0.0-0"
+    "@babel/preset-typescript" "^7.16.7"
+    convert-source-map "^2.0.0"
+    invariant "^2.2.4"
 
 react-native-safe-area-context@4.10.1:
   version "4.10.1"

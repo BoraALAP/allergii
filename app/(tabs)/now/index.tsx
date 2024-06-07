@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { GlobalContext } from "@/context/global";
 import { ApiDataContext } from "@/context/apidata";
@@ -21,7 +21,7 @@ import { Charts } from "@/components/Charts";
 import AirQualityOverView from "@/components/AirQualityOverView";
 
 const HomePage = () => {
-  const { state } = useContext(GlobalContext);
+  const { state, dispatch } = useContext(GlobalContext);
   const {
     apiDataState: {
       current,
@@ -40,7 +40,7 @@ const HomePage = () => {
 
   const todaysLeftHours = forecast.forecastday[0].hour.filter(
     (hour: any) =>
-      new Date(location.localtime).getHours() <= new Date(hour.time).getHours()
+      new Date(location?.localtime).getHours() <= new Date(hour.time).getHours()
   );
   const todayHours = [
     ...todaysLeftHours,

@@ -5,7 +5,7 @@ import { BlurView } from "expo-blur";
 import { GlobalContext } from "@/context/global";
 import { useContext } from "react";
 
-export const MainPagesOptions = ({ children }: React.PropsWithChildren) => {
+export const MainPagesOptions = (props: any) => {
   const { state } = useContext(GlobalContext);
   return (
     <Stack
@@ -30,8 +30,9 @@ export const MainPagesOptions = ({ children }: React.PropsWithChildren) => {
           ? dark.colors.tint.text
           : light.colors.tint.text,
       }}
+      {...props}
     >
-      {children}
+      {props.children}
     </Stack>
   );
 };

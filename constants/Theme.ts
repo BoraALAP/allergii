@@ -122,6 +122,12 @@ export const global = {
       input: "8px",
     },
   },
+  colors: {
+    splash: {
+      start: blue800,
+      end: lBlue800,
+    },
+  },
 };
 
 export const color = {

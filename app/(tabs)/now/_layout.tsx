@@ -11,8 +11,6 @@ export default function Layout() {
   const { state } = useContext(GlobalContext);
   const navigation = useNavigation();
 
-  const colorScheme = useColorScheme();
-
   return (
     <MainPagesOptions>
       <Stack.Screen

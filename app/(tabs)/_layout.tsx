@@ -3,7 +3,6 @@ import React, { useContext } from "react";
 import { Tabs } from "expo-router";
 
 import { dark, global, light } from "@/constants/Theme";
-import { useColorScheme } from "react-native";
 import { GlobalContext } from "@/context/global";
 import { NowIcon } from "@/assets/icons/now";
 import { NowActiveIcon } from "@/assets/icons/nowactive";
@@ -11,8 +10,6 @@ import { SettingsIcon } from "@/assets/icons/settings";
 import { SettingsActiveIcon } from "@/assets/icons/settingsactive";
 import { DailyIcon } from "@/assets/icons/daily";
 import { DailyActiveIcon } from "@/assets/icons/dailyactive";
-
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 
 export default function TabLayout() {
   const { state } = useContext(GlobalContext);
@@ -27,21 +24,17 @@ export default function TabLayout() {
 
   return (
     <Tabs
-      initialRouteName="now"
       screenOptions={{
         headerShown: false,
-
         tabBarActiveTintColor: state.dark
           ? dark.colors.tabBar.selected.text
           : light.colors.tabBar.selected.text,
         tabBarInactiveTintColor: state.dark
           ? dark.colors.tabBar.default.text
           : light.colors.tabBar.default.text,
-
         tabBarLabelStyle: {
           fontFamily: global.font.family.primaryBold,
         },
-
         tabBarStyle: {
           backgroundColor: state.dark
             ? dark.colors.page.bg.start
@@ -49,6 +42,7 @@ export default function TabLayout() {
         },
       }}
     >
+      <Tabs.Screen redirect name="index" />
       <Tabs.Screen
         name="now"
         options={{

@@ -9,13 +9,13 @@ import {
   PragatiNarrow_700Bold,
 } from "@expo-google-fonts/pragati-narrow";
 import { Lato_400Regular, Lato_700Bold } from "@expo-google-fonts/lato";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { ThemeProvider } from "styled-components";
 
 import { dark, light } from "@/constants/Theme";
 
 import { GlobalContext, initialState, reducer } from "../context/global";
-import { getData } from "../func/storage";
+import { getData, storeData } from "../func/storage";
 import {
   ApiDataContext,
   apiDataInitialState,
@@ -25,6 +25,7 @@ import {
 import fetchData from "@/func/fetchData";
 import { NowAiContext, nowAiInitialState, nowAiReducer } from "@/context/nowai";
 import { Platform, useColorScheme } from "react-native";
+import Splash from "@/components/Splash";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -32,14 +33,15 @@ export {
 } from "expo-router";
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
+  //   // Ensure that reloading on `/modal` keeps a back button present.
+  initialRouteName: "/(tabs)/now",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const [initLoad, setInitLoad] = useState(true);
   const [loaded, error] = useFonts({
     PragatiNarrow_400Regular,
     PragatiNarrow_700Bold,
@@ -50,7 +52,6 @@ export default function RootLayout() {
 
   const colorScheme = useColorScheme();
   const [state, dispatch] = useReducer(reducer, initialState);
-
   const [apiDataState, apiDataDispatch] = useReducer(
     apiDataReducer,
     apiDataInitialState
@@ -60,13 +61,36 @@ export default function RootLayout() {
     nowAiReducer,
     nowAiInitialState
   );
+
   //on load check the location permission and save the location in the global state
   useEffect(() => {
     (async () => {
       const globalData = await getData("global");
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (!globalData) {
+        if (status !== "granted") {
+          dispatch({
+            type: "SET_NO_LOCATION_PERMISSION",
+          });
+        } else {
+          // Load global data
 
-      if (globalData) {
-        dispatch({
+          dispatch({
+            type: "SET_LOCATION_PERMISSION",
+          });
+          const {
+            coords: { longitude, latitude },
+          } = await Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.Low,
+          });
+
+          await dispatch({
+            type: "SET_LOCATION",
+            payload: { latitude, longitude },
+          });
+        }
+      } else {
+        await dispatch({
           type: "LOAD_DATA",
           payload: globalData,
         });
@@ -77,32 +101,17 @@ export default function RootLayout() {
         payload: colorScheme === "dark" ? true : false,
       });
 
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      const result = fetchData(await state.location);
 
-      if (status !== "granted") {
-        // Alert.alert("Permission to access location was denied");
-        dispatch({
-          type: "SET_NO_LOCATION_PERMISSION",
-        });
-
-        return;
-      } else {
-        // Load global data
-
-        dispatch({
-          type: "SET_LOCATION_PERMISSION",
-        });
-        const {
-          coords: { longitude, latitude },
-        } = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Low,
-        });
-
-        await dispatch({
-          type: "SET_LOCATION",
-          payload: { latitude, longitude },
-        });
-      }
+      await apiDataDispatch({
+        type: "LOAD_DATA",
+        payload: await result,
+      });
+      await setInitLoad(false);
+      await dispatch({
+        type: "SET_LOADING",
+        payload: false,
+      });
     })();
   }, []);
 
@@ -115,13 +124,13 @@ export default function RootLayout() {
       });
       const result = await fetchData(state.location);
 
-      apiDataDispatch({
+      await apiDataDispatch({
         type: "LOAD_DATA",
         payload: result,
       });
 
       // Set loading to false
-      dispatch({
+      await dispatch({
         type: "SET_LOADING",
         payload: false,
       });
@@ -142,13 +151,17 @@ export default function RootLayout() {
   }, [error]);
 
   useEffect(() => {
-    if (loaded && !state.loading) {
+    if (loaded) {
       SplashScreen.hideAsync();
     }
-  }, [loaded, state.loading]);
+  }, [loaded]);
 
-  if (!loaded && !state.loading) {
+  if (!loaded && initLoad && state.loading) {
     return null;
+  }
+
+  if (!loaded || initLoad || state.loading) {
+    return <Splash />;
   }
 
   return (
@@ -157,7 +170,7 @@ export default function RootLayout() {
         <NowAiContext.Provider value={{ nowAiState, nowAiDispatch }}>
           <ThemeProvider theme={state.dark ? dark : light}>
             {/* {state.notifications == 0 && <PushNotification />} */}
-            <Stack initialRouteName="(tabs)/now">
+            <Stack initialRouteName="/(tabs)/now">
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen
                 name="hourmodal"

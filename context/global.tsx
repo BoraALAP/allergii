@@ -1,6 +1,7 @@
 import { createContext, useEffect, useReducer } from "react";
 
 import * as Notifications from "expo-notifications";
+import { storeData } from "@/func/storage";
 
 // Define your action types
 type ActionType = {
@@ -63,6 +64,13 @@ export const reducer = (state: InitialStateType, action: any) => {
       };
 
     case "SET_LOCATION":
+      storeData(
+        {
+          ...state,
+          location: action.payload,
+        },
+        "global"
+      );
       return {
         ...state,
         location: action.payload,
