@@ -12,6 +12,7 @@ import { DayType } from "@/types/api";
 import { TempIcon } from "@/assets/icons/temp";
 import { WindIcon } from "@/assets/icons/wind";
 import { RainIcon } from "@/assets/icons/rain";
+import { UserContext } from "@/context/user";
 
 type DayDetailsProps = {
   maxtemp_c: number;
@@ -33,6 +34,7 @@ type DayDetailsProps = {
 
 const DayDetails = ({ day }: { day: DayType }) => {
   const { state } = useContext(GlobalContext);
+  const { userState } = useContext(UserContext);
   const {
     maxtemp_c,
     maxtemp_f,
@@ -59,7 +61,7 @@ const DayDetails = ({ day }: { day: DayType }) => {
         <ItemContainer>
           <SectionTitle>Max Temp:</SectionTitle>
           <Value color={ValueColor({ value: maxtemp_c, type: "temp" })}>
-            {state.settings.distanceType === 0
+            {userState.settings.distanceType === 0
               ? `${Math.round(maxtemp_c)}°C`
               : `${Math.round(maxtemp_f)}°F`}
           </Value>
@@ -67,7 +69,7 @@ const DayDetails = ({ day }: { day: DayType }) => {
         <ItemContainer>
           <SectionTitle>Min Temp:</SectionTitle>
           <Value color={ValueColor({ value: mintemp_c, type: "temp" })}>
-            {state.settings.distanceType === 0
+            {userState.settings.distanceType === 0
               ? `${Math.round(mintemp_c)}°C`
               : `${Math.round(mintemp_f)}°F`}
           </Value>
@@ -81,7 +83,7 @@ const DayDetails = ({ day }: { day: DayType }) => {
         <ItemContainer>
           <SectionTitle>Max Wind Speed:</SectionTitle>
           <Value color={ValueColor({ value: maxwind_kph, type: "speed" })}>
-            {state.settings.distanceType === 0
+            {userState.settings.distanceType === 0
               ? `${Math.round(maxwind_kph)} KM/H`
               : `${Math.round(maxwind_mph)} M/H`}
           </Value>
@@ -89,7 +91,7 @@ const DayDetails = ({ day }: { day: DayType }) => {
         <ItemContainer>
           <SectionTitle>Avg. Visibility:</SectionTitle>
           <Value color={ValueColor({ value: avgvis_km, type: "visibility" })}>
-            {state.settings.distanceType === 0
+            {userState.settings.distanceType === 0
               ? `${Math.round(avgvis_km)} KM`
               : `${Math.round(avgvis_miles)} M`}
           </Value>
@@ -108,7 +110,7 @@ const DayDetails = ({ day }: { day: DayType }) => {
               <Value
                 color={ValueColor({ value: totalprecip_mm, type: "rain" })}
               >
-                {state.settings.distanceType === 0
+                {userState.settings.distanceType === 0
                   ? `${totalprecip_mm} MM`
                   : `${totalprecip_in} INC`}
               </Value>

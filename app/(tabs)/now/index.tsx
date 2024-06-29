@@ -19,9 +19,11 @@ import RainInfo from "@/components/RainInfo";
 import { Charts } from "@/components/Charts";
 
 import AirQualityOverView from "@/components/AirQualityOverView";
+import { UserContext } from "@/context/user";
 
 const HomePage = () => {
-  const { state, dispatch } = useContext(GlobalContext);
+  const { state } = useContext(GlobalContext);
+  const { userState } = useContext(UserContext);
   const {
     apiDataState: {
       current,
@@ -33,9 +35,10 @@ const HomePage = () => {
     },
   } = useContext(ApiDataContext);
 
-  if (state.loading || !current || !location) {
+  if (!current || !location || state.loading) {
     return <Loading />;
   }
+
   const day = forecast.forecastday[0];
 
   const todaysLeftHours = forecast.forecastday[0].hour.filter(
@@ -89,12 +92,14 @@ const HomePage = () => {
         />
         <DividerH />
       </Section>
-      {state.settings.allergy === 0 &&
+      {userState.settings.allergy === 0 &&
         (googleairquality !== null || googlepollen !== null) && (
           <Section>
             <AirQualityOverView
               airQuality={googleairquality}
               pollen={googlepollen}
+              temperature={current.temp_c}
+              humidity={current.humidity}
             />
             <DividerH />
           </Section>

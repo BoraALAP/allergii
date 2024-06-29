@@ -13,9 +13,11 @@ import { TextLabel, BottomLabel, CustomDataPoint } from "./styles/lineChart";
 import Legend from "../ui/Legend";
 import { ChartSpace } from "./styles/generalStyle";
 import styled from "styled-components";
+import { UserContext } from "@/context/user";
 
 const TempChart = ({ hours }: { hours: HourType[] }) => {
   const { state } = useContext(GlobalContext);
+  const { userState } = useContext(UserContext);
 
   //find the max and min value from existhours array, after looking temp_c and feelslike_c, which ever is bigger and smaller
   const maxValue = Math.max(
@@ -30,10 +32,10 @@ const TempChart = ({ hours }: { hours: HourType[] }) => {
       <TextLabel feelLike={feelLike} color={feelLike && "body"}>
         {`${Math.round(
           feelLike
-            ? state.settings.tempType === 0
+            ? userState.settings.tempType === 0
               ? hour.feelslike_c
               : hour.feelslike_f
-            : state.settings.tempType === 0
+            : userState.settings.tempType === 0
             ? hour.temp_c
             : hour.temp_f
         ).toString()}°`}

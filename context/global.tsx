@@ -1,6 +1,5 @@
 import { createContext, useEffect, useReducer } from "react";
 
-import * as Notifications from "expo-notifications";
 import { storeData } from "@/func/storage";
 
 // Define your action types
@@ -11,36 +10,26 @@ type ActionType = {
 
 // type for initialState
 export type InitialStateType = {
+  appInitialized: boolean;
+  loading: boolean;
   location: {
     latitude: number;
     longitude: number;
   };
   locationPermission: boolean;
-  settings: {
-    tempType: number;
-    distanceType: number;
-    allergy: number;
-    notifications: number;
-  };
-  loading: boolean;
   errorMsg: string | null;
   dark: boolean;
 };
 
 // Define the initial state of the app
 export const initialState = {
+  appInitialized: false,
+  loading: true,
   location: {
     latitude: 51.507218,
     longitude: -0.127586,
   },
   locationPermission: false,
-  settings: {
-    allergy: 1,
-    tempType: 0, //0 is celsius, 1 is fahrenheit
-    distanceType: 0, //0 is km, 1 is miles
-    notifications: 0,
-  },
-  loading: true,
   errorMsg: null,
   dark: false,
 };
@@ -69,7 +58,7 @@ export const reducer = (state: InitialStateType, action: any) => {
           ...state,
           location: action.payload,
         },
-        "global"
+        "@global"
       );
       return {
         ...state,
@@ -89,48 +78,15 @@ export const reducer = (state: InitialStateType, action: any) => {
         locationPermission: true,
       };
 
-    case "SET_NOTIFICATIONS":
-      action.payload === 1 &&
-        Notifications.cancelAllScheduledNotificationsAsync();
-      return {
-        ...state,
-        settings: {
-          ...state.settings,
-          notifications: action.payload,
-        },
-      };
-
-    case "SET_TEMP_TYPE":
-      return {
-        ...state,
-        settings: {
-          ...state.settings,
-          tempType: action.payload,
-        },
-      };
-
-    case "SET_DIRECTION_TYPE":
-      return {
-        ...state,
-        settings: {
-          ...state.settings,
-          distanceType: action.payload,
-        },
-      };
-
-    case "SET_ALLERGY":
-      return {
-        ...state,
-        settings: {
-          ...state.settings,
-          allergy: action.payload,
-        },
-      };
-
     case "SET_LOADING":
       return {
         ...state,
         loading: action.payload,
+      };
+    case "APP_INITIALIZED":
+      return {
+        ...state,
+        appInitialized: true,
       };
 
     case "SET_ERROR":

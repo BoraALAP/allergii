@@ -4,12 +4,14 @@ import { Tabs } from "expo-router";
 
 import { dark, global, light } from "@/constants/Theme";
 import { GlobalContext } from "@/context/global";
-import { NowIcon } from "@/assets/icons/now";
-import { NowActiveIcon } from "@/assets/icons/nowactive";
-import { SettingsIcon } from "@/assets/icons/settings";
-import { SettingsActiveIcon } from "@/assets/icons/settingsactive";
-import { DailyIcon } from "@/assets/icons/daily";
-import { DailyActiveIcon } from "@/assets/icons/dailyactive";
+import { NowIcon } from "@/assets/icons/navigation/now";
+import { NowActiveIcon } from "@/assets/icons/navigation/nowactive";
+import { DailyIcon } from "@/assets/icons/navigation/daily";
+import { DailyActiveIcon } from "@/assets/icons/navigation/dailyactive";
+import { UserActiveIcon } from "@/assets/icons/navigation/userActive";
+import { UserIcon } from "@/assets/icons/navigation/user";
+import { DiaryActiveIcon } from "@/assets/icons/navigation/diaryActive";
+import { DiaryIcon } from "@/assets/icons/navigation/diary";
 
 export default function TabLayout() {
   const { state } = useContext(GlobalContext);
@@ -70,15 +72,31 @@ export default function TabLayout() {
           },
         }}
       />
+
       <Tabs.Screen
-        name="settings"
+        name="diary"
         options={{
-          title: "Settings",
+          title: "Diary",
+
           tabBarIcon: ({ focused }) => {
             if (focused) {
-              return <SettingsActiveIcon color={tabSelectedIconColor} />;
+              return <DiaryActiveIcon color={tabSelectedIconColor} />;
             } else {
-              return <SettingsIcon color={tabIconColor} />;
+              return <DiaryIcon color={tabIconColor} />;
+            }
+          },
+        }}
+      />
+
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ focused }) => {
+            if (focused) {
+              return <UserActiveIcon color={tabSelectedIconColor} />;
+            } else {
+              return <UserIcon color={tabIconColor} />;
             }
           },
         }}

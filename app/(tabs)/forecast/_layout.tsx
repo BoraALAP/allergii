@@ -1,3 +1,4 @@
+import { global } from "@/constants/Theme";
 import { MainPagesOptions } from "@/lib/screenOptions";
 import { Slot, Stack } from "expo-router";
 import React from "react";
@@ -12,7 +13,12 @@ export default function Layout() {
           title: "Forecast",
         }}
       />
-      <Stack.Screen name="[day]" options={{ headerShown: true }} />
+      <Stack.Screen
+        name="[day]"
+        options={{
+          headerShown: true,
+        }}
+      />
     </MainPagesOptions>
   );
 }

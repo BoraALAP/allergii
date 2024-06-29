@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
-import { Button } from "@/components/ui/Buttons";
+import { Tab } from "./ui/Tabs";
 
 import { HourType } from "@/types/api";
 import TempChart from "./charts/TempChart";
@@ -47,11 +47,11 @@ export const Charts = ({ hours }: { hours: HourType[] }) => {
 
   return (
     <>
-      <ButtonContainers>
+      <TabContainers>
         {charts.map((chart, index) => {
           if (chart.display) {
             return (
-              <Button
+              <Tab
                 key={index}
                 title={chart.title}
                 active={activeChart === chart.title}
@@ -62,14 +62,14 @@ export const Charts = ({ hours }: { hours: HourType[] }) => {
             );
           }
         })}
-      </ButtonContainers>
+      </TabContainers>
 
       <RenderedChart />
     </>
   );
 };
 
-const ButtonContainers = styled(View)`
+const TabContainers = styled(View)`
   display: grid;
   flex-direction: row;
   align-items: flex-start;

@@ -21,7 +21,10 @@ const Textcolor = styled(TextBase)<{
     | "extreme"
     | "normal"
     | "invert"
-    | "soft";
+    | "soft"
+    | "disabled"
+    | "primary";
+
   large?: boolean;
 }>`
   color: ${(props) => {
@@ -37,13 +40,16 @@ const Textcolor = styled(TextBase)<{
       case "extreme":
         return props.theme.colors.level.extreme;
       case "body":
-        return props.theme.colors.body;
+        return props.theme.colors.text.body;
       case "invert":
-        return props.theme.colors.invert;
+        return props.theme.colors.text.invert;
       case "soft":
-        return props.theme.colors.soft;
+        return props.theme.colors.text.soft;
+      case "disabled":
+        return props.theme.colors.text.disabled;
+      case "primary":
       default:
-        return props.theme.colors.primary;
+        return props.theme.colors.text.primary;
     }
   }};
 `;

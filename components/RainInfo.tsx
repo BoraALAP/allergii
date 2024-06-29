@@ -11,6 +11,7 @@ import { Card } from "@/components/ui/Card";
 import { DayType } from "@/types/api";
 import { RainIcon } from "@/assets/icons/rain";
 import { SnowIcon } from "@/assets/icons/snow";
+import { UserContext } from "@/context/user";
 
 type RainInfoProps = {
   precip_mm: number;
@@ -31,7 +32,7 @@ const RainInfo = ({
   chance_of_rain,
   chance_of_snow,
 }: RainInfoProps) => {
-  const { state } = useContext(GlobalContext);
+  const { userState } = useContext(UserContext);
 
   return (
     <Card row>
@@ -44,7 +45,7 @@ const RainInfo = ({
             <ItemContainer row>
               <SectionTitle>Rain Amount:</SectionTitle>
               <Value color={ValueColor({ value: precip_mm, type: "rain" })}>
-                {state.settings.distanceType === 0
+                {userState.settings.distanceType === 0
                   ? `${precip_mm} MM`
                   : `${precip_in} INC`}
               </Value>

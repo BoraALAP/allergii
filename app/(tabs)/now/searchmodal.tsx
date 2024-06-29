@@ -15,6 +15,7 @@ import { getData, storeData } from "@/func/storage";
 import { DividerH } from "@/components/ui/Elements";
 import Loading from "@/components/ui/Loading";
 import { dark, light } from "@/constants/Theme";
+import { Input } from "@/components/ui/Input";
 
 type GoogleLocation = {
   description: string;
@@ -33,6 +34,7 @@ type GoogleLocation = {
 const ModalScreen = () => {
   const navigation = useNavigation();
   const { state, dispatch } = useContext(GlobalContext);
+
   const [focused, setFocused] = useState(false);
   const [results, setResults] = useState([]);
   const [recentList, setRecentList] = useState([]);
@@ -90,11 +92,11 @@ const ModalScreen = () => {
               ...prevList.slice(0, 4),
             ];
           });
-
           await dispatch({
             type: "SET_LOCATION",
             payload: await data,
           });
+
           navigation.goBack();
         }}
       >
@@ -145,8 +147,8 @@ const ModalScreen = () => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
 
-      const recentList = await getData("recentList");
-      const savedList = await getData("savedList");
+      const recentList = await getData("@recentList");
+      const savedList = await getData("@savedList");
 
       (await recentList) !== null && setRecentList(await recentList);
       (await savedList) !== null && setFavoriteList(await savedList);
@@ -190,12 +192,12 @@ const ModalScreen = () => {
 
   useEffect(() => {
     (async () => {
-      favoriteList.length > 0 && (await storeData(favoriteList, "savedList"));
+      favoriteList.length > 0 && (await storeData(favoriteList, "@savedList"));
     })();
   }, [favoriteList]);
   useEffect(() => {
     (async () => {
-      recentList.length > 0 && (await storeData(recentList, "recentList"));
+      recentList.length > 0 && (await storeData(recentList, "@recentList"));
     })();
   }, [recentList]);
 
@@ -205,7 +207,7 @@ const ModalScreen = () => {
 
   return (
     <PageView>
-      <TextInputContainer
+      <Input
         placeholder="Search"
         onChangeText={(event: any) => fetchSuggestions(event)}
         clearButtonMode="while-editing"
@@ -219,11 +221,10 @@ const ModalScreen = () => {
       {state.locationPermission && (
         <PressableItemCurrent
           onPress={async () => {
-            await dispatch({
+            dispatch({
               type: "SET_LOCATION",
               payload: currentLocation,
             });
-
             navigation.goBack();
           }}
         >
@@ -338,16 +339,16 @@ const ListContainer = styled(View)`
   width: 100%;
 `;
 
-const TextInputContainer = styled(TextInput)`
-  width: 100%;
-  padding: 12px;
-  background-color: ${({ theme }) => theme.colors.page.bg.start};
-  color: ${({ theme }) => theme.colors.primary};
-  border-bottom-width: 1px;
-  border-bottom-color: ${({ theme }) => theme.colors.page.bg.end};
-  font-family: ${({ theme }) => theme.font.family.primary};
-  margin-bottom: 12px;
-`;
+// const TextInputContainer = styled(TextInput)`
+//   width: 100%;
+//   padding: 12px;
+//   background-color: ${({ theme }) => theme.colors.page.bg.start};
+//   color: ${({ theme }) => theme.colors.primary};
+//   border-bottom-width: 1px;
+//   border-bottom-color: ${({ theme }) => theme.colors.page.bg.end};
+//   font-family: ${({ theme }) => theme.font.family.primary};
+//   margin-bottom: 12px;
+// `;
 
 const ViewGap = styled(View)`
   gap: 16px;

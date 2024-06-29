@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/Card";
 import { RainIcon } from "@/assets/icons/rain";
 import { DirectionIconContainer } from "./ui/DirectionIconContainer";
 import { View } from "react-native";
+import { UserContext } from "@/context/user";
 
 type WindInfoProps = {
   wind_degree: number;
@@ -36,7 +37,7 @@ const WindInfo = ({
   precip_in,
   precip_mm,
 }: WindInfoProps) => {
-  const { state } = useContext(GlobalContext);
+  const { userState } = useContext(UserContext);
 
   return (
     <Card row>
@@ -56,7 +57,7 @@ const WindInfo = ({
         <ItemContainer>
           <SectionTitle>Wind Speed:</SectionTitle>
           <Value color={ValueColor({ value: wind_kph, type: "speed" })}>
-            {state.settings.distanceType === 0
+            {userState.settings.distanceType === 0
               ? `${Math.round(wind_kph)} KM/H`
               : `${Math.round(wind_mph)} M/H`}
           </Value>
@@ -64,7 +65,7 @@ const WindInfo = ({
         <ItemContainer>
           <SectionTitle>Gust Speed:</SectionTitle>
           <Value color={ValueColor({ value: gust_kph, type: "speed" })}>
-            {state.settings.distanceType === 0
+            {userState.settings.distanceType === 0
               ? `${Math.round(gust_kph)} KM/H`
               : `${Math.round(gust_mph)} M/H`}
           </Value>
@@ -72,7 +73,7 @@ const WindInfo = ({
         <ItemContainer>
           <SectionTitle>Visibility:</SectionTitle>
           <Value color={ValueColor({ value: vis_km, type: "visibility" })}>
-            {state.settings.distanceType === 0
+            {userState.settings.distanceType === 0
               ? `${Math.round(vis_km)} KM`
               : `${Math.round(vis_miles)} M`}
           </Value>
@@ -92,7 +93,7 @@ const WindInfo = ({
                 color={ValueColor({ value: precip_mm, type: "rain" })}
                 large
               >
-                {state.settings.distanceType === 0
+                {userState.settings.distanceType === 0
                   ? `${precip_mm} MM`
                   : `${precip_in} INC`}
               </Value>

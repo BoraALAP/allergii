@@ -9,7 +9,7 @@ const getBundleID = () => {
     return "com.boraalap.allergii.prev";
   }
 
-  return "com.boraalap.allergii";
+  return "com.boraalap.allergii.prod";
 };
 
 const bundleID = getBundleID();
@@ -37,7 +37,7 @@ module.exports = ({ config }: ConfigContext): ExpoConfig => ({
   version: "1.1.0",
   orientation: "portrait",
   icon: "./assets/appicon.png",
-  scheme: "myapp",
+  scheme: "allergii",
   userInterfaceStyle: "automatic",
   splash: {
     // image: "./assets/splash.png",
@@ -90,6 +90,14 @@ module.exports = ({ config }: ConfigContext): ExpoConfig => ({
       {
         icon: "./assets/noti-appicon.png",
         color: "#005266",
+      },
+    ],
+    [
+      "expo-build-properties",
+      {
+        android: {
+          minSdkVersion: 24,
+        },
       },
     ],
   ],

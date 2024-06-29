@@ -50,8 +50,6 @@ export const ApiDataContext = createContext<{
 export const apiDataReducer = (state: ApiDataStateType, action: any) => {
   switch (action.type) {
     case "LOAD_DATA":
-      storeData(action.payload, "apiData");
-
       return {
         ...state,
         ...action.payload,

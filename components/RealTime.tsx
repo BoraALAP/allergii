@@ -13,6 +13,7 @@ import { SunIcon } from "@/assets/icons/sun";
 import { CloudIcon } from "@/assets/icons/cloud";
 import { HumidityIcon } from "@/assets/icons/humidity";
 import IconContainer from "@/components/ui/IconContainer";
+import { UserContext } from "@/context/user";
 
 type RealTimeProps = {
   day?: number;
@@ -48,7 +49,7 @@ const RealTime = ({
   is_day,
   humidity,
 }: RealTimeProps) => {
-  const { state } = useContext(GlobalContext);
+  const { userState } = useContext(UserContext);
 
   return (
     <Card row>
@@ -70,7 +71,7 @@ const RealTime = ({
           <Row style={{ gap: 4, alignItems: "flex-start" }}>
             <SectionTitle>{!!day ? "Max" : ""}</SectionTitle>
             <BigNumber color={ValueColor({ value: temp.c, type: "temp" })}>
-              {state.settings.tempType === 0
+              {userState.settings.tempType === 0
                 ? `${Math.round(temp.c)}°C`
                 : `${Math.round(temp.f)}°F`}
             </BigNumber>
@@ -81,7 +82,7 @@ const RealTime = ({
               <BigNumber
                 color={ValueColor({ value: feelslike.c, type: "temp" })}
               >
-                {state.settings.tempType === 0
+                {userState.settings.tempType === 0
                   ? `${Math.round(feelslike.c)}°C`
                   : `${Math.round(feelslike.f)}°F`}
               </BigNumber>

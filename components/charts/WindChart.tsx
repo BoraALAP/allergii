@@ -13,9 +13,11 @@ import { DirectionIconContainer } from "../ui/DirectionIconContainer";
 import { CustomDataPoint } from "./styles/lineChart";
 import Legend from "../ui/Legend";
 import { ChartSpace } from "./styles/generalStyle";
+import { UserContext } from "@/context/user";
 
 const WindChart = ({ hours }: { hours: HourType[] }) => {
   const { state } = useContext(GlobalContext);
+  const { userState } = useContext(UserContext);
 
   //find the max and min value from existhours array, after looking wind_kph and gust_kph, which ever is bigger and smaller
   const maxValue = Math.max(
@@ -30,10 +32,10 @@ const WindChart = ({ hours }: { hours: HourType[] }) => {
       <TextLabel gust={gust} color={gust && "body"}>
         {`${Math.round(
           gust
-            ? state.settings.distanceType === 0
+            ? userState.settings.distanceType === 0
               ? hour.gust_kph
               : hour.gust_mph
-            : state.settings.distanceType === 0
+            : userState.settings.distanceType === 0
             ? hour.wind_kph
             : hour.wind_mph
         ).toString()}`}

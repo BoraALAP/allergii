@@ -30,11 +30,22 @@ export const removeValue = async (key: string) => {
   console.log("Done.");
 };
 
+export const clearAll = async () => {
+  try {
+    await AsyncStorage.clear();
+  } catch (e) {
+    console.log(e);
+  }
+
+  console.log("Done.");
+};
+
 export const getAll = async () => {
   try {
     const keys = await AsyncStorage.getAllKeys();
 
     const result = await AsyncStorage.multiGet(keys);
+    console.log(result);
 
     return result;
   } catch (e) {

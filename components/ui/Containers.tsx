@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   RefreshControl,
   SafeAreaView,
@@ -8,7 +8,7 @@ import {
 import styled from "styled-components";
 import { ApiDataContext } from "@/context/apidata";
 import { GlobalContext } from "@/context/global";
-import fetchData from "@/func/fetchData";
+import useFetch from "@/func/useFetch";
 import PageBackgroundLinear from "./PageBackgroundLinear";
 
 type PageViewProps = {
@@ -44,25 +44,19 @@ export const PageScrollView = ({
   verticalCenter,
   noPadding,
 }: PageViewProps) => {
+  const { state } = useContext(GlobalContext);
   const [refreshing, setRefreshing] = useState(false);
 
-  const { apiDataDispatch } = useContext(ApiDataContext);
-  const { state } = useContext(GlobalContext);
+  const { loading, fetchData } = useFetch();
+
+  useEffect(() => {
+    if (!loading) setRefreshing(false);
+  }, [loading]);
 
   const onRefresh = React.useCallback(async () => {
-    setRefreshing(true);
-
     // on refresh fetch the data from apis
-    const data = await fetchData(state.location);
-    apiDataDispatch({ type: "LOAD_DATA", payload: await data });
-    // await fetchAIData(
-    //   apiDataState,
-    //   nowAiDispatch,
-    //   state.settings.distanceType,
-    //   state.settings.tempType
-    // );
-
-    setRefreshing(false);
+    setRefreshing(true);
+    fetchData(state.location.latitude, state.location.longitude);
   }, []);
 
   return (
@@ -121,6 +115,7 @@ export const Grid = styled(View)<{ flex?: boolean }>`
   flex-wrap: wrap;
   flex-direction: row;
   gap: 8px;
+  flex: 1;
 `;
 
 export const ItemContainer = styled(View)<{ row?: boolean }>`

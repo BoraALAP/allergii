@@ -37,8 +37,8 @@ const ModalScreen = () => {
   //     await fetchAIData(
   //       apiDataState,
   //       nowAiDispatch,
-  //       state.settings.distanceType,
-  //       state.settings.tempType
+  //       userState.settings.distanceType,
+  //       userState.settings.tempType
   //     );
   //     setLoading(false);
   //   })();

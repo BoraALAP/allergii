@@ -13,7 +13,7 @@ const Forecast = () => {
 
   const { apiDataState } = useContext(ApiDataContext);
 
-  if (state.loading || !apiDataState.current || !apiDataState.location) {
+  if (!apiDataState.current || !apiDataState.location) {
     return <Loading />;
   }
 

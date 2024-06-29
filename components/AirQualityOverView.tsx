@@ -10,13 +10,21 @@ import styled from "styled-components";
 import { View } from "react-native";
 import { Grid } from "@/components/ui/Containers";
 import { ValueColor } from "@/func/valueColor";
+import {
+  calculateDustAndDander,
+  calculateMoldPotential,
+} from "@/func/allergyCalculations";
 
 const AirQualityOverView = ({
   airQuality,
   pollen,
+  temperature,
+  humidity,
 }: {
   airQuality: GoogleAirQualityType;
   pollen: GooglePollenType;
+  temperature: number;
+  humidity: number;
 }) => {
   const { state } = useContext(GlobalContext);
 
@@ -35,13 +43,60 @@ const AirQualityOverView = ({
 
   const { aqiDisplay, displayName, category, aqi } = airQuality?.indexes[1];
 
+  const pm10 = airQuality.pollutants.find((item: any) => item.code === "pm10");
+  const pm25 = airQuality.pollutants.find((item: any) => item.code === "pm25");
+
+  const mold = calculateMoldPotential({
+    temperature,
+    humidity,
+    pm10: pm10?.concentration.value || 0,
+    pm25: pm25?.concentration.value || 0,
+  });
+  const dustanddander = calculateDustAndDander(
+    pm25?.concentration.value || 0,
+    pm10?.concentration.value || 0
+  );
+
+  const allergyList = [
+    {
+      displayName: "Air Quality",
+      description: category,
+      value: aqi,
+    },
+    {
+      displayName: "Mold",
+      description: mold.description,
+      value: mold.value,
+    },
+
+    {
+      displayName: "Dust & Dander",
+      description: dustanddander.description,
+      value: dustanddander.value,
+    },
+  ];
+
   return (
     <Card>
       <Grid>
-        <ItemContainer>
-          <SectionTitle>Air Quality</SectionTitle>
-          <Value>{category}</Value>
-        </ItemContainer>
+        <></>
+        {allergyList.map((item, index) => (
+          <ItemContainer key={index}>
+            <Row>
+              <SectionTitle>{item.displayName}</SectionTitle>
+            </Row>
+            {item.value && item.description && (
+              <Value
+                color={ValueColor({
+                  value: item.value,
+                  type: "pollen",
+                })}
+              >
+                {item.description}
+              </Value>
+            )}
+          </ItemContainer>
+        ))}
         {pollen?.dailyInfo[0].pollenTypeInfo.map((item, index) => (
           <ItemContainer key={index} disabled={!item.inSeason}>
             <Row>

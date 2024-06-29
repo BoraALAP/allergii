@@ -9,7 +9,7 @@ import RealTime from "@/components/RealTime";
 import DayDetails from "@/components/DayDetails";
 import { DividerH } from "@/components/ui/Elements";
 import RainInfo from "@/components/RainInfo";
-import { global } from "@/constants/Theme";
+
 import { Charts } from "@/components/Charts";
 
 const Day = () => {
@@ -29,9 +29,6 @@ const Day = () => {
     <PageScrollView center noPadding>
       <Stack.Screen
         options={{
-          headerBackTitleStyle: {
-            fontFamily: global.font.family.primaryBold,
-          },
           title: Intl.DateTimeFormat("en-US", {
             weekday: "long",
             month: "long",

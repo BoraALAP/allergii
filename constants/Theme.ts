@@ -1,5 +1,3 @@
-import { TextInput } from "react-native";
-
 const lBlue100 = "hsl(173, 100%, 90%)";
 const lBlue200 = "hsl(173, 100%, 80%)";
 const lBlue300 = "hsl(173, 100%, 70%)";
@@ -84,7 +82,9 @@ const grey100 = "hsl(0, 0%, 90%)";
 const grey50 = "hsl(0, 0%, 95%)";
 const white = "hsl(0, 0%, 100%)";
 
-export const global = {
+//generate types for global and color objects
+
+export const global: GlobalType = {
   font: {
     size: {
       xs: "11px",
@@ -130,106 +130,122 @@ export const global = {
   },
 };
 
-export const color = {
-  primary: black,
-  secondary: orange700,
-
-  soft: grey200,
-  invert: white,
-  heading: black,
-  value: black,
-  sectionTitle: grey800,
-  body: grey700,
-  divider: grey150,
-  tabBar: {
-    default: {
-      icon: grey800,
-      text: grey800,
-    },
-    selected: {
-      icon: orange700,
-      text: orange700,
-    },
-  },
-  tint: {
-    active: grey900,
-    text: grey900,
-  },
-  page: {
-    bg: {
-      start: white,
-      end: grey50,
-    },
-  },
-  modal: {
-    bg: grey50,
-  },
-
-  card: {
-    border: grey100,
-    background: white,
-    disabled: {
-      border: grey150,
-      background: grey50,
-    },
-  },
-  button: {
-    bg: {
-      primary: { default: lBlue800, active: lBlue900 },
-      secondary: { default: orange500, active: orange600 },
-      tertiary: { default: purple500, active: purple600 },
-      disabled: { default: grey400, active: grey600 },
-    },
-    text: {
-      primary: grey50,
-      secondary: grey900,
-      tertiary: grey900,
-      disabled: grey900,
-    },
-  },
-  inSeason: {
-    true: green500,
-    false: red500,
-  },
-  level: {
-    low: blue500,
-    normal: green600,
-    medium: orange500,
-    high: red400,
-    extreme: red800,
-  },
-  chart: {
-    bottom: lBlue500,
-    middle: blue500,
-    top: orange500,
-    line1: grey700,
-    line2: grey500,
-    bar: {
-      bg: grey50,
-      low: blue300,
-      medium: orange300,
-      high: red300,
-    },
-  },
-  icon: {
-    yellow: orange400,
-    lightBlue: blue400,
-    blue: blue600,
-    darkBlue: blue800,
-  },
-};
-
-export const light = {
+export const light: ColorType = {
   dark: false,
-  ...global,
+  ...(global as GlobalType),
   colors: {
-    ...color,
+    primary: black,
+    secondary: orange700,
+    soft: grey200,
+    invert: white,
+    value: black,
+    sectionTitle: grey800,
+    divider: grey150,
+    text: {
+      primary: black,
+      heading: black,
+      body: grey700,
+      invert: white,
+      soft: grey200,
+      disabled: grey400,
+    },
+    tabBar: {
+      default: {
+        icon: grey800,
+        text: grey800,
+      },
+      selected: {
+        icon: orange700,
+        text: orange700,
+      },
+    },
+    tint: {
+      active: grey900,
+      text: grey900,
+    },
+    slider: {
+      base: orange400,
+      thumb: black,
+      track: orange700,
+    },
+    page: {
+      bg: {
+        start: white,
+        end: grey50,
+      },
+    },
+    modal: {
+      bg: grey50,
+    },
+
+    card: {
+      border: grey100,
+      background: white,
+      disabled: {
+        border: grey150,
+        background: grey50,
+      },
+    },
+    input: {
+      border: grey800,
+      placeholder: grey600,
+    },
+
+    button: {
+      bg: {
+        primary: { default: lBlue800, active: lBlue900 },
+        secondary: { default: orange500, active: orange600 },
+        tertiary: { default: purple500, active: purple600 },
+        disabled: { default: grey400, active: grey600 },
+      },
+      border: {
+        secondary: grey600,
+        nav: grey200,
+        disabled: grey400,
+      },
+      text: {
+        primary: grey50,
+        secondary: grey900,
+        tertiary: grey900,
+        disabled: grey900,
+      },
+    },
+    inSeason: {
+      true: green500,
+      false: red500,
+    },
+    level: {
+      low: blue500,
+      normal: green600,
+      medium: orange500,
+      high: red400,
+      extreme: red800,
+    },
+    chart: {
+      bottom: lBlue500,
+      middle: blue500,
+      top: orange500,
+      line1: grey700,
+      line2: grey500,
+      bar: {
+        bg: grey50,
+        low: blue300,
+        medium: orange300,
+        high: red300,
+      },
+    },
+    icon: {
+      yellow: orange400,
+      lightBlue: blue400,
+      blue: blue600,
+      darkBlue: blue800,
+    },
   },
 };
 
-export const dark = {
+export const dark: ColorType = {
   dark: true,
-  ...global,
+  ...(global as GlobalType),
   colors: {
     page: {
       bg: {
@@ -251,18 +267,28 @@ export const dark = {
       },
     },
     primary: white,
-
     secondary: orange200,
     soft: grey700,
     invert: grey900,
-    heading: white,
     value: white,
     sectionTitle: grey200,
-    body: grey150,
     divider: grey750,
+    text: {
+      primary: white,
+      heading: white,
+      body: grey150,
+      invert: grey900,
+      soft: grey700,
+      disabled: grey400,
+    },
     tint: {
       active: grey100,
       text: grey100,
+    },
+    slider: {
+      base: orange800,
+      thumb: white,
+      track: orange400,
     },
     card: {
       border: grey900,
@@ -272,12 +298,22 @@ export const dark = {
         background: grey950,
       },
     },
+    input: {
+      border: grey300,
+      placeholder: grey400,
+    },
+
     button: {
       bg: {
         primary: { default: lBlue300, active: lBlue100 },
         secondary: { default: orange500, active: orange600 },
         tertiary: { default: purple500, active: purple600 },
-        disabled: { default: grey400, active: grey600 },
+        disabled: { default: grey600, active: grey400 },
+      },
+      border: {
+        secondary: grey400,
+        nav: grey700,
+        disabled: grey600,
       },
       text: {
         primary: grey950,
@@ -318,4 +354,173 @@ export const dark = {
       darkBlue: blue800,
     },
   },
+};
+
+type GlobalType = {
+  font: {
+    size: {
+      xs: string;
+      sm: string;
+      base: string;
+      lg: string;
+      xl: string;
+      xxl: string;
+      pageTitle: string;
+      sectionTitle: string;
+      value: string;
+      largeValue: string;
+      bigNumber: string;
+    };
+    weight: {
+      light: string;
+      normal: string;
+      medium: string;
+      bold: string;
+      extraBold: string;
+    };
+    family: {
+      primary: string;
+      primaryBold: string;
+      secondary: string;
+      secondaryBold: string;
+    };
+  };
+  border: {
+    radius: {
+      circle: string;
+      button: string;
+      card: string;
+      modal: string;
+      input: string;
+    };
+  };
+  colors: {
+    splash: {
+      start: string;
+      end: string;
+    };
+  };
+};
+
+export type ColorType = {
+  dark: boolean;
+
+  colors: {
+    primary: string;
+    secondary: string;
+    soft: string;
+    invert: string;
+    value: string;
+    sectionTitle: string;
+    divider: string;
+    text: {
+      heading: string;
+      primary: string;
+      body: string;
+      invert: string;
+      soft: string;
+      disabled: string;
+    };
+    tabBar: {
+      default: {
+        icon: string;
+        text: string;
+      };
+      selected: {
+        icon: string;
+        text: string;
+      };
+    };
+    tint: {
+      active: string;
+      text: string;
+    };
+    page: {
+      bg: {
+        start: string;
+        end: string;
+      };
+    };
+    modal: {
+      bg: string;
+    };
+    slider: {
+      base: string;
+      thumb: string;
+      track: string;
+    };
+    card: {
+      border: string;
+      background: string;
+      disabled: {
+        border: string;
+        background: string;
+      };
+    };
+    input: {
+      border: string;
+      placeholder: string;
+    };
+    button: {
+      bg: {
+        primary: {
+          default: string;
+          active: string;
+        };
+        secondary: {
+          default: string;
+          active: string;
+        };
+        tertiary: {
+          default: string;
+          active: string;
+        };
+        disabled: {
+          default: string;
+          active: string;
+        };
+      };
+      border: {
+        secondary: string;
+        nav: string;
+        disabled: string;
+      };
+      text: {
+        primary: string;
+        secondary: string;
+        tertiary: string;
+        disabled: string;
+      };
+    };
+    inSeason: {
+      true: string;
+      false: string;
+    };
+    level: {
+      low: string;
+      normal: string;
+      medium: string;
+      high: string;
+      extreme: string;
+    };
+    chart: {
+      bottom: string;
+      middle: string;
+      top: string;
+      line1: string;
+      line2: string;
+      bar: {
+        bg: string;
+        low: string;
+        medium: string;
+        high: string;
+      };
+    };
+    icon: {
+      yellow: string;
+      lightBlue: string;
+      blue: string;
+      darkBlue: string;
+    };
+  };
 };

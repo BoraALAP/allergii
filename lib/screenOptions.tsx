@@ -14,9 +14,15 @@ export const MainPagesOptions = (props: any) => {
           color: state.dark ? dark.colors.body : light.colors.body,
           fontFamily: global.font.family.primaryBold,
         },
+        headerLargeTitleStyle: {
+          fontFamily: global.font.family.primaryBold,
+        },
         headerShadowVisible: false,
         headerTransparent: Platform.OS === "ios" ? true : false,
         headerShown: Platform.OS === "ios" ? false : true,
+        headerBackTitleStyle: {
+          fontFamily: global.font.family.primaryBold,
+        },
         headerStyle: {
           backgroundColor:
             Platform.OS === "ios"
